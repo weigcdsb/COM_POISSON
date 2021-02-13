@@ -4,8 +4,9 @@
 
 One strange thing for the simulation... You can see simulation in demo.m.
 Basically, after filtering/ smoothing, the fitting results for parameters are:
+![alt text](https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png?raw=true)
 
 
-<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png" width="15">
+<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png?raw=true" width="15">
 
 
