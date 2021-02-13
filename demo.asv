@@ -83,27 +83,8 @@ lam_fit2 = exp(X_lam.*theta_fit2(1, :)');
 nu_fit1 = exp(G_nu.*theta_fit1(2, :)');
 nu_fit2 = exp(G_nu.*theta_fit2(2, :)');
 
-lambda = figure;
-hold on
-plot(lam_true*dt, 'r', 'LineWidth', 2)
-plot(lam_fit1*dt, 'b', 'LineWidth', 2)
-plot(lam_fit2*dt, 'g', 'LineWidth', 2)
-legend('true', 'filtering', 'smoothing', 'Location','northwest')
-title('\lambda')
-xlabel('step')
-hold off
-saveas(lambda, 'lambda.png')
 
-nu = figure;
-hold on
-plot(nu_true*dt, 'r', 'LineWidth', 2)
-plot(nu_fit1*dt, 'b', 'LineWidth', 2)
-plot(nu_fit2*dt, 'g', 'LineWidth', 2)
-legend('true', 'filtering', 'smoothing', 'Location','northwest')
-title('\nu')
-xlabel('step')
-hold off
-saveas(nu, 'nu.png')
+
 
 fit1_mean = zeros(T/dt, 1);
 fit1_var = zeros(T/dt, 1);
@@ -135,7 +116,7 @@ for k = 1:(T/dt)
     fit2_mlogy(k) = Ck/Zk;
 end
 
-meanY = figure;
+figure(10)
 hold on
 plot(mean(spk_vec, 1), 'color', [0 0 0 0.2])
 plot(theo_mean, 'r', 'LineWidth', 2)
@@ -143,11 +124,9 @@ plot(fit1_mean, 'b', 'LineWidth', 2)
 plot(fit2_mean, 'g', 'LineWidth', 2)
 legend('obs.','true', 'filtering', 'smoothing', 'Location','northwest')
 title('mean of Y_k')
-xlabel('step')
 hold off
-saveas(meanY, 'meanY.png')
 
-varY = figure;
+figure(11)
 hold on
 plot(var(spk_vec, 1), 'color', [0 0 0 0.2])
 plot(theo_var, 'r', 'LineWidth', 2)
@@ -155,11 +134,9 @@ plot(fit1_var, 'b', 'LineWidth', 2)
 plot(fit2_var, 'g', 'LineWidth', 2)
 legend('obs.','true', 'filtering', 'smoothing', 'Location','northwest')
 title('var of Y_k')
-xlabel('step')
 hold off
-saveas(varY, 'varY.png')
 
-meanLogYfac = figure;
+figure(12)
 hold on
 plot(mean(gammaln(spk_vec + 1), 1), 'color', [0 0 0 0.2])
 plot(theo_mlogy, 'r', 'LineWidth', 2)
@@ -167,9 +144,7 @@ plot(fit1_mlogy, 'b', 'LineWidth', 2)
 plot(fit2_mlogy, 'g', 'LineWidth', 2)
 legend('obs.','true', 'filtering', 'smoothing', 'Location','northwest')
 title('mean of log(Y_k!)')
-xlabel('step')
 hold off
-saveas(meanLogYfac, 'meanLogYfac.png')
 
 
 
