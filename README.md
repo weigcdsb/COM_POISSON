@@ -12,3 +12,6 @@ But when investigating the fitting for mean($Y_k$), Var($Y_k$) and mean($log(Y_K
 
 Maybe we should consider reparameterize to $\mu$ and $\nu$, where $\mu = E(Y)$?
 
+<script type="text/javascript" async
+
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
