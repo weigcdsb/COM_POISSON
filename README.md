@@ -7,3 +7,6 @@ Basically, after filtering/ smoothing, the fitting results for parameters are:
 ![image](https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png)<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png" width="10">
 
 
+![](https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png)
+
+<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png" width="250"/>
