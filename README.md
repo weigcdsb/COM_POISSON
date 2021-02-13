@@ -4,9 +4,13 @@
 
 One strange thing for the simulation... You can see simulation in demo.m.
 Basically, after filtering/ smoothing, the fitting results for parameters are:
-![image](https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png)<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png" width="10">
 
+<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png" width="500"/>
+<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/nu.png" width="500"/>
 
-![](https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png)
+But when investigating the fitting for mean($Y_k$), Var($Y_k$) and mean($log(Y_K!)$). Things looks much better:
+<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/meanY.png" width="500"/>
+<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/varY.png" width="500"/>
+<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/meanLogYfac.png" width="500"/>
 
-<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png" width="250"/>
+Maybe we should consider reparameterize to $\mu$ and $\nu$, where $\mu = E(Y)$?
