@@ -11,7 +11,3 @@ But when investigating the fitting for mean($Y_k$), Var($Y_k$) and mean($log(Y_K
 <img src="https://github.com/weigcdsb/COM_POISSON/blob/main/meanY.png" width="250"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/varY.png" width="250"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/meanLogYfac.png" width="250"/>
 
 Maybe we should consider reparameterize to $\mu$ and $\nu$, where $\mu = E(Y)$?
-
-<script type="text/javascript" async
-
-src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
