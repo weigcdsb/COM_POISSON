@@ -2,7 +2,7 @@ rng(123)
 
 %% generate data
 T = 10;
-dt = 0.02;
+dt = 0.01;
 n = 100;
 
 X_lam = ones(T/dt, 1);
@@ -17,8 +17,8 @@ theta_true = [[repmat(4.5, 1, round(T/(dt*2)))...
 lam_true = exp(X_lam.*theta_true(:, 1));
 nu_true = exp(G_nu.*theta_true(:, 2));
 
-plot(lam_true*dt)
-plot(nu_true*dt)
+% plot(lam_true*dt)
+% plot(nu_true*dt)
 
 spk_vec = zeros(n, T/dt);
 theo_mean = zeros(T/dt, 1);
@@ -38,8 +38,8 @@ end
 
 figure(1)
 hold on
-plot(sum(spk_vec, 1))
-plot(n*theo_mean)
+plot(mean(spk_vec, 1))
+plot(theo_mean)
 hold off
 
 figure(2)
@@ -55,6 +55,15 @@ hold off
 
 
 
+hold on
+plot(lam_true)
+plot(lam_fit)
+hold off
+
+hold on
+plot(nu_true(1:500))
+plot(nu_fit(1:500))
+hold off
 
 hold on
 plot(theta_true(:, 1))
