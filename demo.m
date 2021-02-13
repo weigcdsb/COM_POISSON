@@ -17,6 +17,7 @@ theta_true = [[repmat(3, 1, round(T/(dt*2)))...
 lam_true = exp(X_lam.*theta_true(:, 1));
 nu_true = exp(G_nu.*theta_true(:, 2));
 
+figure(999)
 plot(nu_true*dt)
 
 spk_vec = zeros(n, T/dt);
@@ -65,14 +66,14 @@ hold off
 figure(4)
 hold on
 plot(theta_true(:, 1))
-% plot(theta_fit1(1, :))
+plot(theta_fit1(1, :))
 plot(theta_fit2(1, :))
 hold off
 
 figure(5)
 hold on
 plot(theta_true(:, 2))
-% plot(theta_fit1(2, :))
+plot(theta_fit1(2, :))
 plot(theta_fit2(2, :))
 hold off
 

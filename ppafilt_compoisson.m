@@ -49,7 +49,7 @@ for i=2:n_spk
     w1 = nCell*lam2*(X_lam(i,:)'*X_lam(i,:));
     w2 = lamnu*(X_lam(i,:)'*G_nu(i, :));
     w3 = lamnu*(G_nu(i, :)'*X_lam(i,:));
-    w4 = (nu(i)*dt*sum_logfac + nCell*nu2);
+    w4 = (nu(i)*dt*sum_logfac + nCell*nu2)*(G_nu(i, :)'*G_nu(i, :));
     
     
     
