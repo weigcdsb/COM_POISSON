@@ -1,4 +1,4 @@
-function [theta,W,lam, nu, i] = ppafilt_compoisson(N,X_lam,G_nu,theta0,W0,F,Q,dt)
+function [theta,W] = ppasmoo_compoisson(N,X_lam,G_nu,theta0,W0,F,Q,dt)
 
 
 n_spk = size(N, 2);
@@ -49,19 +49,19 @@ for i=2:n_spk
     w1 = nCell*lam2*(X_lam(i,:)'*X_lam(i,:));
     w2 = lamnu*(X_lam(i,:)'*G_nu(i, :));
     w3 = lamnu*(G_nu(i, :)'*X_lam(i,:));
-    w4 = (nu(i)*dt*sum_logfac + n*nu2);
+    w4 = (nu(i)*dt*sum_logfac + nCell*nu2);
     
     
     
-    Wpostinv = inv(Wpred(:,:,i)) + diag([w_lam, w_nu]);
+    Wpostinv = inv(Wpred(:,:,i)) + [w1, w2; w3, w4];
     W(:,:,i) = inv(Wpostinv);
 %     W(:,:,i)
     
     theta(:,i)  = thetapred(:,i) +...
-        W(:,:,i)*[(sum(N(:, i))- nCell*mean_k)*X_lam(i,:)';...
-        -((nu(i)*dt*sum_logfac))*G_nu(i, :)'];
+        W(:,:,i)*[(sum(N(:, i))- nCell*lam1)*X_lam(i,:)';...
+        -(nu(i)*dt*sum_logfac + nCell*nu1)*G_nu(i, :)'];
     
-%     [theta(:,i),theta_true(i,:)']
+%     [thetapred(:,i), theta(:,i),theta_true(i,:)']
     
     [~, msgid] = lastwarn;
     if strcmp(msgid,'MATLAB:nearlySingularMatrix')
@@ -71,5 +71,16 @@ for i=2:n_spk
 end
 
 lastwarn('')
+I = eye(length(theta0));
+
+for i=(n_spk-2):-1:1
+    Wi = inv(Wpred(:,:,i+1));
+    Fsquig = inv(F)*(I-Q*Wi);
+    Ksquig = inv(F)*Q*Wi;
+    
+    theta(:,i)=Fsquig*theta(:,i+1) + Ksquig*thetapred(:,i+1);
+    C = W(:,:,i)*F'*Wi;
+    W(:,:,i) = W(:,:,i) + C*(W(:,:,i+1)-Wpred(:,:,i+1))*C';
+end
 
 end

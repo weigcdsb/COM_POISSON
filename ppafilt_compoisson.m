@@ -1,4 +1,4 @@
-function [theta,W,lam, nu, i] = ppafilt_compoisson(N,X_lam,G_nu,theta0,W0,F,Q,dt)
+function [theta,W] = ppafilt_compoisson(N,X_lam,G_nu,theta0,W0,F,Q,dt)
 
 
 n_spk = size(N, 2);
@@ -59,9 +59,9 @@ for i=2:n_spk
     
     theta(:,i)  = thetapred(:,i) +...
         W(:,:,i)*[(sum(N(:, i))- nCell*lam1)*X_lam(i,:)';...
-        -((nu(i)*dt*sum_logfac) + nCell*nu1)*G_nu(i, :)'];
+        -(nu(i)*dt*sum_logfac + nCell*nu1)*G_nu(i, :)'];
     
-%     [theta(:,i),theta_true(i,:)']
+%     [thetapred(:,i), theta(:,i),theta_true(i,:)']
     
     [~, msgid] = lastwarn;
     if strcmp(msgid,'MATLAB:nearlySingularMatrix')
