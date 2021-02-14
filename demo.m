@@ -58,10 +58,10 @@ hold off
 %% fit
 
 [theta_fit1,W_fit1] =...
-    ppafilt_compoisson(spk_vec,X_lam,G_nu,ones(2,1),eye(2),eye(2),1e-5*eye(2),dt);
+    ppafilt_compoisson(spk_vec,X_lam,G_nu,ones(2,1),eye(2),eye(2),2*1e-3*eye(2),dt);
 
 [theta_fit2,W_fit2] =...
-    ppasmoo_compoisson(spk_vec,X_lam,G_nu,ones(2,1),eye(2),eye(2),1e-5*eye(2),dt);
+    ppasmoo_compoisson(spk_vec,X_lam,G_nu,ones(2,1),eye(2),eye(2),2*1e-3*eye(2),dt);
 
 figure(4)
 hold on
@@ -89,7 +89,7 @@ plot(lam_true*dt, 'r', 'LineWidth', 2)
 plot(lam_fit1*dt, 'b', 'LineWidth', 2)
 plot(lam_fit2*dt, 'g', 'LineWidth', 2)
 legend('true', 'filtering', 'smoothing', 'Location','northwest')
-title('\lambda')
+title('\lambda\Delta t')
 xlabel('step')
 hold off
 saveas(lambda, 'lambda.png')
@@ -100,7 +100,7 @@ plot(nu_true*dt, 'r', 'LineWidth', 2)
 plot(nu_fit1*dt, 'b', 'LineWidth', 2)
 plot(nu_fit2*dt, 'g', 'LineWidth', 2)
 legend('true', 'filtering', 'smoothing', 'Location','northwest')
-title('\nu')
+title('\nu\Delta t')
 xlabel('step')
 hold off
 saveas(nu, 'nu.png')
