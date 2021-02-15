@@ -17,6 +17,6 @@ Also, I need to mention that the initial value is set as theta_true(1,:). The sa
 
 Maybe this is because when nu -> 0, the estimation of summation such as Z,... will shoot to inifinity.
 
-Another issue is that the updating of lambda is influenced by nu a lot. Maybe we can consider to reparametrize to mu and nu, where E(Y) = mu*\dalta t? Then since mu and nu are orthogonal, that would be better.
+Another issue is that the updating of lambda is influenced by nu a lot. Maybe we can consider to reparametrize to mu and nu, where E(Y) = mu*(Delta t)? Then since mu and nu are orthogonal, that would be better. (https://journals.sagepub.com/doi/abs/10.1177/1471082X17697749)
 
 
