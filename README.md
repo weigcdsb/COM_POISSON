@@ -13,4 +13,6 @@ Here, I showed 2 examples:
 
 Well, looks good.
 But here's one problem. The algorithm is very easy to get singular matrix. That means, it correct "too hard"... Maybe we can add some constraint for theta updating? Maybe that will make the W matrix meaningless...
+Also, I need to mention that the initial value is set as theta_true(1,:). The same reason: arbitrary initial value may make the algorithm get singular matrix.
+
 
