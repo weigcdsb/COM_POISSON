@@ -1,6 +1,4 @@
 # COM_POISSON
-
-## Alert: there's a bug, wait for fixing...
  adaptive filtering for com-poisson
 
 The derivation includes 2 files: 1) a initial version & 2) a more meaniful, compact version (matrix form)
