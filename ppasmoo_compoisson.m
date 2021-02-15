@@ -34,9 +34,9 @@ for i=2:n_spk
     Z = cum_app(1);
     A = cum_app(2);
     B = cum_app(3);
-    C = cum_app(3);
-    D = cum_app(3);
-    E = cum_app(3);
+    C = cum_app(4);
+    D = cum_app(5);
+    E = cum_app(6);
     
     lam1 = A/Z;
     lam2 = B/Z - lam1^2;

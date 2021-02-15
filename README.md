@@ -1,13 +1,16 @@
 # COM_POISSON
  adaptive filtering for com-poisson
 
+Here, I showed 2 examples:
 
-One strange thing for the simulation... You can see simulation in demo.m.
-Basically, after filtering/ smoothing, the fitting results for parameters are:
+## Example 1: jump lambda + jump nu
 
-<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda.png" width="350"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/nu.png" width="350"/>
+<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda_1.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/nu_1.png" width="400"/>
 
-But when investigating the fitting for mean($Y_k$), Var($Y_k$) and mean($log(Y_K!)$). Things looks much better:
-<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/meanY.png" width="250"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/varY.png" width="250"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/meanLogYfac.png" width="250"/>
+## Example 2: jump lambda + cos nu
 
-Maybe we should consider reparameterize to $\mu$ and $\nu$, where $\mu = E(Y)$?
+<img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda_2.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/nu_2.png" width="400"/>
+
+Well, looks good.
+But here's one problem. The algorithm is very easy to get singular matrix. That means, it correct "too hard"... Maybe we can add some constraint for theta updating? Maybe that will make the W matrix meaningless...
+

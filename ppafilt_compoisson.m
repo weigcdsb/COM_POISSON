@@ -3,7 +3,7 @@ function [theta,W] = ppafilt_compoisson(N,X_lam,G_nu,theta0,W0,F,Q,dt)
 
 n_spk = size(N, 2);
 nCell = size(N, 1);
-maxSum = n_spk; % max number for sum estimation;
+maxSum = 5*n_spk; % max number for sum estimation;
 
 % Preallocate
 theta   = zeros(length(theta0), n_spk);
@@ -34,9 +34,9 @@ for i=2:n_spk
     Z = cum_app(1);
     A = cum_app(2);
     B = cum_app(3);
-    C = cum_app(3);
-    D = cum_app(3);
-    E = cum_app(3);
+    C = cum_app(4);
+    D = cum_app(5);
+    E = cum_app(6);
     
     lam1 = A/Z;
     lam2 = B/Z - lam1^2;
@@ -61,7 +61,6 @@ for i=2:n_spk
         W(:,:,i)*[(sum(N(:, i))- nCell*lam1)*X_lam(i,:)';...
         -(nu(i)*dt*sum_logfac + nCell*nu1)*G_nu(i, :)'];
     
-%     [thetapred(:,i), theta(:,i),theta_true(i,:)']
     
     [~, msgid] = lastwarn;
     if strcmp(msgid,'MATLAB:nearlySingularMatrix')
