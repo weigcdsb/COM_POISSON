@@ -1,6 +1,8 @@
 # COM_POISSON
  adaptive filtering for com-poisson
 
+The derivation includes 2 files: 1) a initial version & 2) a more meaniful, compact version (matrix form)
+
 Here, I showed 2 examples:
 
 ## Example 1: jump lambda + jump nu
