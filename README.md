@@ -30,7 +30,7 @@ For interpretation, maybe we can consider to reparametrize to mu and nu, where E
 
 I found this review paper is very useful: https://onlinelibrary.wiley.com/doi/10.1002/wics.1533
 
-One thing I'm thinking: Will it benefit a lot to extend into zero-inflated COM-Poisson? Since as far as I know, the spikes are usually pretty sparse.
+One thing I'm thinking: Will it benefit a lot to extend COM-Poisson into zero-inflated COM-Poisson? Since as far as I know, the spikes are usually pretty sparse. Conceptually, I'm thinking 2 ways: 1) track P(Y_k = 0) directly; 2) use another linear model logit(E(Y_k = 0)) = Z*\alpha (wow, now we have a tri-linear model). Maybe way-2) is more informative, for example, we can include pre-synaptic spiking information into Z, and see the influence of presynaptic spikes onto the sparsity of post-spikes?
 
 
 
