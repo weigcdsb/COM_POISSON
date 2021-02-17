@@ -18,7 +18,7 @@ Here, I showed 3 examples:
 
 <img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta1_3.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta2_3.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda_3.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/nu_3.png" width="400"/>
 
-Well, all looks good, although lambda for example 3 is not super ideal. This may cause by the Hessian is not robust to outliers. To resolve that, I replace replace hessian (observed information) with expected (Fisher) information, which is motivated by 'Fisher scoring' in IRLS. It seems using fisher information resolves  the problem a lot:
+Well, all looks good, although lambda for example 3 is not super ideal. This may be caused by the Hessian is not robust to outliers (since we need sum the log(y!), and y! will blow up very quickly). To resolve that, I replace replace hessian (observed information) with expected (Fisher) information, which is motivated by 'Fisher scoring' in IRLS. It seems using fisher information resolves  the problem a lot:
 
 <img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta1_fisher.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta2_fisher.png" width="400"/>
 
