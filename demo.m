@@ -88,7 +88,7 @@ legend('true', 'filtering', 'smoothing', 'Location','northwest')
 title('\theta for \nu')
 xlabel('step')
 hold off
-saveas(theta1, 'theta2_1.png')
+saveas(theta2, 'theta2_1.png')
 
 
 lambda = figure;
@@ -168,7 +168,7 @@ legend('true', 'filtering', 'smoothing', 'Location','northwest')
 title('\theta for \nu')
 xlabel('step')
 hold off
-saveas(theta1, 'theta2_2.png')
+saveas(theta2, 'theta2_2.png')
 
 
 lambda = figure;
@@ -249,7 +249,7 @@ legend('true', 'filtering', 'smoothing', 'Location','northwest')
 title('\theta for \nu')
 xlabel('step')
 hold off
-saveas(theta1, 'theta2_3.png')
+saveas(theta2, 'theta2_3.png')
 
 
 lambda = figure;
