@@ -1,9 +1,12 @@
-function [theta,W] = ppasmoo_compoisson(N,X_lam,G_nu,theta0,W0,F,Q,dt)
+function [theta,W] = ppasmoo_compoisson(N,X_lam,G_nu,W0,F,Q,dt)
+
+% newton raphson
+theta0 = nf_initial(N(:, 1), X_lam(1,:), G_nu(1,:), dt);
 
 
 n_spk = size(N, 2);
 nCell = size(N, 1);
-maxSum = n_spk; % max number for sum estimation;
+maxSum = 5*n_spk; % max number for sum estimation;
 
 % Preallocate
 theta   = zeros(length(theta0), n_spk);

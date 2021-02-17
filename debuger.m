@@ -1,8 +1,11 @@
 N = spk_vec;
-theta0 = theta_true(1, :)';
 W0 = eye(2);
 F = eye(2);
 Q = ones(2,2);
+
+y = N(:, 1);
+x_lam = X_lam(1,:);
+g_nu = G_nu(1,:);
 
 
 -nu(i)*dt*sum_logfac + nCell*nu(i)*dt*C/Z

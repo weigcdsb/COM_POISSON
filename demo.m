@@ -1,4 +1,4 @@
-rng(123)
+rng(12)
 
 %% demo 1: step lambda + step nu
 T = 10;
@@ -56,11 +56,11 @@ plot(theo_mlogy)
 hold off
 
 [theta_fit1,W_fit1] =...
-    ppafilt_compoisson(spk_vec,X_lam,G_nu,theta_true(1, :)',...
+    ppafilt_compoisson(spk_vec,X_lam,G_nu,...
     eye(2),eye(2),dt*eye(2),dt);
 
 [theta_fit2,W_fit2] =...
-    ppasmoo_compoisson(spk_vec,X_lam,G_nu,theta_true(1, :)',...
+    ppasmoo_compoisson(spk_vec,X_lam,G_nu,...
     eye(2),eye(2),dt*eye(2),dt);
 
 lam_fit1 = exp(X_lam.*theta_fit1(1, :)');
@@ -70,10 +70,14 @@ nu_fit2 = exp(G_nu.*theta_fit2(2, :)');
 
 theta1 = figure;
 hold on
-plot(theta_true(:, 1), 'r', 'LineWidth', 2)
-plot(theta_fit1(1, :), 'b', 'LineWidth', 2)
-plot(theta_fit2(1, :), 'g', 'LineWidth', 2)
-legend('true', 'filtering', 'smoothing', 'Location','northwest')
+l1 = plot(theta_true(:, 1), 'k', 'LineWidth', 2);
+l2 = plot(theta_fit1(1, :), 'b', 'LineWidth', 1);
+l3 = plot(theta_fit2(1, :), 'c', 'LineWidth', 1);
+plot(theta_fit1(1, :) + sqrt(squeeze(W_fit1(1, 1, :)))', 'b:', 'LineWidth', .5)
+plot(theta_fit1(1, :) - sqrt(squeeze(W_fit1(1, 1, :)))', 'b:', 'LineWidth', .5)
+plot(theta_fit2(1, :) + sqrt(squeeze(W_fit2(1, 1, :)))', 'c:', 'LineWidth', .5)
+plot(theta_fit2(1, :) - sqrt(squeeze(W_fit2(1, 1, :)))', 'c:', 'LineWidth', .5)
+legend([l1 l2 l3], 'true', 'filtering', 'smoothing', 'Location','northwest');
 title('\theta for \lambda')
 xlabel('step')
 hold off
@@ -81,10 +85,14 @@ saveas(theta1, 'theta1_1.png')
 
 theta2 = figure;
 hold on
-plot(theta_true(:, 2), 'r', 'LineWidth', 2)
-plot(theta_fit1(2, :), 'b', 'LineWidth', 2)
-plot(theta_fit2(2, :), 'g', 'LineWidth', 2)
-legend('true', 'filtering', 'smoothing', 'Location','northwest')
+l1 = plot(theta_true(:, 2), 'k', 'LineWidth', 2);
+l2 = plot(theta_fit1(2, :), 'b', 'LineWidth', 1);
+l3 = plot(theta_fit2(2, :), 'c', 'LineWidth', 1);
+plot(theta_fit1(2, :) + sqrt(squeeze(W_fit1(2, 2, :)))', 'b:', 'LineWidth', .5)
+plot(theta_fit1(2, :) - sqrt(squeeze(W_fit1(2, 2, :)))', 'b:', 'LineWidth', .5)
+plot(theta_fit2(2, :) + sqrt(squeeze(W_fit2(2, 2, :)))', 'c:', 'LineWidth', .5)
+plot(theta_fit2(2, :) - sqrt(squeeze(W_fit2(2, 2, :)))', 'c:', 'LineWidth', .5)
+legend([l1 l2 l3], 'true', 'filtering', 'smoothing', 'Location','northwest');
 title('\theta for \nu')
 xlabel('step')
 hold off
@@ -93,9 +101,9 @@ saveas(theta2, 'theta2_1.png')
 
 lambda = figure;
 hold on
-plot(lam_true*dt, 'r', 'LineWidth', 2)
-plot(lam_fit1*dt, 'b', 'LineWidth', 2)
-plot(lam_fit2*dt, 'g', 'LineWidth', 2)
+plot(lam_true*dt, 'k', 'LineWidth', 2)
+plot(lam_fit1*dt, 'r', 'LineWidth', 1)
+plot(lam_fit2*dt,'color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1)
 legend('true', 'filtering', 'smoothing', 'Location','northwest')
 title('\lambda\Delta t')
 xlabel('step')
@@ -104,9 +112,9 @@ saveas(lambda, 'lambda_1.png')
 
 nu = figure;
 hold on
-plot(nu_true*dt, 'r', 'LineWidth', 2)
-plot(nu_fit1*dt, 'b', 'LineWidth', 2)
-plot(nu_fit2*dt, 'g', 'LineWidth', 2)
+plot(nu_true*dt, 'k', 'LineWidth', 2)
+plot(nu_fit1*dt, 'r', 'LineWidth', 1)
+plot(nu_fit2*dt,'color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1)
 legend('true', 'filtering', 'smoothing', 'Location','northwest')
 title('\nu\Delta t')
 xlabel('step')
@@ -136,11 +144,11 @@ for k = 1:(T/dt)
 end
 
 [theta_fit1,W_fit1] =...
-    ppafilt_compoisson(spk_vec,X_lam,G_nu,theta_true(1, :)',...
+    ppafilt_compoisson(spk_vec,X_lam,G_nu,...
     eye(2),eye(2),dt*eye(2),dt);
 
 [theta_fit2,W_fit2] =...
-    ppasmoo_compoisson(spk_vec,X_lam,G_nu,theta_true(1, :)',...
+    ppasmoo_compoisson(spk_vec,X_lam,G_nu,...
     eye(2),eye(2),dt*eye(2),dt);
 
 lam_fit1 = exp(X_lam.*theta_fit1(1, :)');
@@ -150,10 +158,14 @@ nu_fit2 = exp(G_nu.*theta_fit2(2, :)');
 
 theta1 = figure;
 hold on
-plot(theta_true(:, 1), 'r', 'LineWidth', 2)
-plot(theta_fit1(1, :), 'b', 'LineWidth', 2)
-plot(theta_fit2(1, :), 'g', 'LineWidth', 2)
-legend('true', 'filtering', 'smoothing', 'Location','northwest')
+l1 = plot(theta_true(:, 1), 'k', 'LineWidth', 2);
+l2 = plot(theta_fit1(1, :), 'b', 'LineWidth', 1);
+l3 = plot(theta_fit2(1, :), 'c', 'LineWidth', 1);
+plot(theta_fit1(1, :) + sqrt(squeeze(W_fit1(1, 1, :)))', 'b:', 'LineWidth', .5)
+plot(theta_fit1(1, :) - sqrt(squeeze(W_fit1(1, 1, :)))', 'b:', 'LineWidth', .5)
+plot(theta_fit2(1, :) + sqrt(squeeze(W_fit2(1, 1, :)))', 'c:', 'LineWidth', .5)
+plot(theta_fit2(1, :) - sqrt(squeeze(W_fit2(1, 1, :)))', 'c:', 'LineWidth', .5)
+legend([l1 l2 l3], 'true', 'filtering', 'smoothing', 'Location','northwest');
 title('\theta for \lambda')
 xlabel('step')
 hold off
@@ -161,10 +173,14 @@ saveas(theta1, 'theta1_2.png')
 
 theta2 = figure;
 hold on
-plot(theta_true(:, 2), 'r', 'LineWidth', 2)
-plot(theta_fit1(2, :), 'b', 'LineWidth', 2)
-plot(theta_fit2(2, :), 'g', 'LineWidth', 2)
-legend('true', 'filtering', 'smoothing', 'Location','northwest')
+l1 = plot(theta_true(:, 2), 'k', 'LineWidth', 2);
+l2 = plot(theta_fit1(2, :), 'b', 'LineWidth', 1);
+l3 = plot(theta_fit2(2, :), 'c', 'LineWidth', 1);
+plot(theta_fit1(2, :) + sqrt(squeeze(W_fit1(2, 2, :)))', 'b:', 'LineWidth', .5)
+plot(theta_fit1(2, :) - sqrt(squeeze(W_fit1(2, 2, :)))', 'b:', 'LineWidth', .5)
+plot(theta_fit2(2, :) + sqrt(squeeze(W_fit2(2, 2, :)))', 'c:', 'LineWidth', .5)
+plot(theta_fit2(2, :) - sqrt(squeeze(W_fit2(2, 2, :)))', 'c:', 'LineWidth', .5)
+legend([l1 l2 l3], 'true', 'filtering', 'smoothing', 'Location','northwest');
 title('\theta for \nu')
 xlabel('step')
 hold off
@@ -173,9 +189,9 @@ saveas(theta2, 'theta2_2.png')
 
 lambda = figure;
 hold on
-plot(lam_true*dt, 'r', 'LineWidth', 2)
-plot(lam_fit1*dt, 'b', 'LineWidth', 2)
-plot(lam_fit2*dt, 'g', 'LineWidth', 2)
+plot(lam_true*dt, 'k', 'LineWidth', 2)
+plot(lam_fit1*dt, 'r', 'LineWidth', 1)
+plot(lam_fit2*dt,'color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1)
 legend('true', 'filtering', 'smoothing', 'Location','northwest')
 title('\lambda\Delta t')
 xlabel('step')
@@ -184,9 +200,9 @@ saveas(lambda, 'lambda_2.png')
 
 nu = figure;
 hold on
-plot(nu_true*dt, 'r', 'LineWidth', 2)
-plot(nu_fit1*dt, 'b', 'LineWidth', 2)
-plot(nu_fit2*dt, 'g', 'LineWidth', 2)
+plot(nu_true*dt, 'k', 'LineWidth', 2)
+plot(nu_fit1*dt, 'r', 'LineWidth', 1)
+plot(nu_fit2*dt,'color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1)
 legend('true', 'filtering', 'smoothing', 'Location','northwest')
 title('\nu\Delta t')
 xlabel('step')
@@ -220,11 +236,11 @@ for k = 1:(T/dt)
 end
 
 [theta_fit1,W_fit1] =...
-    ppafilt_compoisson(spk_vec,X_lam,G_nu,theta_true(1, :)',...
+    ppafilt_compoisson(spk_vec,X_lam,G_nu,...
     eye(2),eye(2),dt*eye(2),dt);
 
 [theta_fit2,W_fit2] =...
-    ppasmoo_compoisson(spk_vec,X_lam,G_nu,theta_true(1, :)',...
+    ppasmoo_compoisson(spk_vec,X_lam,G_nu,...
     eye(2),eye(2),dt*eye(2),dt);
 
 lam_fit1 = exp(X_lam.*theta_fit1(1, :)');
@@ -234,10 +250,14 @@ nu_fit2 = exp(G_nu.*theta_fit2(2, :)');
 
 theta1 = figure;
 hold on
-plot(theta_true(:, 1), 'r', 'LineWidth', 2)
-plot(theta_fit1(1, :), 'b', 'LineWidth', 2)
-plot(theta_fit2(1, :), 'g', 'LineWidth', 2)
-legend('true', 'filtering', 'smoothing', 'Location','northwest')
+l1 = plot(theta_true(:, 1), 'k', 'LineWidth', 2);
+l2 = plot(theta_fit1(1, :), 'b', 'LineWidth', 1);
+l3 = plot(theta_fit2(1, :), 'c', 'LineWidth', 1);
+plot(theta_fit1(1, :) + sqrt(squeeze(W_fit1(1, 1, :)))', 'b:', 'LineWidth', .5)
+plot(theta_fit1(1, :) - sqrt(squeeze(W_fit1(1, 1, :)))', 'b:', 'LineWidth', .5)
+plot(theta_fit2(1, :) + sqrt(squeeze(W_fit2(1, 1, :)))', 'c:', 'LineWidth', .5)
+plot(theta_fit2(1, :) - sqrt(squeeze(W_fit2(1, 1, :)))', 'c:', 'LineWidth', .5)
+legend([l1 l2 l3], 'true', 'filtering', 'smoothing', 'Location','northwest');
 title('\theta for \lambda')
 xlabel('step')
 hold off
@@ -245,10 +265,14 @@ saveas(theta1, 'theta1_3.png')
 
 theta2 = figure;
 hold on
-plot(theta_true(:, 2), 'r', 'LineWidth', 2)
-plot(theta_fit1(2, :), 'b', 'LineWidth', 2)
-plot(theta_fit2(2, :), 'g', 'LineWidth', 2)
-legend('true', 'filtering', 'smoothing', 'Location','northwest')
+l1 = plot(theta_true(:, 2), 'k', 'LineWidth', 2);
+l2 = plot(theta_fit1(2, :), 'b', 'LineWidth', 1);
+l3 = plot(theta_fit2(2, :), 'c', 'LineWidth', 1);
+plot(theta_fit1(2, :) + sqrt(squeeze(W_fit1(2, 2, :)))', 'b:', 'LineWidth', .5)
+plot(theta_fit1(2, :) - sqrt(squeeze(W_fit1(2, 2, :)))', 'b:', 'LineWidth', .5)
+plot(theta_fit2(2, :) + sqrt(squeeze(W_fit2(2, 2, :)))', 'c:', 'LineWidth', .5)
+plot(theta_fit2(2, :) - sqrt(squeeze(W_fit2(2, 2, :)))', 'c:', 'LineWidth', .5)
+legend([l1 l2 l3], 'true', 'filtering', 'smoothing', 'Location','northwest');
 title('\theta for \nu')
 xlabel('step')
 hold off
@@ -257,9 +281,9 @@ saveas(theta2, 'theta2_3.png')
 
 lambda = figure;
 hold on
-plot(lam_true*dt, 'r', 'LineWidth', 2)
-plot(lam_fit1*dt, 'b', 'LineWidth', 2)
-plot(lam_fit2*dt, 'g', 'LineWidth', 2)
+plot(lam_true*dt, 'k', 'LineWidth', 2)
+plot(lam_fit1*dt, 'r', 'LineWidth', 1)
+plot(lam_fit2*dt,'color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1)
 legend('true', 'filtering', 'smoothing', 'Location','northwest')
 title('\lambda\Delta t')
 xlabel('step')
@@ -268,9 +292,9 @@ saveas(lambda, 'lambda_3.png')
 
 nu = figure;
 hold on
-plot(nu_true*dt, 'r', 'LineWidth', 2)
-plot(nu_fit1*dt, 'b', 'LineWidth', 2)
-plot(nu_fit2*dt, 'g', 'LineWidth', 2)
+plot(nu_true*dt, 'k', 'LineWidth', 2)
+plot(nu_fit1*dt, 'r', 'LineWidth', 1)
+plot(nu_fit2*dt,'color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1)
 legend('true', 'filtering', 'smoothing', 'Location','northwest')
 title('\nu\Delta t')
 xlabel('step')

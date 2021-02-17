@@ -20,10 +20,8 @@ Here, I showed 3 examples:
 
 
 Well, all looks good (although lambda for example 3 is not super ideal).
-Here's one problem. The algorithm is very easy to get singular matrix. That means, it correct "too hard"... Maybe we can add some constraint for theta updating? Maybe that will make the W matrix meaningless...
-Also, I need to mention that the initial value is set as theta_true(1,:). The same reason: arbitrary initial value may make the algorithm get singular matrix.
+Here's one problem. Basically, I initialized the value by Newton-Raphson. However, it's quite unstable... The Hessian will be singular in some cases. Maybe we can think of using IRLS? The same problem occurs for filtering/ smoothing, if initialized with a bad value... (there are tons of research about this, we can just use them)
 
-Maybe this is because when nu -> 0, the estimation of summation such as Z,... will shoot to inifinity.
 
 Another issue is that the updating of lambda is influenced by nu a lot (especially in example 3, because of bad simulation?). Maybe we can consider to reparametrize to mu and nu, where E(Y) = mu*(Delta t)? Then since mu and nu are orthogonal, that would be better. (https://journals.sagepub.com/doi/abs/10.1177/1471082X17697749)
 
