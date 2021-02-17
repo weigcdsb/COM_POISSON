@@ -10,6 +10,9 @@ tol = 1e-12;
 
 % ignoring (nu-1)/2*nu in E(Y) yields
 % nu = E(Y)/Var(Y) = mean(Y)/var(Y)
+
+% delete the outlier (Q1 - 1.5IQR <= y <= Q3 + 1.5IQR)
+y = rmoutliers(y, 'quartiles');
 theta0 = [((x_lam*x_lam')^-1)*x_lam*(log(mean(y)) - log(dt));...
     ((g_nu*g_nu')^-1)*g_nu*(log(mean(y)) -log(var(y)) - log(dt))];
 

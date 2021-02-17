@@ -63,7 +63,7 @@ l5 = plot(theta_fit4(1, :),'color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1);
 % plot(theta_fit1(1, :) - sqrt(squeeze(W_fit1(1, 1, :)))', 'b:', 'LineWidth', .5)
 % plot(theta_fit2(1, :) + sqrt(squeeze(W_fit2(1, 1, :)))', 'c:', 'LineWidth', .5)
 % plot(theta_fit2(1, :) - sqrt(squeeze(W_fit2(1, 1, :)))', 'c:', 'LineWidth', .5)
-legend('true', 'filtering', 'filterin-fisher',...
+legend('true', 'filtering', 'filtering-fisher',...
     'smoothing', 'smoothing-fisher', 'Location','northwest');
 title('\theta for \lambda')
 xlabel('step')
@@ -83,7 +83,7 @@ l5 = plot(theta_fit4(2, :),'color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1);
 % plot(theta_fit1(2, :) - sqrt(squeeze(W_fit1(2, 2, :)))', 'b:', 'LineWidth', .5)
 % plot(theta_fit2(2, :) + sqrt(squeeze(W_fit2(2, 2, :)))', 'c:', 'LineWidth', .5)
 % plot(theta_fit2(2, :) - sqrt(squeeze(W_fit2(2, 2, :)))', 'c:', 'LineWidth', .5)
-legend('true', 'filtering', 'filterin-fisher',...
+legend('true', 'filtering', 'filtering-fisher',...
     'smoothing', 'smoothing-fisher', 'Location','northwest');
 title('\theta for \nu')
 xlabel('step')

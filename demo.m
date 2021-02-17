@@ -1,4 +1,4 @@
-rng(12)
+rng(123)
 
 %% demo 1: step lambda + step nu
 T = 10;

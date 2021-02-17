@@ -8,4 +8,6 @@ x_lam = X_lam(1,:);
 g_nu = G_nu(1,:);
 
 
+boxplot(N(:, 1:10))
+
 -nu(i)*dt*sum_logfac + nCell*nu(i)*dt*C/Z

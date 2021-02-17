@@ -22,7 +22,7 @@ Well, all looks good, although lambda for example 3 is not super ideal. This may
 
 <img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta1_fisher.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta2_fisher.png" width="400"/>
 
-Here's one problem. Basically, I initialized the value by Newton-Raphson. However, it's quite unstable... Even I replace Hessian with Fisher information...(But there are tons of research about this, and I will do some literature review later)
+Here's one problem. Basically, I initialized the value by Newton-Raphson. However, it's quite unstable (not robust to outlier), even when I replace Hessian with Fisher information (equivalent to IRLS)... Since Newton-Raphson/ IRLS uses data again and again (iteratively), even a single outlier will damage the algorithm a lot. So, for the initial value estimation, I simply delete outliers (outside [Q1 - 1.5IQR, Q3 + 1.5IQR]). The fisher scoring  in the filtering (smoothing) will not be influenced a lot by outliers, since the data at each step is only used once directly.
 
 For interpretation, maybe we can consider to reparametrize to mu and nu, where E(Y) = mu*(Delta t)? (https://journals.sagepub.com/doi/abs/10.1177/1471082X17697749) Well, that doesn't add too much...
 
