@@ -26,4 +26,11 @@ Here's one problem. Basically, I initialized the value by Newton-Raphson. Howeve
 
 For interpretation, maybe we can consider to reparametrize to mu and nu, where E(Y) = mu*(Delta t)? (https://journals.sagepub.com/doi/abs/10.1177/1471082X17697749) Well, that doesn't add too much...
 
+## Thoughts & Ideas
+
+I found this review paper is very useful: https://onlinelibrary.wiley.com/doi/10.1002/wics.1533
+
+One thing I'm thinking: Will it benefit a lot to extend into zero-inflated COM-Poisson? Since as far as I know, the spikes are usually pretty sparse.
+
+
 
