@@ -203,12 +203,15 @@ X_lam = ones(T/dt, 1);
 G_nu = ones(T/dt, 1);
 
 period = T/(2*dt);
-theta_true = [[repmat(3.5, 1, round(T/(dt*2)))...
-    repmat(4.5, 1, T/dt - round(T/(dt*2)))]',...
-    3+2*cos((10*pi/period)*(1:T/dt))'];
+theta_true = [[repmat(4, 1, round(T/(dt*2)))...
+    repmat(5, 1, T/dt - round(T/(dt*2)))]',...
+    5+cos((10*pi/period)*(1:T/dt))'];
 
 lam_true = exp(X_lam.*theta_true(:, 1));
 nu_true = exp(G_nu.*theta_true(:, 2));
+
+% plot(theta_true(:, 1))
+
 
 spk_vec = zeros(n, T/dt);
 
