@@ -261,7 +261,7 @@ legend('true', 'filtering', 'smoothing', 'Location','northwest')
 title('\lambda\Delta t')
 xlabel('step')
 hold off
-saveas(lambda, 'lambda_2.png')
+saveas(lambda, 'lambda_3.png')
 
 nu = figure;
 hold on
@@ -272,4 +272,4 @@ legend('true', 'filtering', 'smoothing', 'Location','northwest')
 title('\nu\Delta t')
 xlabel('step')
 hold off
-saveas(nu, 'nu_2.png')
+saveas(nu, 'nu_3.png')
