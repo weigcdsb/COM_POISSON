@@ -18,7 +18,7 @@ Here, I showed 3 examples:
 
 <img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta1_3.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta2_3.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda_3.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/nu_3.png" width="400"/>
 
-Well, all looks good. However, the Hessian is not stable and tend to be influenced by outliers (the term log(y!) up quickly). Here, I first tried to use 'Fisher scoring', i.e. replace Hessian (observed information) with expected (Fisher) information, which is motivated by 'Fisher scoring' in IRLS. It seems that Fisher scoring doesn't change the results a lot.
+Well, all looks good. However, the Hessian is not stable and tend to be influenced by outliers (the term log(y!) blows up quickly). Here, I first tried to use 'Fisher scoring', i.e. replace Hessian (observed information) with expected (Fisher) information, which is motivated by 'Fisher scoring' in IRLS. It seems that Fisher scoring doesn't change the results a lot.
 
 <img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta1_fisher.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta2_fisher.png" width="400"/>
 
