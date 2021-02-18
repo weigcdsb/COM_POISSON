@@ -22,7 +22,7 @@ Well, all looks good. However, the Hessian is not stable and tend to be influenc
 
 <img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta1_fisher.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta2_fisher.png" width="400"/>
 
-But the Fisher scoring matrix is still not stable... The same problem happens for initial value estimation. Basically, I initialized the value by Newton-Raphson. It's quite unstable (not robust to outlier), even when I replace Hessian with Fisher information (equivalent to IRLS)... So, for the initial value estimation, I simply delete outliers (outside [Q1 - 1.5IQR, Q3 + 1.5IQR]). Can we do the same thing in the following steps? Or do you happen to know some other methods?
+But the Fisher scoring matrix is still not stable... The same problem happens for initial value estimation. Basically, I initialized the value by Newton-Raphson. It's quite unstable (not robust to outlier), even when I replace Hessian with Fisher information (equivalent to IRLS)... So, for the initial value estimation, I simply delete outliers (outside [Q1 - 1.5IQR, Q3 + 1.5IQR]). But...sometimes it still give a ill-conditioned matrix....
 
 ## Thoughts & Ideas
 
