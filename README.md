@@ -1,7 +1,7 @@
 # COM_POISSON
  adaptive filtering for com-poisson
 
-The derivation includes 3 files: 1) a initial version， 2) a more meaniful, compact version (matrix form) and 3) replace hessian (observed information) with expected (Fisher) information.
+The derivation mainly has 4 parts: 1) general adaptive filtering for COM-Poisson; 2) Fisher scoring version; 3) linear regression version and 4) adaptive filtering for generalized count distribution
 
 Here, I showed 3 examples:
 
@@ -18,19 +18,23 @@ Here, I showed 3 examples:
 
 <img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta1_3.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta2_3.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/lambda_3.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/nu_3.png" width="400"/>
 
-Well, all looks good, although lambda for example 3 is not super ideal. This may be caused by the Hessian is not robust to outliers (since we need sum the log(y!), and y! will blow up very quickly). To resolve that, I replace Hessian (observed information) with expected (Fisher) information, which is motivated by 'Fisher scoring' in IRLS. It seems using fisher information resolves the problem a lot:
+Well, all looks good. However, the Hessian is not stable and tend to be influenced by outliers (the term log(y!) up quickly). Here, I first tried to use 'Fisher scoring', i.e. replace Hessian (observed information) with expected (Fisher) information, which is motivated by 'Fisher scoring' in IRLS. It seems that Fisher scoring doesn't change the results a lot.
 
 <img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta1_fisher.png" width="400"/><img src="https://github.com/weigcdsb/COM_POISSON/blob/main/theta2_fisher.png" width="400"/>
 
-Here's one problem. Basically, I initialized the value by Newton-Raphson. However, it's quite unstable (not robust to outlier), even when I replace Hessian with Fisher information (equivalent to IRLS)... Since Newton-Raphson/ IRLS uses data again and again (iteratively), even a single outlier will damage the algorithm a lot. So, for the initial value estimation, I simply delete outliers (outside [Q1 - 1.5IQR, Q3 + 1.5IQR]). The fisher scoring  in the filtering (smoothing) will not be influenced a lot by outliers, since the data at each step is only used once directly.
-
-For interpretation, maybe we can consider to reparametrize to mu and nu, where E(Y) = mu*(Delta t)? (https://journals.sagepub.com/doi/abs/10.1177/1471082X17697749) Well, that doesn't add too much...
+But the Fisher scoring matrix is still not stable... The same problem happens for initial value estimation. Basically, I initialized the value by Newton-Raphson. It's quite unstable (not robust to outlier), even when I replace Hessian with Fisher information (equivalent to IRLS)... So, for the initial value estimation, I simply delete outliers (outside [Q1 - 1.5IQR, Q3 + 1.5IQR]). Can we do the same thing in the following steps? Or do you happen to know some other methods?
 
 ## Thoughts & Ideas
 
 I found this review paper is very useful: https://onlinelibrary.wiley.com/doi/10.1002/wics.1533
 
-One thing I'm thinking: Will it benefit a lot to extend COM-Poisson into zero-inflated COM-Poisson? Since as far as I know, the spikes are usually pretty sparse. Conceptually, I'm thinking 2 ways: 1) track P(Y_k = 0) directly; 2) use another linear model logit(E(Y_k = 0)) = Z*\alpha (wow, now we have a tri-linear model). Maybe way-2) is more informative, for example, we can include pre-synaptic spiking information into Z, and see the influence of presynaptic spikes onto the sparsity of post-spikes?
+For interpretation, maybe we can consider to reparametrize to mu and nu, where E(Y) = mu*(Delta t)? (https://journals.sagepub.com/doi/abs/10.1177/1471082X17697749) Well, I think that doesn't add too much...
+
+Another thing I'm thinking: Will it benefit a lot to extend COM-Poisson into zero-inflated COM-Poisson? Since as far as I know, the spikes are usually pretty sparse. Conceptually, I'm thinking 2 ways: 1) track P(Y_k = 0) directly; 2) use another linear model logit(E(Y_k = 0)) = Z*\alpha (wow, now we have a tri-linear model). Maybe way-2) is more informative, for example, we can include pre-synaptic spiking information into Z, and see the influence of presynaptic spikes onto the sparsity of post-spikes?
+
+Finally, is it valuable to specify some form of g(y) in the generalized count distribution?
+
+
 
 
 

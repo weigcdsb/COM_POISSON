@@ -54,9 +54,9 @@ theta1 = figure;
 hold on
 l1 = plot(theta_true(:, 1), 'k', 'LineWidth', 2);
 l2 = plot(theta_fit1(1, :), 'b', 'LineWidth', 1);
-l3 = plot(theta_fit2(1, :), 'c', 'LineWidth', 1);
+l3 = plot(theta_fit2(1, :), 'r', 'LineWidth', 1);
 
-l4 = plot(theta_fit3(1, :), 'r', 'LineWidth', 1);
+l4 = plot(theta_fit3(1, :), 'c', 'LineWidth', 1);
 l5 = plot(theta_fit4(1, :),'color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1);
 
 % plot(theta_fit1(1, :) + sqrt(squeeze(W_fit1(1, 1, :)))', 'b:', 'LineWidth', .5)
@@ -74,9 +74,9 @@ theta2 = figure;
 hold on
 l1 = plot(theta_true(:, 2), 'k', 'LineWidth', 2);
 l2 = plot(theta_fit1(2, :), 'b', 'LineWidth', 1);
-l3 = plot(theta_fit2(2, :), 'c', 'LineWidth', 1);
+l3 = plot(theta_fit2(2, :), 'r', 'LineWidth', 1);
 
-l4 = plot(theta_fit3(2, :), 'r', 'LineWidth', 1);
+l4 = plot(theta_fit3(2, :), 'c', 'LineWidth', 1);
 l5 = plot(theta_fit4(2, :),'color', [0.9290, 0.6940, 0.1250], 'LineWidth', 1);
 
 % plot(theta_fit1(2, :) + sqrt(squeeze(W_fit1(2, 2, :)))', 'b:', 'LineWidth', .5)

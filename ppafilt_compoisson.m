@@ -41,28 +41,25 @@ for i=2:n_spk
     D = cum_app(5);
     E = cum_app(6);
     
-    lam1 = A/Z;
-    lam2 = B/Z - lam1^2;
-    nu1 = -nu(i)*dt*C/Z;
-    nu2 = ((nu(i)*dt)^2*D)/Z + nu1 - nu1^2;
-    lamnu = nu(i)*dt*(C*A/(Z^2) - E/Z);
-    
+    mean_Y = A/Z;
+    var_Y = B/Z - mean_Y^2;
+    mean_logYfac = C/Z;
+    var_logYfac = D/Z - mean_logYfac^2;
+    cov_Y_logYfac = E/Z - A*C/(Z^2);
     sum_logfac = sum(gammaln(N(:, i) + 1));
     
-    w1 = nCell*lam2*(X_lam(i,:)'*X_lam(i,:));
-    w2 = lamnu*(X_lam(i,:)'*G_nu(i, :));
-    w3 = lamnu*(G_nu(i, :)'*X_lam(i,:));
-    w4 = (nu(i)*dt*sum_logfac + nCell*nu2)*(G_nu(i, :)'*G_nu(i, :));
+    info1 = nCell*var_Y*(X_lam(i,:)'*X_lam(i,:));
+    info2 = -nCell*cov_Y_logYfac*nu(i)*dt*(X_lam(i,:)'*G_nu(i, :));
+    info3 = -nCell*cov_Y_logYfac*nu(i)*dt*(G_nu(i, :)'*X_lam(i,:));
+    info4 = (nu(i)*dt)*(nCell*nu(i)*dt*var_logYfac-nCell*mean_logYfac + sum_logfac)*...
+        (G_nu(i, :)'*G_nu(i, :));
     
-    
-    
-    Wpostinv = inv(Wpred(:,:,i)) + [w1, w2; w3, w4];
+    Wpostinv = inv(Wpred(:,:,i)) + [info1, info2; info3, info4];
     W(:,:,i) = inv(Wpostinv);
-%     W(:,:,i)
     
     theta(:,i)  = thetapred(:,i) +...
-        W(:,:,i)*[(sum(N(:, i))- nCell*lam1)*X_lam(i,:)';...
-        -(nu(i)*dt*sum_logfac + nCell*nu1)*G_nu(i, :)'];
+        W(:,:,i)*[(sum(N(:, i))- nCell*mean_Y)*X_lam(i,:)';...
+        nu(i)*dt*(-sum_logfac + nCell*mean_logYfac)*G_nu(i, :)'];
     
     
     [~, msgid] = lastwarn;
