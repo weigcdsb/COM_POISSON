@@ -13,21 +13,23 @@ C = cum_app(4);
 D = cum_app(5);
 E = cum_app(6);
 
-lam1 = A/Z;
-lam2 = B/Z - lam1^2;
-nu1 = -nu*dt*C/Z;
-nu2 = ((nu*dt)^2*D)/Z + nu1 - nu1^2;
-lamnu = nu*dt*(C*A/(Z^2) - E/Z);
-
+mean_Y = A/Z;
+var_Y = B/Z - mean_Y^2;
+mean_logYfac = C/Z;
+var_logYfac = D/Z - mean_logYfac^2;
+cov_Y_logYfac = E/Z - A*C/(Z^2);
 sum_logfac = sum(gammaln(y + 1));
 
-w1 = nCell*lam2*(x_lam'*x_lam);
-w2 = lamnu*(x_lam'*g_nu);
-w3 = lamnu*(g_nu'*x_lam);
-w4 = (nu*dt*sum_logfac + nCell*nu2)*(g_nu'*g_nu);
+info1 = nCell*var_Y*(x_lam'*x_lam);
+info2 = -nCell*cov_Y_logYfac*nu*dt*(x_lam'*g_nu);
+info3 = -nCell*cov_Y_logYfac*nu*dt*(g_nu'*x_lam);
+info4 = (nu*dt)*(nCell*nu*dt*var_logYfac-nCell*mean_logYfac + sum_logfac)*...
+    (g_nu'*g_nu);
 
-hess = -[w1, w2; w3, w4];
-grad = [(sum(y)- nCell*lam1)*x_lam';...
-        -(nu*dt*sum_logfac + nCell*nu1)*g_nu'];
+hess = [info1, info2; info3, info4];
+grad = [(sum(y)- nCell*mean_Y)*x_lam';...
+        nu*dt*(-sum_logfac + nCell*mean_logYfac)*g_nu'];
+
+
 
 return
