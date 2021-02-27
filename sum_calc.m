@@ -12,7 +12,7 @@ for js = 1:n
        exp((js-1)*log(lam) - nu*gammaln(js))*(gammaln(js))^2,...
        exp(log(js-1) + (js-1)*log(lam) - nu*gammaln(js))*gammaln(js)];
     
-    if(js > 5)
+    if(js > 5 && ~isnan(max(term)/min(cum_app)))
         if((max(term)/min(cum_app)) < termlim)
             break
         end
