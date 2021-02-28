@@ -26,7 +26,7 @@ But the Fisher scoring matrix is still not stable... The same problem happens fo
 
 ## Thoughts & Ideas
 
-**Approximation for moments**: A recent paper (2020), https://www.sciencedirect.com/science/article/abs/pii/S0167947317302608, when \lambda >=2 and \nu <= 1
+**Approximation for moments**: https://www.sciencedirect.com/science/article/abs/pii/S0167947317302608, when \lambda >=2 and \nu <= 1
 
 I found this review paper is very useful: https://onlinelibrary.wiley.com/doi/10.1002/wics.1533
 
