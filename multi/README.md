@@ -26,6 +26,8 @@ But the Fisher scoring matrix is still not stable... The same problem happens fo
 
 ## Thoughts & Ideas
 
+**Approximation for moments**: https://www.sciencedirect.com/science/article/abs/pii/S0167947317302608, when \lambda >=2 and \nu <= 1
+
 I found this review paper is very useful: https://onlinelibrary.wiley.com/doi/10.1002/wics.1533
 
 For interpretation, maybe we can consider to reparametrize to mu and nu, where E(Y) = mu*(Delta t)? (https://journals.sagepub.com/doi/abs/10.1177/1471082X17697749) Well, I think that doesn't add too much...
