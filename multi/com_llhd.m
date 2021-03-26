@@ -1,4 +1,4 @@
-function[llhd] = com_llhd(y, lambda, nu)
+function[llhd, g] = com_llhd(y, lambda, nu)
 
 summax = 1000; 
 termlim = 1e-12;
@@ -14,5 +14,8 @@ for js = 1:summax
 end
 
 llhd = log(lambda)*sum(y) - nu*sum(gammaln(y + 1)) - length(y)*Z;
+
+if
+
 
 return

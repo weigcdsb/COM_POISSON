@@ -1,4 +1,5 @@
 rng(123)
+addpath(genpath('D:\GitHub\COM_POISSON'));
 
 %% demo 1: step lambda + step nu
 T = 10;
