@@ -1,4 +1,4 @@
-function [theta,W] = ppafilt_compoisson_v2(theta0, N,X_lam,G_nu,W0,F,Q)
+function [theta,W, lam, nu, Zvec] = ppafilt_compoisson_v2(theta0, N,X_lam,G_nu,W0,F,Q)
 
 % newton raphson
 % theta0 = nf_initial(N(:, 1), X_lam(1,:), G_nu(1,:), dt);
@@ -13,6 +13,7 @@ theta   = zeros(length(theta0), n_spk);
 W   = zeros([size(W0) n_spk]);
 lam = n_spk*0;
 nu = n_spk*0;
+Zvec = n_spk*0;
 np_lam = size(X_lam, 2);
 
 % Initialize
@@ -21,6 +22,8 @@ W(:,:,1) = W0;
 
 lam(1) = exp(X_lam(1,:)*theta0(1:np_lam));
 nu(1) = exp(G_nu(1,:)*theta0((np_lam+1):end));
+cum_app = sum_calc(lam(1), nu(1), maxSum);
+Zvec(1) = cum_app(1);
 
 thetapred = theta;
 Wpred = W;
@@ -40,6 +43,7 @@ for i=2:n_spk
     C = cum_app(4);
     D = cum_app(5);
     E = cum_app(6);
+    Zvec(i) = Z;
     
     mean_Y = A/Z;
     var_Y = B/Z - mean_Y^2;
