@@ -100,3 +100,18 @@ subplot(1,3,3)
 plot([1:(120-smoothing)]+smoothing/2,mff')
 xlabel('Trial')
 ylabel('Fano Factor')
+
+%%
+
+
+figure(11)
+neuron=11
+[~,idx]=sort(theta);
+ry = reshape(trial_y(:,neuron),100,[]);
+subplot(1,2,1)
+plot(trial_x,trial_y(:,neuron),'.')
+xlabel('Stimulus Direction [rad]')
+subplot(1,2,2)
+imagesc(ry(idx,:))
+xlabel('Trials')
+ylabel('Stimulus Number')
