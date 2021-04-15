@@ -115,3 +115,21 @@ subplot(1,2,2)
 imagesc(ry(idx,:))
 xlabel('Trials')
 ylabel('Stimulus Number')
+
+%% Example tuning curve fit
+nknots=7;
+X = getCubicBSplineBasis(trial_x,nknots,true);
+x0 = linspace(0,2*pi,256);
+bas = getCubicBSplineBasis(x0,nknots,true);
+
+[b,dev,stats] = glmfit(X,trial_y(:,neuron),'poisson','constant','off');
+[yhat,dylo,dyhi]=glmval(b,bas,'log',stats,'constant','off');
+
+
+figure(12)
+plot(trial_x,trial_y(:,neuron),'.')
+hold on
+plot(x0,yhat)
+plot(x0,yhat-dylo)
+plot(x0,yhat+dyhi)
+hold off
