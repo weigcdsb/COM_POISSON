@@ -22,10 +22,10 @@ for rep=1:size(data.EVENTS,2)
 end
 
 %%
-neuron=24; % 24 25 42
+neuron=46; % 72 46 13
 ry = reshape(trial_y(:,neuron),100,[]);
 
-nknots=5;
+nknots=7;
 X = getCubicBSplineBasis(theta',nknots,true);
 x0 = linspace(0,2*pi,256);
 bas = getCubicBSplineBasis(x0,nknots,true);
@@ -36,18 +36,22 @@ basData = bas(:,2:end);
 % writematrix(basData,'D:\GitHub\COM_POISSON\runRcode\basData.csv')
 % writematrix(theta','D:\GitHub\COM_POISSON\runRcode\theta.csv')
 
-trial = 1;
-fitData = [ry(:, trial) X(:,2:end)];
+trial = 1:10;
+fitData = [reshape(ry(:, trial), [], 1) repmat(X(:,2:end), length(trial), 1)];
 writematrix(fitData,'D:\GitHub\COM_POISSON\runRcode\fitData.csv')
 
 %% fit the data
 
+% cmp initials
 RunRcode('D:\GitHub\COM_POISSON\runRcode\cmpRegression.r',...
     'E:\software\R\R-4.0.2\bin');
 
 theta0 = readmatrix('cmp_t1.csv');
-theta0 = theta0(:, 2:end);
-theta0 = theta0(:);
+theta0 = reshape(theta0(:, 2:end), [], 1);
+
+% poisson initials
+% b = glmfit(X,ry(:, 1),'poisson','constant','off');
+% theta0 = [b; zeros(nknots+1, 1)];
 
 % [theta_fit1,W_fit1] =...
 %     ppafilt_compoisson_v3(theta0, ry,repmat(X, [1 1 size(ry, 2)]),repmat(X, [1 1 size(ry, 2)]),...

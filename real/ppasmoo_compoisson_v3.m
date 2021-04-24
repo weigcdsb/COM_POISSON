@@ -2,7 +2,7 @@ function [theta,W] = ppasmoo_compoisson_v3(theta0, N,X_lam,G_nu,W0,F,Q)
 
 n_spk = size(N, 2);
 nCell = size(N, 1);
-maxSum = 5*n_spk; % max number for sum estimation;
+maxSum = 10*n_spk; % max number for sum estimation;
 
 % Preallocate
 theta   = zeros(length(theta0), n_spk);
