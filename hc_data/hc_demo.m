@@ -5,8 +5,8 @@
 % https://portal.nersc.gov/project/crcns/download/hc-3/ec016.19/ec016.269.tar.gz
 
 % Processed datasets...
-load('ec013_718_preprocessed_5Hz.mat')
-% load('ec014_468_preprocessed_5Hz.mat')
+% load('ec013_718_preprocessed_5Hz.mat')
+load('ec014_468_preprocessed_5Hz.mat')
 % load('ec016_269_preprocessed_5Hz.mat')
 
 

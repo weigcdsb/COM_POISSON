@@ -1,3 +1,4 @@
+addpath(genpath('D:\GitHub\COM_POISSON'));
 %
 % %%
 load('data_monkey1_gratings_movie.mat')
@@ -7,14 +8,14 @@ load('theta_gratings_movie.mat')
 
 %% Show stimulus
 
-h = imagesc(M(:,:,1));
-axis equal off
-colormap gray
-for i=1:size(M,3)
-    set(h,'CData',M(:,:,i))
-    drawnow
-    pause(1/30)
-end
+% h = imagesc(M(:,:,1));
+% axis equal off
+% colormap gray
+% for i=1:size(M,3)
+%     set(h,'CData',M(:,:,i))
+%     drawnow
+%     pause(1/30)
+% end
 
 %%
 neuron=2;
@@ -41,6 +42,7 @@ for rep=1:size(data.EVENTS,2)
     for i=1:length(theta)
         for neuron=1:size(data.EVENTS,1)
             trial_y(c,neuron) = sum(data.EVENTS{neuron,rep}>(t+0.05) & data.EVENTS{neuron,rep}<(t+stim_length));
+            % Q1: t + 0.05??
         end
         t=t+stim_length;
         c=c+1;
@@ -49,7 +51,8 @@ end
 
 
 %%
-neuron=16;
+neuron=24;
+
 for i=1:length(theta)
     s(i,2)=var(trial_y(i:100:6000,neuron));
     s(i,1)=mean(trial_y(i:100:6000,neuron));
@@ -57,6 +60,9 @@ end
 
 figure(2)
 subplot(1,3,1)
+% s(:, 1) = mean for 100 theta
+% s(:, 2) = var for 100 theta
+% plot var vs. mean
 plot(s(:,1),s(:,2),'.','MarkerSize',20)
 
 for i=1:length(theta)
@@ -105,9 +111,23 @@ ylabel('Fano Factor')
 
 
 figure(11)
-neuron=11
+neuron=24;
 [~,idx]=sort(theta);
 ry = reshape(trial_y(:,neuron),100,[]);
+
+
+% compare
+subplot(1, 2, 1)
+hold on
+for k = 1:120
+    plot(theta', ry(:, k),'.')
+end
+hold off
+subplot(1, 2, 2)
+plot(trial_x,trial_y(:,neuron),'.')
+
+
+figure(12)
 subplot(1,2,1)
 plot(trial_x,trial_y(:,neuron),'.')
 xlabel('Stimulus Direction [rad]')
@@ -115,6 +135,13 @@ subplot(1,2,2)
 imagesc(ry(idx,:))
 xlabel('Trials')
 ylabel('Stimulus Number')
+
+% Q2:
+% ylabel = 'stimulus number'
+% ylabel = 'theta/ direction'
+
+
+
 
 %% Example tuning curve fit
 nknots=7;
