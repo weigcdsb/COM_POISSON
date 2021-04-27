@@ -25,7 +25,7 @@ for rep=1:size(data.EVENTS,2)
 end
 
 %%
-neuron=14; 
+neuron=46; 
 % 72 46 13
 ry = reshape(trial_y(:,neuron),100,[]);
 
