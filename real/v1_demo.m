@@ -9,6 +9,9 @@ trial_x=repmat(theta',size(data.EVENTS,2),1);
 
 trial_y=[];
 c=1;
+
+% be careful about the bin size
+% there's a bound for mean-var relationship in CMP
 stim_length=0.3;
 for rep=1:size(data.EVENTS,2)
     t=0;
@@ -22,7 +25,8 @@ for rep=1:size(data.EVENTS,2)
 end
 
 %%
-neuron=46; % 72 46 13
+neuron=14; 
+% 72 46 13
 ry = reshape(trial_y(:,neuron),100,[]);
 
 nknots=7;
@@ -62,8 +66,13 @@ theta0 = reshape(theta0(:, 2:end), [], 1);
     eye(length(theta0)),eye(length(theta0)),1e-3*eye(length(theta0)));
 
 %%
+figure(1)
+subplot(1,2,1)
 plot(theta_fit2(1:(nknots+1), :)')
+title('beta')
+subplot(1,2,2)
 plot(theta_fit2((nknots+2):end, :)')
+title('gamma')
 
 %% calculate mean & var
 
