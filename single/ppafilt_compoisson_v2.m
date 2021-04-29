@@ -6,7 +6,7 @@ function [theta,W, lam, nu, Zvec] = ppafilt_compoisson_v2(theta0, N,X_lam,G_nu,W
 
 n_spk = size(N, 2);
 nCell = size(N, 1);
-maxSum = 5*n_spk; % max number for sum estimation;
+maxSum = 10*max(N(:)); % max number for sum estimation;
 
 % Preallocate
 theta   = zeros(length(theta0), n_spk);
@@ -28,6 +28,8 @@ Zvec(1) = cum_app(1);
 thetapred = theta;
 Wpred = W;
 
+
+warning('Message 1.')
 % Forward-Pass (Filtering)
 for i=2:n_spk
     thetapred(:,i) = F*theta(:,i-1);
@@ -67,9 +69,9 @@ for i=2:n_spk
     
     
     [~, msgid] = lastwarn;
-    if strcmp(msgid,'MATLAB:nearlySingularMatrix')
+    if strcmp(msgid,'MATLAB:nearlySingularMatrix') || strcmp(msgid,'MATLAB:illConditionedMatrix')
         %return;
-        break
+        keyboard
     end
 end
 

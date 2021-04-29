@@ -6,7 +6,7 @@ function [theta,W] = ppasmoo_compoisson_v2(theta0, N,X_lam,G_nu,W0,F,Q)
 
 n_spk = size(N, 2);
 nCell = size(N, 1);
-maxSum = 5*n_spk; % max number for sum estimation;
+maxSum = 20*max(n_spk); % max number for sum estimation;
 
 % Preallocate
 theta   = zeros(length(theta0), n_spk);
@@ -61,11 +61,10 @@ for i=2:n_spk
         W(:,:,i)*[(sum(N(:, i))- nCell*mean_Y)*X_lam(i,:)';...
         nu(i)*(-sum_logfac + nCell*mean_logYfac)*G_nu(i, :)'];
     
-    
     [~, msgid] = lastwarn;
-    if strcmp(msgid,'MATLAB:nearlySingularMatrix')
+    if strcmp(msgid,'MATLAB:nearlySingularMatrix') || strcmp(msgid,'MATLAB:illConditionedMatrix')
         %return;
-        break
+        keyboard
     end
 end
 
