@@ -1,15 +1,10 @@
-# library(devtools)
-# Sys.setenv("R_REMOTES_NO_ERRORS_FROM_WARNINGS" = "true")
-# devtools::install_github("lotze/COMPoissonReg", ref = "v0.7.1")
 library(COMPoissonReg)
+wd <- "D:/GitHub/COM_POISSON/demo/hc"
 
-# wd <- dirname(rstudioapi::getSourceEditorContext()$path)
-wd <- "D:/GitHub/COM_POISSON/runRcode"
-
+######
 y <- read.csv(paste0(wd, '/y.csv'), header = F)
 X <- read.csv(paste0(wd, '/X.csv'), header = F)
 G <- read.csv(paste0(wd, '/G.csv'), header = F)
-
 
 fitData <- data.frame(y = y, X = X, G = G)
 xnam <- paste("x", 0:(ncol(X)-1), sep="")
@@ -34,24 +29,5 @@ gam <- unname(cmpFit$gamma)
 
 write.csv(c(beta, gam),
           file = paste0(wd, '/cmp_t1.csv'), row.names = F)
-
-# nu(cmpFit)
-# cmpFitted<- predict(cmpFit, newdata=newD)
-
-
-
-# posFit <- glm(y ~ ., data = fitData,
-#               family=poisson)
-# posFitted <- predict(posFit, newdata=newD, type = 'response')
-# 
-# x0 <- seq(0, 2*pi, length.out = 256)
-# 
-# plot(theta$V1, y)
-# lines(x0, cmpFitted, col = 'red')
-# lines(x0, posFitted, col = 'blue')
-
-
-
-
 
 
