@@ -51,7 +51,7 @@ G = getCubicBSplineBasis((pos - min(pos))/range(pos),Gnknots,false);
 X_aug = getCubicBSplineBasis((pos_aug - min(pos_aug))/range(pos_aug),nknots,false);
 G_aug= getCubicBSplineBasis((pos_aug - min(pos_aug))/range(pos_aug),Gnknots,false);
 
-nCMP = 5000;
+nCMP = 1000;
 writematrix(spk(1:nCMP), 'D:\GitHub\COM_POISSON\demo\hc\y.csv')
 writematrix(X(1:nCMP, :), 'D:\GitHub\COM_POISSON\demo\hc\X.csv')
 writematrix(G(1:nCMP, :), 'D:\GitHub\COM_POISSON\demo\hc\G.csv')
@@ -64,13 +64,20 @@ theta0 = readmatrix('D:\GitHub\COM_POISSON\demo\hc\cmp_t1.csv');
 % Q = diag([repmat(1e-3,nknots+1,1); repmat(1e-4,Gnknots,1)]); % single G
 Q = diag([repmat(1e-3,nknots+1,1); repmat(1e-3,Gnknots + 1,1)]); % multi G
 
-[theta_fit_aug,W_fit_aug] =...
+% fun smoother twice
+[theta_fit1,W_fit1] =...
     ppasmoo_compoisson_v2(theta0, spk_aug', X_aug, G_aug,...
     eye(length(theta0)),eye(length(theta0)),Q);
 
+theta02 = theta_fit1(:, 1);
+W02 = W_fit1(:, :, 1);
 
-theta_fit = theta_fit_aug(:, (rep*n+1):end);
-W_fit = W_fit_aug(:, :, (rep*n+1):end);
+[theta_fit,W_fit] =...
+    ppasmoo_compoisson_v2(theta02, spk_aug', X_aug, G_aug,...
+    W02,eye(length(theta0)),Q);
+
+% theta_fit = theta_fit_aug(:, (rep*n+1):end);
+% W_fit = W_fit_aug(:, :, (rep*n+1):end);
 
 
 % subplot(1,2,1)

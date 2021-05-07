@@ -80,9 +80,17 @@ theta0 = readmatrix('D:\GitHub\COM_POISSON\runRcode\cmp_t1.csv');
 % Q = diag([repmat(1e-4,nknots+1,1); repmat(1e-5,Gnknots,1)]); % single G
 Q = diag([repmat(1e-4,nknots+1,1); repmat(1e-5,Gnknots + 1,1)]); % multi G
 
-[theta_fit2,W_fit2] =...
+[theta_fit1,W_fit1] =...
     ppasmoo_compoisson_v2(theta0, trial_y_aug(:,neuron)', Xb_aug, Gb_aug,...
     eye(length(theta0)),eye(length(theta0)),Q);
+
+% do smoothing twice
+theta02 = theta_fit1(:, 1);
+W02 = W_fit1(:, :, 1);
+
+[theta_fit2,W_fit2] =...
+    ppasmoo_compoisson_v2(theta02, trial_y_aug(:,neuron)', Xb_aug, Gb_aug,...
+    W02,eye(length(theta0)),Q);
 
 theta_fit2 = theta_fit2(:, (100*repTrial + 1):end);
 W_fit2 = W_fit2(:, :, (100*repTrial + 1):end);

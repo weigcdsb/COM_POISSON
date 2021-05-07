@@ -111,7 +111,7 @@ ylabel('Fano Factor')
 
 
 figure(11)
-neuron=24;
+neuron=13;
 [~,idx]=sort(theta);
 ry = reshape(trial_y(:,neuron),100,[]);
 
