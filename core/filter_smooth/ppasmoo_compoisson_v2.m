@@ -25,7 +25,7 @@ nu(1) = exp(G_nu(1,:)*theta0((np_lam+1):end));
 thetapred = theta;
 Wpred = W;
 
-warning('Message 1.')
+% warning('Message 1.')
 % Forward-Pass (Filtering)
 for i=2:n_spk
     thetapred(:,i) = F*theta(:,i-1);
@@ -78,6 +78,7 @@ for i=2:n_spk
     
     [~, msgid] = lastwarn;
     if strcmp(msgid,'MATLAB:nearlySingularMatrix') || strcmp(msgid,'MATLAB:illConditionedMatrix')
+        lastwarn('')
         return;
 %         keyboard
     end

@@ -1,7 +1,7 @@
-rng(123)
 addpath(genpath('D:\GitHub\COM_POISSON'));
 
 %%
+rng(123)
 T = 100;
 dt = 0.01; % bin length (s)
 n = 1; % number of independent observations
@@ -10,7 +10,7 @@ X_lam = ones(T/dt, 1);
 G_nu = ones(T/dt, 1);
 
 beta_true = [repmat(2, 1, round(T/(dt*3)))...
-    repmat(10, 1, round(T/(dt*3)))...
+    repmat(8, 1, round(T/(dt*3)))...
     repmat(2, 1, T/dt - 2*round(T/(dt*3)))]';
 
 lam_true = exp(X_lam.*beta_true);
@@ -33,14 +33,14 @@ theo_var = zeros(T/dt, 1);
 
 for k = 1:(T/dt)
     spk_vec(:, k) = com_rnd(lam_true(k), nu_true(k), n);
-    cum_app = sum_calc(lam_true(k), nu_true(k), 1000);
-    Zk = cum_app(1);
-    Ak = cum_app(2);
-    Bk = cum_app(3);
-    Ck = cum_app(4);
+    logcum_app = logsum_calc(lam_true(k), nu_true(k), 1000);
+    log_Zk = logcum_app(1);
+    log_Ak = logcum_app(2);
+    log_Bk = logcum_app(3);
+    log_Ck = logcum_app(4);
     
-    theo_mean(k) = Ak/Zk;
-    theo_var(k) = Bk/Zk - theo_mean(k)^2;
+    theo_mean(k) = exp(log_Ak - log_Zk);
+    theo_var(k) = exp(log_Bk - log_Zk) - theo_mean(k)^2;
 end
 
 figure(2)
@@ -93,7 +93,7 @@ title('\theta for \nu')
 xlabel('step')
 hold off
 
-saveas(theta, 'theta_mean.png')
+% saveas(theta, 'theta_mean.png')
 %%
 lam_fit1 = exp(X_lam.*theta_fit1(1, :)');
 lam_fit2 = exp(X_lam.*theta_fit2(1, :)');
@@ -138,7 +138,7 @@ legend([l1 l2 l3], 'true', 'filtering', 'smoothing', 'Location','northeast');
 title('var')
 xlabel('step')
 
-saveas(mean_var, 'mean_var_mean.png')
+% saveas(mean_var, 'mean_var_mean.png')
 
 
 

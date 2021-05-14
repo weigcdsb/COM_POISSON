@@ -1,7 +1,8 @@
-rng(123)
 addpath(genpath('D:\GitHub\COM_POISSON'));
+% addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
 
 %%
+rng(123)
 T = 100;
 dt = 0.02; % bin length (s)
 n = 1; % number of independent observations
@@ -28,16 +29,17 @@ theo_var = zeros(T/dt, 1);
 theo_mlogy = zeros(T/dt, 1);
 
 for k = 1:(T/dt)
-    spk_vec(:, k) = com_rnd(lam_true(k), nu_true(k), n);
-    cum_app = sum_calc(lam_true(k), nu_true(k), 1000);
-    Zk = cum_app(1);
-    Ak = cum_app(2);
-    Bk = cum_app(3);
-    Ck = cum_app(4);
     
-    theo_mean(k) = Ak/Zk;
-    theo_var(k) = Bk/Zk - theo_mean(k)^2;
-    theo_mlogy(k) = Ck/Zk;
+    spk_vec(:, k) = com_rnd(lam_true(k), nu_true(k), n);
+    logcum_app = logsum_calc(lam_true(k), nu_true(k), 1000);
+    log_Zk = logcum_app(1);
+    log_Ak = logcum_app(2);
+    log_Bk = logcum_app(3);
+    log_Ck = logcum_app(4);
+    
+    theo_mean(k) = exp(log_Ak - log_Zk);
+    theo_var(k) = exp(log_Bk - log_Zk) - theo_mean(k)^2;
+    theo_mlogy(k) = exp(log_Ck - log_Zk);
 end
 
 figure(3)

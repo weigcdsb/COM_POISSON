@@ -1,4 +1,4 @@
-function [theta,W, lam, nu, Zvec] = ppafilt_compoisson_v2(theta0, N,X_lam,G_nu,W0,F,Q)
+function [theta,W, lam, nu, log_Zvec] = ppafilt_compoisson_v2(theta0, N,X_lam,G_nu,W0,F,Q)
 
 % newton raphson
 % theta0 = nf_initial(N(:, 1), X_lam(1,:), G_nu(1,:), dt);
@@ -13,7 +13,7 @@ theta   = zeros(length(theta0), n_spk);
 W   = zeros([size(W0) n_spk]);
 lam = n_spk*0;
 nu = n_spk*0;
-Zvec = n_spk*0;
+log_Zvec = n_spk*0;
 np_lam = size(X_lam, 2);
 
 % Initialize
@@ -22,14 +22,14 @@ W(:,:,1) = W0;
 
 lam(1) = exp(X_lam(1,:)*theta0(1:np_lam));
 nu(1) = exp(G_nu(1,:)*theta0((np_lam+1):end));
-cum_app = sum_calc(lam(1), nu(1), maxSum);
-Zvec(1) = cum_app(1);
+logcum_app = logsum_calc(lam(1), nu(1), maxSum);
+log_Zvec(1) = logcum_app(1);
 
 thetapred = theta;
 Wpred = W;
 
 
-warning('Message 1.')
+% warning('Message 1.')
 % Forward-Pass (Filtering)
 for i=2:n_spk
     thetapred(:,i) = F*theta(:,i-1);
@@ -45,6 +45,7 @@ for i=2:n_spk
     log_C = logcum_app(4);
     log_D = logcum_app(5);
     log_E = logcum_app(6);
+    log_Zvec(i) = log_Z;
     
     mean_Y = exp(log_A - log_Z);
     var_Y = exp(log_B - log_Z) - mean_Y^2;
@@ -84,8 +85,9 @@ for i=2:n_spk
     
     [~, msgid] = lastwarn;
     if strcmp(msgid,'MATLAB:nearlySingularMatrix') || strcmp(msgid,'MATLAB:illConditionedMatrix')
-        %return;
-        keyboard
+        lastwarn('')
+        return;
+%         keyboard
     end
 end
 
