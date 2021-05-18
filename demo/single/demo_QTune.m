@@ -5,8 +5,8 @@ addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
 T = 100;
 dt = 0.01; % bin length (s)
 N = 1; % number of independent observations
-Q_true = diag([1e-7 1e-4]);
-% Q_true = diag([1e-4 1e-5]);
+% Q_true = diag([1e-7 1e-4]);
+Q_true = diag([1e-4 1e-5]);
 
 
 % X_lam = ones(T/dt, 1);
@@ -91,7 +91,7 @@ xline(log10(Q_true(2, 2)), 'r--', 'LineWidth', 2);
 plot(log10(Qopt(2)), log10(Qopt(1)), 'o', 'Color', 'b',...
     'LineWidth', 2, 'markerfacecolor', 'b', 'MarkerSize',5)
 
-% saveas(llhdPlot_heat, 'llhdPlot_heat.png')
+saveas(llhdPlot_heat, 'llhdPlot_heat.png')
 %%
 
 
@@ -126,7 +126,7 @@ xlabel('step')
 xlim([100, round(T/dt)])
 hold off
 
-% saveas(theta, 'theta_Qtune.png')
+saveas(theta, 'theta_Qtune.png')
 
 %% multi
 rng(12)
