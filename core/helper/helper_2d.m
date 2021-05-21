@@ -1,6 +1,6 @@
 function neg_llhd_pred = helper_2d(Q, theta0, N, X_lam, G_nu, W0, F)
 
-Qmatrix = diag([Q(1) Q(2)]);
+Qmatrix = diag(Q);
 
 [~,~, lam, nu, log_Zvec] = ppafilt_compoisson_v2(theta0, N, X_lam, G_nu, W0, F, Qmatrix);
 llhd_pred = sum(N.*log((lam+(lam==0))) -...

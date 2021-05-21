@@ -23,27 +23,9 @@ for rep=1:size(data.EVENTS,2)
 end
 
 %%
-
-% no augment:
-repTrial = 0;
-trial_y_aug = trial_y;
-trial_x_aug = trial_x;
-
-% data augment: replicate the first 5 trials
-% repTrial = 10;
-
-% way 1: (trial_1,…trial_1) + (trial_1, trial_2,…, trial_120)
-% trial_y_aug = [repmat(trial_y(1:100, :), repTrial, 1); trial_y];
-% trial_x_aug = [repmat(trial_x(1:100, :), repTrial, 1); trial_x];
-
-% way 2: (trial_1,…trial_n) + (trial_1, trial_2,…, trial_120)
-% trial_y_aug = [trial_y(1:(100*repTrial), :); trial_y];
-% trial_x_aug = [trial_x(1:(100*repTrial), :); trial_x];
-
-neuron=3; 
+neuron=13; 
 % 72 46 13
 ry = reshape(trial_y(:,neuron),100,[]);
-ry_aug = reshape(trial_y_aug(:,neuron),100,[]);
 [~,theta_idx]=sort(theta);
 
 %
@@ -52,8 +34,8 @@ Gnknots=7;
 X = getCubicBSplineBasis(theta',nknots,true);
 G = getCubicBSplineBasis(theta',Gnknots,true);
 
-Xb_aug = getCubicBSplineBasis(trial_x_aug,nknots,true);
-Gb_aug = getCubicBSplineBasis(trial_x_aug,Gnknots,true);
+Xb = getCubicBSplineBasis(trial_x,nknots,true);
+Gb = getCubicBSplineBasis(trial_x,Gnknots,true);
 
 x0 = linspace(0,2*pi,256);
 bas = getCubicBSplineBasis(x0,nknots,true);
@@ -76,36 +58,79 @@ theta0 = readmatrix('D:\GitHub\COM_POISSON\runRcode\cmp_t1.csv');
 % b = glmfit(repmat(X, length(trial), 1),reshape(ry(:, trial), [], 1),'poisson','constant','off');
 % theta0 = [b; zeros(Gnknots, 1)-2]; % Poisson, single
 % theta0 = [b; zeros(Gnknots + 1, 1)-2]; % Poisson, multi
-%%
+
+%% no Q-tune
 % Q = diag([repmat(1e-4,nknots+1,1); repmat(1e-5,Gnknots,1)]); % single G
 Q = diag([repmat(1e-4,nknots+1,1); repmat(1e-5,Gnknots + 1,1)]); % multi G
 
-[theta_fit1,W_fit1] =...
-    ppasmoo_compoisson_v2(theta0, trial_y_aug(:,neuron)', Xb_aug, Gb_aug,...
+[theta_fit_tmp,W_fit_tmp] =...
+    ppasmoo_compoisson_v2(theta0, trial_y(:,neuron)', Xb, Gb,...
     eye(length(theta0)),eye(length(theta0)),Q);
 
 % do smoothing twice
-theta02 = theta_fit1(:, 1);
-W02 = W_fit1(:, :, 1);
+theta021 = theta_fit_tmp(:, 1);
+W021 = W_fit_tmp(:, :, 1);
 
+[theta_fit1,W_fit1] =...
+    ppasmoo_compoisson_v2(theta021, trial_y(:,neuron)', Xb, Gb,...
+    W021,eye(length(theta0)),Q);
+
+%% Q-tune version
+
+QLB = 1e-8;
+QUB = 1e-4;
+Q0 = QLB*ones(1, length(theta0));
+DiffMinChange = QLB;
+DiffMaxChange = QUB*0.1;
+MaxFunEvals = 100;
+MaxIter = 25;
+
+% way 1: search Q with W0 = I, and use the optimized Q to do double
+% smoothing...
+f = @(Q) helper_2d(Q, theta0, trial_y(1:6000,neuron)',Xb,Gb,...
+    eye(length(theta0)),eye(length(theta0)));
+options = optimset('DiffMinChange',DiffMinChange,'DiffMaxChange',DiffMaxChange,...
+    'MaxFunEvals', MaxFunEvals, 'MaxIter', MaxIter);
+Qopt = fmincon(f,Q0,[],[],[],[],...
+    QLB*ones(1, length(theta0)),QUB*ones(1, length(theta0)), [], options);
+
+% do smoothing twice
+[theta_fit_tmp,W_fit_tmp] =...
+    ppasmoo_compoisson_v2(theta0, trial_y(:,neuron)', Xb, Gb,...
+    eye(length(theta0)),eye(length(theta0)),diag(Qopt));
+theta022 = theta_fit_tmp(:, 1);
+W022 = W_fit_tmp(:, :, 1);
 [theta_fit2,W_fit2] =...
-    ppasmoo_compoisson_v2(theta02, trial_y_aug(:,neuron)', Xb_aug, Gb_aug,...
-    W02,eye(length(theta0)),Q);
+    ppasmoo_compoisson_v2(theta022, trial_y(:,neuron)', Xb, Gb,...
+    W022,eye(length(theta0)),diag(Qopt));
 
-theta_fit2 = theta_fit2(:, (100*repTrial + 1):end);
-W_fit2 = W_fit2(:, :, (100*repTrial + 1):end);
-%%
-figure(2)
+% way2: use previous W0, optimize Q and do smoothing once...
+f = @(Q) helper_2d(Q, theta021, trial_y(1:6000,neuron)',Xb,Gb,...
+    W021,eye(length(theta021)));
+Qopt = fmincon(f,Q0,[],[],[],[],...
+    QLB*ones(1, length(theta021)),QUB*ones(1, length(theta021)), [], options);
+[theta_fit3,W_fit3] =...
+    ppasmoo_compoisson_v2(theta021, trial_y(:,neuron)', Xb, Gb,...
+    W021,eye(length(theta0)),diag(Qopt));
+
+save('v1.mat')
+
+%% parameter tracks...
+theta_fit = theta_fit3;
+
+param = figure;
 subplot(1,2,1)
-plot(theta_fit2(1:(nknots+1), :)')
+plot(theta_fit(1:(nknots+1), :)')
 title('beta')
 subplot(1,2,2)
-plot(theta_fit2((nknots+2):end, :)')
+plot(theta_fit((nknots+2):end, :)')
 title('gamma')
 
-%% calculate mean & var
+% saveas(param, 'param_track_noQTune.png')
+% saveas(param, 'param_track_QTune_twice.png')
+saveas(param, 'param_track_QTune_once.png')
 
-theta_fit = theta_fit2;
+%% calculate mean & var
 
 Xb = getCubicBSplineBasis(trial_x,nknots,true);
 Gb = getCubicBSplineBasis(trial_x,Gnknots,true);
@@ -132,7 +157,7 @@ CMP_ff = CMP_var./CMP_mean;
 
 %%
 
-figure(3)
+heat = figure;
 ry_hat = reshape(CMP_mean,100,[]);
 ry_var = reshape(CMP_var,100,[]);
 subplot(1,2,1)
@@ -145,8 +170,12 @@ imagesc(ry_var(theta_idx,:)./ry_hat(theta_idx,:))
 title('Fano Factor')
 colorbar
 
+% saveas(heat, 'heat_noQTune.png')
+% saveas(heat, 'heat_QTune_twice.png')
+saveas(heat, 'heat_QTune_once.png')
+
 %%
-figure(4)
+line = figure;
 subplot(1,2,1)
 plot(ry_hat(theta_idx,:))
 % plot(ry_hat(theta_idx,10:end))
@@ -156,4 +185,6 @@ plot(ry_var(theta_idx,:)./ry_hat(theta_idx,:))
 % plot(ry_var(theta_idx,10:end)./ry_hat(theta_idx,10:end))
 title('Fano Factor')
 
-
+% saveas(line, 'line_noQTune.png')
+% saveas(line, 'line_QTune_twice.png')
+saveas(line, 'line_QTune_once.png')
