@@ -8,7 +8,6 @@ for k=1:length(lam)
     log_Zk = logcum_app(1);
     log_Ak = logcum_app(2);
     log_Bk = logcum_app(3);
-    log_Ck = logcum_app(4);
 
     theo_mean(k) = exp(log_Ak - log_Zk);
     theo_var(k) = exp(log_Bk - log_Zk) - theo_mean(k)^2;
