@@ -1,4 +1,4 @@
-function [theta,W] = ppasmoo_compoisson_v2(theta0, N,X_lam,G_nu,W0,F,Q)
+function [theta,W,lam,nu,log_Zvec] = ppasmoo_compoisson_v2(theta0, N,X_lam,G_nu,W0,F,Q)
 
 % newton raphson
 % theta0 = nf_initial(N(:, 1), X_lam(1,:), G_nu(1,:), dt);
@@ -13,6 +13,7 @@ theta   = zeros(length(theta0), n_spk);
 W   = zeros([size(W0) n_spk]);
 lam = n_spk*0;
 nu = n_spk*0;
+log_Zvec = n_spk*0;
 np_lam = size(X_lam, 2);
 
 % Initialize
@@ -41,6 +42,7 @@ for i=2:n_spk
     log_C = logcum_app(4);
     log_D = logcum_app(5);
     log_E = logcum_app(6);
+    log_Zvec(i) = log_Z;
     
     mean_Y = exp(log_A - log_Z);
     var_Y = exp(log_B - log_Z) - mean_Y^2;
@@ -95,7 +97,11 @@ for i=(n_spk-2):-1:1
     theta(:,i)=Fsquig*theta(:,i+1) + Ksquig*thetapred(:,i+1);
     C = W(:,:,i)*F'*Wi;
     W(:,:,i) = W(:,:,i) + C*(W(:,:,i+1)-Wpred(:,:,i+1))*C';
+    
+    lam(i) = exp(X_lam(i,:)*theta(1:np_lam, i));
+    nu(i) = exp(G_nu(i,:)*theta((np_lam+1):end, i));
+    logcum_app = logsum_calc(lam(i), nu(i), maxSum);
+    log_Zvec(i) = logcum_app(1);
 end
-
 
 end

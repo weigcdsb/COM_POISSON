@@ -1,11 +1,12 @@
-addpath(genpath('D:\GitHub\COM_POISSON'));
-% addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
+% addpath(genpath('D:\GitHub\COM_POISSON'));
+addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
 
 %%
 % rng(123)
 T = 10;
 dt = 0.005; % bin length (s)
 n = 1; % number of independent observations
+t = linspace(0,1,T/dt);
 
 X_lam = ones(T/dt, 1);
 G_nu = ones(T/dt, 1);
@@ -13,10 +14,9 @@ G_nu = ones(T/dt, 1);
 theta_true = zeros(T/dt,2);
 
 % % Case 1 -- Mean increase - poisson model
-% t = linspace(0,1,T/dt);
-% theta_true(:,1) = (t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1;
-% theta_true(:,2) = 0;
-% Q=diag([1e-2 1e-6]);
+theta_true(:,1) = (t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1;
+theta_true(:,2) = 0;
+Q=diag([1e-2 1e-6]);
 
 % % Case 2 -- Var decrease - constant(ish) mean
 % theta_true(:,2) = 5*(t-0.2)/.05.*exp(-(t-0.2)/.05).*(t>.2);
@@ -25,10 +25,10 @@ theta_true = zeros(T/dt,2);
 % Q=diag([1e-4 1e-4]);
 
 % Case 3 -- Mean increase + Var decrease
-theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
-nu_true = exp(G_nu.*theta_true(:, 2));
-theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
-Q=diag([1e-3 1e-3]);
+% theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
+% nu_true = exp(G_nu.*theta_true(:, 2));
+% theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
+% Q=diag([1e-3 1e-3]);
 
 
 lam_true = exp(X_lam.*theta_true(:, 1));
@@ -42,7 +42,7 @@ figure(3)
 subplot(2,3,1)
 plot(mean(spk_vec, 1))
 hold on
-plot(theo_mean)
+plot(theo_mean, 'r', 'LineWidth', 2)
 hold off
 box off; set(gca,'TickDir','out')
 ylabel('Observations')
