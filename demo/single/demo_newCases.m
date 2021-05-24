@@ -14,9 +14,9 @@ G_nu = ones(T/dt, 1);
 theta_true = zeros(T/dt,2);
 
 % % Case 1 -- Mean increase - poisson model (good)
-theta_true(:,1) = (t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1;
-theta_true(:,2) = 0;
-Q=diag([1e-2 1e-6]);
+% theta_true(:,1) = (t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1;
+% theta_true(:,2) = 0;
+% Q=diag([1e-2 1e-6]);
 
 % % Case 2 -- Var decrease - constant(ish) mean (not bad)
 % target_mean = 10; 
@@ -27,18 +27,18 @@ Q=diag([1e-2 1e-6]);
 % Q=diag([1e-3 1e-3]);
 
 % Case 3 -- Mean increase + Var decrease
-% % seems mean increase --> var increase also, confused
-% theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
-% nu_true = exp(G_nu.*theta_true(:, 2));
-% % theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
-% % to run fast... use approximation again
-% target_mean = exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1);
-% % hold on
-% % plot(nu_true.*log(target_mean' + (nu_true - 1)./ (2*nu_true)))
-% % plot(theta_true(:,1))
-% % hold off
-% theta_true(:,1) = nu_true.*log(target_mean' + (nu_true - 1)./ (2*nu_true));
-% Q=diag([1e-3 1e-3]);
+% seems mean increase --> var increase also, confused
+theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
+nu_true = exp(G_nu.*theta_true(:, 2));
+% theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
+% to run fast... use approximation again
+target_mean = exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1);
+% hold on
+% plot(nu_true.*log(target_mean' + (nu_true - 1)./ (2*nu_true)))
+% plot(theta_true(:,1))
+% hold off
+theta_true(:,1) = nu_true.*log(target_mean' + (nu_true - 1)./ (2*nu_true));
+Q=diag([1e-3 1e-3]);
 
 lam_true = exp(X_lam.*theta_true(:, 1));
 nu_true = exp(G_nu.*theta_true(:, 2));
@@ -68,8 +68,6 @@ plot(theo_mean, 'LineWidth', 2)
 hold off
 box off; set(gca,'TickDir','out')
 ylabel('Observations')
-sgtitle('case1') 
-
 
 
 % fit
@@ -97,15 +95,15 @@ sgtitle('case1')
 % plot(tf_path')
 % theta0 = mean(tf_path, 2);
 
-% way 2: run smoothing twice for the first 100 spikes?
+% way 2: run smoothing twice?
 max_init = 100;
 spk_tmp = spk_vec(1:max_init);
 theta0_tmp = [log(mean(spk_tmp)); 0];
 W0_tmp = diag([1 1]);
 F = diag([1 1]);
 [theta_fit_tmp,W_fit_tmp] =...
-    ppasmoo_compoisson_v2(theta0_tmp, spk_tmp,X_lam,G_nu,...
-    W0_tmp,F,diag([1e-3 1e-3]));
+    ppasmoo_compoisson_v2(theta0_tmp, spk_vec,X_lam,G_nu,...
+    W0_tmp,F,diag([1e-4 1e-4]));
 theta0 = theta_fit_tmp(:, 1);
 W0 = W_fit_tmp(:, :, 1);
 
@@ -199,7 +197,7 @@ plot(theo_mean, 'LineWidth', 2)
 hold off
 box off; set(gca,'TickDir','out')
 ylabel('Observations')
-sgtitle('case1') 
+sgtitle('case3') 
 
 subplot(2,3,2)
 plot(est_mean)
@@ -238,5 +236,5 @@ plot((theta_true(:,2)), 'LineWidth', 2)
 hold off
 ylabel('gamma')
 
-% save('C:\Users\gaw19004\Desktop\COM_POI_data\sim_case1.mat')
-% saveas(figure(3), 'case1.png')
+% save('C:\Users\gaw19004\Desktop\COM_POI_data\sim_case3.mat')
+% saveas(figure(3), 'case3.png')
