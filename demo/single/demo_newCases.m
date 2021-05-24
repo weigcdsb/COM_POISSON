@@ -27,7 +27,6 @@ theta_true = zeros(T/dt,2);
 % Q=diag([1e-3 1e-3]);
 
 % Case 3 -- Mean increase + Var decrease
-% seems mean increase --> var increase also, confused
 theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
 nu_true = exp(G_nu.*theta_true(:, 2));
 % theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
