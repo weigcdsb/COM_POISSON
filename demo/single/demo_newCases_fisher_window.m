@@ -1,7 +1,7 @@
 addpath(genpath('D:\GitHub\COM_POISSON'));
 %%
 
-rng(5)
+rng(1) %rng(5)
 T = 10;
 dt = 0.005; % bin length (s)
 n = 1; % number of independent observations
@@ -37,14 +37,11 @@ Q=diag([1e-3 1e-3]);
 
 lam_true = exp(X_lam.*theta_true(:, 1));
 nu_true = exp(G_nu.*theta_true(:, 2));
-
-
 spk_vec = com_rnd(lam_true, nu_true);
-[theo_mean,theo_var]=getMeanVar(lam_true,nu_true);
 
 
 % fit... different windwo
-for m = [1 5 10 20 40 100]
+for m = [1 5 10 100]
     
     % initialize...
     max_init = 100;
@@ -52,64 +49,29 @@ for m = [1 5 10 20 40 100]
     theta0_tmp = [log(mean(spk_tmp)); 0];
     W0_tmp = diag([1 1]);
     F = diag([1 1]);
-    [theta_fit_tmp,W_fit_tmp] =...
+    [theta_fit_tmp1,W_fit_tmp1] =...
         ppasmoo_compoisson_v2_window(theta0_tmp, spk_vec,X_lam,G_nu,...
         W0_tmp,F,diag([1e-4 1e-4]), m);
+    [theta_fit_tmp2,W_fit_tmp2] =...
+        ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
+        W0_tmp,F,diag([1e-4 1e-4]), m);
     
-    theta0 = theta_fit_tmp(:, 1);
-    W0 = W_fit_tmp(:, :, 1);
+    theta01 = theta_fit_tmp1(:, 1);
+    W01 = W_fit_tmp1(:, :, 1);
+    
+    theta02 = theta_fit_tmp2(:, 1);
+    W02 = W_fit_tmp2(:, :, 1);
     
     %
-    [theta_fit1,W_fit1] =...
-        ppafilt_compoisson_v2_window(theta0, spk_vec,X_lam,G_nu,...
-        W0,F,Q, m);
-    [est_mean,est_var]=getMeanVar(exp(theta_fit1(1,:)),exp(theta_fit1(2,:)));
+    [theta_fit1,~] =...
+        ppafilt_compoisson_v2_window(theta01, spk_vec,X_lam,G_nu,...
+        W01,F,Q, m);
+    [theta_fit2,~] =...
+        ppafilt_compoisson_v2_window_fisher(theta02, spk_vec,X_lam,G_nu,...
+        W02,F,Q, m);
     
-    figure(m)
-    subplot(2,3,1)
-    plot(mean(spk_vec, 1))
-    hold on
-    plot(theo_mean, 'r', 'LineWidth', 2)
-    hold off
-    box off; set(gca,'TickDir','out')
-    ylabel('Observations')
-    
-    subplot(2,3,2)
-    plot(theo_mean)
-    hold on
-    plot(est_mean)
-    hold off
-    ylabel('Mean')
-    
-    subplot(2,3,5)
-    plot(theo_var)
-    hold on
-    plot(est_var)
-    hold off
-    ylabel('Var')
-    
-    
-    subplot(2,3,4)
-    plot(theo_var./theo_mean)
-    hold on
-    plot(est_var./est_mean)
-    hold off
-    ylim([0 4])
-    ylabel('Fano Factor')
-    
-    subplot(2,3,3)
-    plot((theta_true(:,1)))
-    hold on
-    plot((theta_fit1(1,:)))
-    hold off
-    ylabel('beta')
-    
-    subplot(2,3,6)
-    plot((theta_true(:,2)))
-    hold on
-    plot((theta_fit1(2,:)))
-    hold off
-    ylabel('gamma')
+    plotAll(m+100, spk_vec, X_lam, G_nu, theta_true, theta_fit1)
+    plotAll(m+200, spk_vec, X_lam, G_nu, theta_true, theta_fit2)
     
 end
 
@@ -142,7 +104,7 @@ end
 %
 % end
 %
-% f = @(p) helper_window(p, spk_vec,X_lam,G_nu, F, theta0Set, W0Set, nWindLB);
+% f = @(p) helper_window_v2(p, spk_vec,X_lam,G_nu, F, theta0Set, W0Set, nWindLB);
 % opts.MaxFunctionEvaluations = 500;
 % p = surrogateopt(f, [QLB*ones(1, np), nWindLB], [QUB*ones(1, np), nWindUB], np+1, opts);
 
@@ -164,14 +126,14 @@ for k = winSizeSet
     W0_tmp = diag([1 1]);
     F = diag([1 1]);
     [theta_fit_tmp,W_fit_tmp] =...
-        ppasmoo_compoisson_v2_window(theta0_tmp, spk_vec,X_lam,G_nu,...
+        ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
         W0_tmp,F,diag([1e-4 1e-4]), k);
     
     theta0_winSize(:, idx) = theta_fit_tmp(:, 1);
     W0_winSize(:, :, idx) = W_fit_tmp(:, :, 1);
     
     [~, ~, lam, nu, log_Zvec] =...
-        ppafilt_compoisson_v2_window(theta0_winSize(:, idx), spk_vec,X_lam,G_nu,...
+        ppafilt_compoisson_v2_window_fisher(theta0_winSize(:, idx), spk_vec,X_lam,G_nu,...
         W0_winSize(:, :, idx),F,diag([1e-4 1e-4]), k);
     
     if(length(log_Zvec) == size(spk_vec, 2))
@@ -183,7 +145,7 @@ for k = winSizeSet
     idx = idx + 1;
 end
 
-% plot(preLL_winSize)
+% plot(winSizeSet, preLL_winSize)
 [~, winIdx] = max(preLL_winSize);
 optWinSize = winSizeSet(winIdx);
 theta0 = theta0_winSize(:, winIdx);
@@ -207,12 +169,12 @@ Qopt = fmincon(f,Q0,[],[],[],[],...
 
 
 [theta_fit1,W_fit1] =...
-    ppafilt_compoisson_v2_window(theta0, spk_vec,X_lam,G_nu,...
+    ppafilt_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
     W0,F,diag(Qopt), optWinSize);
 [est_mean1,est_var1]=getMeanVar(exp(theta_fit1(1,:)),exp(theta_fit1(2,:)));
 
 [theta_fit2,W_fit2] =...
-    ppasmoo_compoisson_v2_window(theta0, spk_vec,X_lam,G_nu,...
+    ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
     W0,F,diag(Qopt), optWinSize);
 [est_mean2,est_var2]=getMeanVar(exp(theta_fit2(1,:)),exp(theta_fit2(2,:)));
 

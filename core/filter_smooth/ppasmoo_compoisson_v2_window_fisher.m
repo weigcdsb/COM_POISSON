@@ -1,5 +1,5 @@
-function [theta,W, lam, nu, log_Zvec] =...
-    ppafilt_compoisson_v2_window(theta0, N,X_lam,G_nu,W0,F,Q, windSize)
+function [theta,W,lam,nu,log_Zvec] =...
+    ppasmoo_compoisson_v2_window_fisher(theta0, N,X_lam,G_nu,W0,F,Q, windSize)
 
 n_spk = size(N, 2);
 nCell = size(N, 1);
@@ -19,8 +19,6 @@ W(:,:,1) = W0;
 
 lam(1) = exp(X_lam(1,:)*theta0(1:np_lam));
 nu(1) = exp(G_nu(1,:)*theta0((np_lam+1):end));
-logcum_app = logsum_calc(lam(1), nu(1), maxSum);
-log_Zvec(1) = logcum_app(1);
 
 thetapred = theta;
 Wpred = W;
@@ -65,8 +63,9 @@ for i=2:n_spk
         info1 = nCell*var_Y*X_lam(i+k-1,:)'*X_lam(i+k-1,:);
         info2 = -nCell*nu_ext(k)*cov_Y_logYfac*X_lam(i+k-1,:)'*G_nu(i+k-1, :);
         info3 = info2';
-        info4 = nu_ext(k)*(nCell*nu_ext(k)*var_logYfac - nCell*mean_logYfac +...
-            sum(gammaln(N(:, i+k-1) + 1)))*G_nu(i+k-1, :)'*G_nu(i+k-1, :);
+%         info4 = nu_ext(k)*(nCell*nu_ext(k)*var_logYfac - nCell*mean_logYfac +...
+%             sum(gammaln(N(:, i+k-1) + 1)))*G_nu(i+k-1, :)'*G_nu(i+k-1, :);
+        info4 = nu_ext(k)*(nCell*nu_ext(k)*var_logYfac)*G_nu(i+k-1, :)'*G_nu(i+k-1, :); % Fisher scoring
         
         INFO = INFO + [info1, info2; info3, info4];
         SCORE = SCORE + [(sum(N(:, i+k-1)) - nCell*mean_Y)*X_lam(i+k-1,:)';...
@@ -87,5 +86,21 @@ for i=2:n_spk
 end
 
 lastwarn('')
+I = eye(length(theta0));
+
+for i=(n_spk-2):-1:1
+    Wi = inv(Wpred(:,:,i+1));
+    Fsquig = inv(F)*(I-Q*Wi);
+    Ksquig = inv(F)*Q*Wi;
+    
+    theta(:,i)=Fsquig*theta(:,i+1) + Ksquig*thetapred(:,i+1);
+    C = W(:,:,i)*F'*Wi;
+    W(:,:,i) = W(:,:,i) + C*(W(:,:,i+1)-Wpred(:,:,i+1))*C';
+    
+    lam(i) = exp(X_lam(i,:)*theta(1:np_lam, i));
+    nu(i) = exp(G_nu(i,:)*theta((np_lam+1):end, i));
+    logcum_app = logsum_calc(lam(i), nu(i), maxSum);
+    log_Zvec(i) = logcum_app(1);
+end
 
 end

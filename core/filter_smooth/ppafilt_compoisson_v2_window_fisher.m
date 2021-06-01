@@ -1,5 +1,5 @@
 function [theta,W, lam, nu, log_Zvec] =...
-    ppafilt_compoisson_v2_window(theta0, N,X_lam,G_nu,W0,F,Q, windSize)
+    ppafilt_compoisson_v2_window_fisher(theta0, N,X_lam,G_nu,W0,F,Q, windSize)
 
 n_spk = size(N, 2);
 nCell = size(N, 1);
@@ -65,8 +65,9 @@ for i=2:n_spk
         info1 = nCell*var_Y*X_lam(i+k-1,:)'*X_lam(i+k-1,:);
         info2 = -nCell*nu_ext(k)*cov_Y_logYfac*X_lam(i+k-1,:)'*G_nu(i+k-1, :);
         info3 = info2';
-        info4 = nu_ext(k)*(nCell*nu_ext(k)*var_logYfac - nCell*mean_logYfac +...
-            sum(gammaln(N(:, i+k-1) + 1)))*G_nu(i+k-1, :)'*G_nu(i+k-1, :);
+%         info4 = nu_ext(k)*(nCell*nu_ext(k)*var_logYfac - nCell*mean_logYfac +...
+%             sum(gammaln(N(:, i+k-1) + 1)))*G_nu(i+k-1, :)'*G_nu(i+k-1, :);
+        info4 = nu_ext(k)*(nCell*nu_ext(k)*var_logYfac)*G_nu(i+k-1, :)'*G_nu(i+k-1, :); % Fisher scoring
         
         INFO = INFO + [info1, info2; info3, info4];
         SCORE = SCORE + [(sum(N(:, i+k-1)) - nCell*mean_Y)*X_lam(i+k-1,:)';...
