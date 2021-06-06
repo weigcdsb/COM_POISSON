@@ -1,5 +1,5 @@
 function [theta,W,lam,nu,log_Zvec] =...
-    ppasmoo_compoisson_v2_window(theta0, N,X_lam,G_nu,W0,F,Q, windSize)
+    ppasmoo_compoisson_v2_window(theta0, N,X_lam,G_nu,W0,F,Q, windSize, windType)
 
 n_spk = size(N, 2);
 nCell = size(N, 1);
@@ -29,10 +29,19 @@ for i=2:n_spk
     thetapred(:,i) = F*theta(:,i-1);
     Wpred(:,:,i) = F*W(:,:,i-1)*F' + Q;
     
-    if((i + windSize - 1) <= n_spk)
-        obsIdx = i:(i+windSize-1);
-    else
-        obsIdx = i:n_spk;
+    switch windType
+        case{'forward'}
+            obsIdx = i:min(n_spk, i+windSize-1);
+        case{'backward'}
+            obsIdx = max(1, i-windSize+1):i;
+        case{'center'}
+            windSize = ceil((windSize-1)/2)*2 + 1;
+%             fprintf('CAUTION: the windSize is reset as: %d', windSize);
+            halfLength = (windSize-1)/2;
+            obsIdx = max(1, i - halfLength):min(n_spk, i + halfLength);
+        otherwise
+            disp("please input correct window type: 'forward', 'backward' or 'center'");
+            return;
     end
     
     lam_ext = exp(X_lam(obsIdx,:)*thetapred(1:np_lam, i));
@@ -42,9 +51,9 @@ for i=2:n_spk
     
     INFO = zeros(size(W0));
     SCORE = zeros(length(theta0), 1);
-    
-    for k = 1:length(lam_ext)
-        logcum_app = logsum_calc(lam_ext(k), nu_ext(k), maxSum);
+    idx = 1;
+    for k = obsIdx
+        logcum_app = logsum_calc(lam_ext(idx), nu_ext(idx), maxSum);
         log_Z = logcum_app(1);
         log_A = logcum_app(2);
         log_B = logcum_app(3);
@@ -52,7 +61,7 @@ for i=2:n_spk
         log_D = logcum_app(5);
         log_E = logcum_app(6);
         
-        if(k == 1); log_Zvec(i) = log_Z; end
+        if(idx == 1); log_Zvec(i) = log_Z; end
         
         mean_Y = exp(log_A - log_Z);
         var_Y = exp(log_B - log_Z) - mean_Y^2;
@@ -60,16 +69,16 @@ for i=2:n_spk
         var_logYfac = exp(log_D - log_Z) - mean_logYfac^2;
         cov_Y_logYfac =  exp(log_E-log_Z)-exp(log_A+log_C-2*log_Z);
         
-        info1 = nCell*var_Y*X_lam(i+k-1,:)'*X_lam(i+k-1,:);
-        info2 = -nCell*nu_ext(k)*cov_Y_logYfac*X_lam(i+k-1,:)'*G_nu(i+k-1, :);
+        info1 = nCell*var_Y*X_lam(k,:)'*X_lam(k,:);
+        info2 = -nCell*nu_ext(idx)*cov_Y_logYfac*X_lam(k,:)'*G_nu(k, :);
         info3 = info2';
-        info4 = nu_ext(k)*(nCell*nu_ext(k)*var_logYfac - nCell*mean_logYfac +...
-            sum(gammaln(N(:, i+k-1) + 1)))*G_nu(i+k-1, :)'*G_nu(i+k-1, :);
-        
+        info4 = nu_ext(idx)*(nCell*nu_ext(idx)*var_logYfac - nCell*mean_logYfac +...
+            sum(gammaln(N(:, k) + 1)))*G_nu(k, :)'*G_nu(k, :);
         
         INFO = INFO + [info1, info2; info3, info4];
-        SCORE = SCORE + [(sum(N(:, i+k-1)) - nCell*mean_Y)*X_lam(i+k-1,:)';...
-            nu_ext(k)*(-sum(gammaln(N(:, i+k-1) + 1)) + nCell*mean_logYfac)*G_nu(i+k-1, :)'];
+        SCORE = SCORE + [(sum(N(:, k)) - nCell*mean_Y)*X_lam(k,:)';...
+            nu_ext(idx)*(-sum(gammaln(N(:, k) + 1)) + nCell*mean_logYfac)*G_nu(k, :)'];
+        idx = idx + 1;
     end
     
     Wpostinv = inv(Wpred(:,:,i)) + INFO;
@@ -88,7 +97,7 @@ end
 lastwarn('')
 I = eye(length(theta0));
 
-for i=(n_spk-2):-1:1
+for i=(n_spk-1):-1:1
     Wi = inv(Wpred(:,:,i+1));
     Fsquig = inv(F)*(I-Q*Wi);
     Ksquig = inv(F)*Q*Wi;

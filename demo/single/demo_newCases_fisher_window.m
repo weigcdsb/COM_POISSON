@@ -17,29 +17,30 @@ theta_true = zeros(T/dt,2);
 % theta_true(:,2) = 0;
 % Q=diag([1e-2 1e-6]);
 
-% % Case 2 -- Var decrease - constant(ish) mean (not bad)
-% target_mean = 10;
-% theta_true(:,2) = 5*(t-0.2)/.05.*exp(-(t-0.2)/.05).*(t>.2);
-% nu_true = exp(G_nu.*theta_true(:, 2));
-% % theta_true(:,1) = log(10.^nu_true); % better approximation...
-% theta_true(:,1) = nu_true.*log(target_mean + (nu_true - 1)./ (2*nu_true));
-% Q=diag([1e-3 1e-3]);
-
-% Case 3 -- Mean increase + Var decrease
-theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
+% Case 2 -- Var decrease - constant(ish) mean (not bad)
+target_mean = 10;
+theta_true(:,2) = 5*(t-0.2)/.05.*exp(-(t-0.2)/.05).*(t>.2);
 nu_true = exp(G_nu.*theta_true(:, 2));
-% theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
-% to run fast... use approximation again
-target_mean = exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1);
-theta_true(:,1) = nu_true.*log(target_mean' + (nu_true - 1)./ (2*nu_true));
+% theta_true(:,1) = log(10.^nu_true); % better approximation...
+theta_true(:,1) = nu_true.*log(target_mean + (nu_true - 1)./ (2*nu_true));
 Q=diag([1e-3 1e-3]);
+
+% % Case 3 -- Mean increase + Var decrease
+% theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
+% nu_true = exp(G_nu.*theta_true(:, 2));
+% % theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
+% % to run fast... use approximation again
+% target_mean = exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1);
+% theta_true(:,1) = nu_true.*log(target_mean' + (nu_true - 1)./ (2*nu_true));
+% Q=diag([1e-3 1e-3]);
 
 
 lam_true = exp(X_lam.*theta_true(:, 1));
 nu_true = exp(G_nu.*theta_true(:, 2));
 spk_vec = com_rnd(lam_true, nu_true);
+[theo_mean,theo_var]=getMeanVar(lam_true,nu_true);
 
-
+windType = 'forward';
 % fit... different windwo
 for m = [1 5 10 100]
     
@@ -51,10 +52,10 @@ for m = [1 5 10 100]
     F = diag([1 1]);
     [theta_fit_tmp1,W_fit_tmp1] =...
         ppasmoo_compoisson_v2_window(theta0_tmp, spk_vec,X_lam,G_nu,...
-        W0_tmp,F,diag([1e-4 1e-4]), m);
+        W0_tmp,F,diag([1e-4 1e-4]), m, windType);
     [theta_fit_tmp2,W_fit_tmp2] =...
         ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
-        W0_tmp,F,diag([1e-4 1e-4]), m);
+        W0_tmp,F,diag([1e-4 1e-4]), m, windType);
     
     theta01 = theta_fit_tmp1(:, 1);
     W01 = W_fit_tmp1(:, :, 1);
@@ -65,10 +66,10 @@ for m = [1 5 10 100]
     %
     [theta_fit1,~] =...
         ppafilt_compoisson_v2_window(theta01, spk_vec,X_lam,G_nu,...
-        W01,F,Q, m);
+        W01,F,Q, m, windType);
     [theta_fit2,~] =...
         ppafilt_compoisson_v2_window_fisher(theta02, spk_vec,X_lam,G_nu,...
-        W02,F,Q, m);
+        W02,F,Q, m, windType);
     
     plotAll(m+100, spk_vec, X_lam, G_nu, theta_true, theta_fit1)
     plotAll(m+200, spk_vec, X_lam, G_nu, theta_true, theta_fit2)
@@ -114,9 +115,13 @@ end
 
 winSizeSet = [1 linspace(5, 30, 6)];
 np = size(X_lam, 2) + size(G_nu, 2);
-preLL_winSize = zeros(1, length(winSizeSet));
 theta0_winSize = zeros(np, length(winSizeSet));
 W0_winSize = zeros(np, np, length(winSizeSet));
+windType = 'backward';
+
+preLL_winSize_pred = zeros(1, length(winSizeSet));
+preLL_winSize_filt = zeros(1, length(winSizeSet));
+preLL_winSize_smoo = zeros(1, length(winSizeSet));
 
 idx = 1;
 for k = winSizeSet
@@ -127,26 +132,40 @@ for k = winSizeSet
     F = diag([1 1]);
     [theta_fit_tmp,W_fit_tmp] =...
         ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
-        W0_tmp,F,diag([1e-4 1e-4]), k);
+        W0_tmp,F,diag([1e-4 1e-4]), k, windType);
     
     theta0_winSize(:, idx) = theta_fit_tmp(:, 1);
     W0_winSize(:, :, idx) = W_fit_tmp(:, :, 1);
     
-    [~, ~, lam, nu, log_Zvec] =...
-        ppafilt_compoisson_v2_window_fisher(theta0_winSize(:, idx), spk_vec,X_lam,G_nu,...
-        W0_winSize(:, :, idx),F,diag([1e-4 1e-4]), k);
+    [~,~,lam_pred,nu_pred,log_Zvec_pred,...
+    lam_filt,nu_filt,log_Zvec_filt,...
+    lam_smoo,nu_smoo,log_Zvec_smoo] =...
+        ppasmoo_compoisson_v2_window_fisher(theta0_winSize(:, idx), spk_vec,X_lam,G_nu,...
+        W0_winSize(:, :, idx),F,diag([1e-4 1e-4]), k, windType);
     
-    if(length(log_Zvec) == size(spk_vec, 2))
-        preLL_winSize(idx) = sum(spk_vec.*log((lam+(lam==0))) -...
-            nu.*gammaln(spk_vec + 1) - log_Zvec);
+    if(length(log_Zvec_pred) == size(spk_vec, 2))
+        preLL_winSize_pred(idx) = sum(spk_vec.*log((lam_pred+(lam_pred==0))) -...
+            nu_pred.*gammaln(spk_vec + 1) - log_Zvec_pred);
+        preLL_winSize_filt(idx) = sum(spk_vec.*log((lam_filt+(lam_filt==0))) -...
+            nu_filt.*gammaln(spk_vec + 1) - log_Zvec_filt);
+        preLL_winSize_smoo(idx) = sum(spk_vec.*log((lam_smoo+(lam_smoo==0))) -...
+            nu_smoo.*gammaln(spk_vec + 1) - log_Zvec_smoo);
     else
-        preLL_winSize(idx) = -Inf;
+        preLL_winSize_pred(idx) = -Inf;
+        preLL_winSize_filt(idx) = -Inf;
+        preLL_winSize_smoo(idx) = -Inf;
     end
     idx = idx + 1;
 end
 
-% plot(winSizeSet, preLL_winSize)
-[~, winIdx] = max(preLL_winSize);
+subplot(1, 3, 1)
+plot(winSizeSet, preLL_winSize_pred)
+subplot(1, 3, 2)
+plot(winSizeSet, preLL_winSize_filt)
+subplot(1, 3, 3)
+plot(winSizeSet, preLL_winSize_smoo)
+
+[~, winIdx] = max(preLL_winSize_filt);
 optWinSize = winSizeSet(winIdx);
 theta0 = theta0_winSize(:, winIdx);
 W0 = W0_winSize(:, :, winIdx);
@@ -159,7 +178,7 @@ DiffMaxChange = QUB;
 MaxFunEvals = 200;
 MaxIter = 25;
 
-f = @(Q) helper_window(Q, theta0, spk_vec,X_lam,G_nu,W0,F,optWinSize);
+f = @(Q) helper_window(Q, theta0, spk_vec,X_lam,G_nu,W0,F,optWinSize,windType);
 
 % fmincon
 options = optimset('DiffMinChange',DiffMinChange,'DiffMaxChange',DiffMaxChange,...
