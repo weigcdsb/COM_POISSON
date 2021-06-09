@@ -29,6 +29,11 @@ lam_filt = lam_pred;
 nu_filt = nu_pred;
 log_Zvec_filt = log_Zvec_pred;
 
+lam_smoo = lam_filt;
+nu_smoo = nu_filt;
+log_Zvec_smoo = log_Zvec_filt;
+
+
 thetapred = theta;
 Wpred = W;
 

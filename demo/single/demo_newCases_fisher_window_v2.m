@@ -17,22 +17,22 @@ theta_true = zeros(T/dt,2);
 % theta_true(:,2) = 0;
 % Q=diag([1e-2 1e-6]);
 
-% Case 2 -- Var decrease - constant(ish) mean (not bad)
-target_mean = 10;
-theta_true(:,2) = 5*(t-0.2)/.05.*exp(-(t-0.2)/.05).*(t>.2);
-nu_true = exp(G_nu.*theta_true(:, 2));
-% theta_true(:,1) = log(10.^nu_true); % better approximation...
-theta_true(:,1) = nu_true.*log(target_mean + (nu_true - 1)./ (2*nu_true));
-Q=diag([1e-3 1e-3]);
-
-% % Case 3 -- Mean increase + Var decrease
-% theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
+% % Case 2 -- Var decrease - constant(ish) mean (not bad)
+% target_mean = 10;
+% theta_true(:,2) = 5*(t-0.2)/.05.*exp(-(t-0.2)/.05).*(t>.2);
 % nu_true = exp(G_nu.*theta_true(:, 2));
-% % theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
-% % to run fast... use approximation again
-% target_mean = exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1);
-% theta_true(:,1) = nu_true.*log(target_mean' + (nu_true - 1)./ (2*nu_true));
+% % theta_true(:,1) = log(10.^nu_true); % better approximation...
+% theta_true(:,1) = nu_true.*log(target_mean + (nu_true - 1)./ (2*nu_true));
 % Q=diag([1e-3 1e-3]);
+
+% Case 3 -- Mean increase + Var decrease
+theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
+nu_true = exp(G_nu.*theta_true(:, 2));
+% theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
+% to run fast... use approximation again
+target_mean = exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1);
+theta_true(:,1) = nu_true.*log(target_mean' + (nu_true - 1)./ (2*nu_true));
+Q=diag([1e-3 1e-3]);
 
 
 lam_true = exp(X_lam.*theta_true(:, 1));
@@ -40,7 +40,7 @@ nu_true = exp(G_nu.*theta_true(:, 2));
 spk_vec = com_rnd(lam_true, nu_true);
 [theo_mean,theo_var]=getMeanVar(lam_true,nu_true);
 
-windType = 'center';
+windType = 'forward';
 
 %%
 max_init = 100;
