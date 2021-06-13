@@ -18,7 +18,7 @@ load('theta_gratings_movie.mat')
 % end
 
 %%
-neuron=2;
+neuron=13;
 Tlist=cell(0);
 c=1;
 for i=1:size(data.EVENTS,2)
@@ -51,7 +51,7 @@ end
 
 
 %%
-neuron=24;
+% neuron=13;
 
 for i=1:length(theta)
     s(i,2)=var(trial_y(i:100:6000,neuron));
@@ -84,7 +84,7 @@ mff=[]; mmm=[];
 for i=1:(120-smoothing)
     ff=[];
     c=1;
-    for stim=linspace(0,2*pi,10)
+    for stim=linspace(0,2*pi,20)
         tv=[];
         tv = find(abs(theta-stim)<pi/5);
         tid=[];

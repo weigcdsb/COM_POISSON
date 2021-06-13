@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -23,10 +25,12 @@ Type 'q()' to quit R.
 > library(COMPoissonReg)
 Loading required package: Rcpp
 Warning message:
-package 'Rcpp' was built under R version 4.0.3 
+package 'Rcpp' was built under R version 4.0.5 
 > 
 > # wd <- dirname(rstudioapi::getSourceEditorContext()$path)
-> wd <- "D:/GitHub/COM_POISSON/runRcode"
+> # wd <- "D:/GitHub/COM_POISSON/runRcode"
+> wd <- "C:/Users/gaw19004/Documents/GitHub/COM_POISSON/runRcode"
+> 
 > 
 > y <- read.csv(paste0(wd, '/y.csv'), header = F)
 > X <- read.csv(paste0(wd, '/X.csv'), header = F)
@@ -80,4 +84,4 @@ package 'Rcpp' was built under R version 4.0.3
 > 
 > proc.time()
    user  system elapsed 
-  12.94    0.15   13.21 
+   5.28    0.06    5.32 

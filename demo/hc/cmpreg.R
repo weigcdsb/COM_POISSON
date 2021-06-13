@@ -1,5 +1,6 @@
 library(COMPoissonReg)
-wd <- "D:/GitHub/COM_POISSON/demo/hc"
+# wd <- "D:/GitHub/COM_POISSON/demo/hc"
+wd <- "C:/Users/gaw19004/Documents/GitHub/COM_POISSON/demo/hc"
 
 ######
 y <- read.csv(paste0(wd, '/y.csv'), header = F)
