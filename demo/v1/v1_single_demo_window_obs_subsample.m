@@ -149,12 +149,12 @@ options = optimset('DiffMinChange',DiffMinChange,'DiffMaxChange',DiffMaxChange,.
 Qopt = fmincon(f,Q0,[],[],[],[],...
     QLB*ones(1, length(Q0)),QUB*ones(1, length(Q0)), [], options);
 
-% Qopt = 1e-3*ones(1, 4);
+%%
+% Qopt = 1e-3*ones(1, 4); % for no Q tune
 Q_lam = [Qopt(1) Qopt(2)*ones(1, size(Xb, 2)-1)];
 Q_nu = [Qopt(3) Qopt(4)*ones(1, size(Gb, 2) - 1)];
-
 Qoptmatrix = diag([Q_lam Q_nu]);
-
+%%
 
 % window selection
 winSizeSet = [1 linspace(10, 60, 6)];
@@ -166,17 +166,19 @@ preLL_winSize_pred = zeros(1, length(winSizeSet));
 preLL_winSize_filt = zeros(1, length(winSizeSet));
 preLL_winSize_smoo = zeros(1, length(winSizeSet));
 
-
 idx = 1;
 spk_vec = trial_y(:,neuron)';
 for k = winSizeSet
-    [theta_fit_tmp,W_fit_tmp] =...
-        ppasmoo_compoisson_v2_window_fisher(theta0, trial_y(:,neuron)', Xb, Gb,...
-        eye(length(theta0)),eye(length(theta0)),Qoptmatrix, k, windType);
+%     [theta_fit_tmp,W_fit_tmp] =...
+%         ppasmoo_compoisson_v2_window_fisher(theta0, trial_y(:,neuron)', Xb, Gb,...
+%         eye(length(theta0)),eye(length(theta0)),Qoptmatrix, k, windType);
+%     or just use theta021 & W021
+%     
+%     theta0_winSize(:, idx) = theta_fit_tmp(:, 1);
+%     W0_winSize(:, :, idx) = W_fit_tmp(:, :, 1);
     
-    
-    theta0_winSize(:, idx) = theta_fit_tmp(:, 1);
-    W0_winSize(:, :, idx) = W_fit_tmp(:, :, 1);
+    theta0_winSize(:, idx) = theta021;
+    W0_winSize(:, :, idx) = W021;
     
     [~,~,lam_pred,nu_pred,log_Zvec_pred,...
         lam_filt,nu_filt,log_Zvec_filt,...
