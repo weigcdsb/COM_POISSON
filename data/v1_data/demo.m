@@ -29,6 +29,8 @@ end
 figure(2)
 clf
 drawRaster(Tlist,1,0,[0 30])
+ylabel('trial')
+xlabel('time(s)')
 
 %% Get counts per trial
 
@@ -51,7 +53,7 @@ end
 
 
 %%
-% neuron=13;
+neuron=13;
 
 for i=1:length(theta)
     s(i,2)=var(trial_y(i:100:6000,neuron));
