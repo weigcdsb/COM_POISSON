@@ -49,8 +49,6 @@ package 'Rcpp' was built under R version 4.0.5
 > 
 > cmpFit <- glm.cmp(fmlaX,
 +                   fmlaG, data = fitData)
-Warning message:
-glm.fit: fitted rates numerically 0 occurred 
 > beta <- unname(cmpFit$beta)
 > gam <- unname(cmpFit$gamma)
 > 
@@ -61,4 +59,4 @@ glm.fit: fitted rates numerically 0 occurred
 > 
 > proc.time()
    user  system elapsed 
-   3.54    0.03    3.56 
+   2.39    0.03    2.40 

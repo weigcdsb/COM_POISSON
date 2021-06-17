@@ -292,10 +292,13 @@ for i = 1:size(data.EVENTS, 2)
         [~, sortIdx] = sort(abs(x0(j) - theta_ss));
         id = sortIdx(1:nMin);
         
-        lam_tmp = exp(bas(j,:)*theta_fit(1:(nknots+1), idx_tmp(id)));
-        nu_tmp = exp(bas(j,:)*theta_fit((nknots+2):end, idx_tmp(id)));
-        lam = mean(lam_tmp);
-        nu = mean(nu_tmp);
+        %         lam_tmp = exp(bas(j,:)*theta_fit(1:(nknots+1), idx_tmp(id)));
+        %         nu_tmp = exp(bas(j,:)*theta_fit((nknots+2):end, idx_tmp(id)));
+        %         lam = mean(lam_tmp);
+        %         nu = mean(nu_tmp);
+        
+        lam = exp(bas(j,:)*mean(theta_fit(1:(nknots+1), idx_tmp(id)), 2));
+        nu = exp(bas(j,:)*mean(theta_fit((nknots+2):end, idx_tmp(id)), 2));
         
         logcum_app  = logsum_calc(lam, nu, 1000);
         log_Z = logcum_app(1);
