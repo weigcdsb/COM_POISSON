@@ -23,8 +23,7 @@ fmlaX <- as.formula(paste('y~',
 fmlaG <- as.formula(paste('y~',
                           paste(gnam2, collapse= "+")))
 
-cmpFit <- glm.cmp(fmlaX,
-                  fmlaG, data = fitData)
+cmpFit <- glm.cmp(fmlaX, fmlaG, data = fitData)
 beta <- unname(cmpFit$beta)
 gam <- unname(cmpFit$gamma)
 

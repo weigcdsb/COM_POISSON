@@ -60,8 +60,12 @@ hold off
 
 nknots=32;
 Gnknots=1;
-X = getCubicBSplineBasis((pos + 250)/500*2*pi,nknots,true);
-G = getCubicBSplineBasis((pos + 250)/500*2*pi,Gnknots,true);
+
+% X = getCubicBSplineBasis((pos - min(pos))/range(pos),nknots,false);
+% G = getCubicBSplineBasis((pos - min(pos))/range(pos),Gnknots,false);
+
+X = getCubicBSplineBasis((pos + 250)/500*2*pi,nknots,false);
+G = getCubicBSplineBasis((pos + 250)/500*2*pi,Gnknots,false);
 
 %% sanity check the place field to make sure nknots is reasonable...
 

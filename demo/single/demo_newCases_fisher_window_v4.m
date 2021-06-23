@@ -78,7 +78,7 @@ Qoptmatrix(1, length(Q_lam)+1) = Qopt(end);
 Qoptmatrix(length(Q_lam)+1, 1) = Qopt(end);
 
 %%
-% Qoptmatrix = diag([1e-3 1e-3]);
+Qoptmatrix = diag([1e-3 1e-3]);
 
 winSizeSet = [1 linspace(5, 30, 6) 50 100];
 np = size(X_lam, 2) + size(G_nu, 2);
@@ -142,18 +142,18 @@ theta0 = theta0_winSize(:, winIdx);
 W0 = W0_winSize(:, :, winIdx);
 
 %%
-% optWinSize = 200;
-% max_init = 100;
-% spk_tmp = spk_vec(1:max_init);
-% theta0_tmp = [log(mean(spk_tmp)); 0];
-% W0_tmp = diag([1 1]);
-% F = diag([1 1]);
-% [theta_fit_tmp,W_fit_tmp] =...
-%     ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
-%     W0_tmp,F,Qoptmatrix, optWinSize, windType);
-% 
-% theta0 = theta_fit_tmp(:, 1);
-% W0 = W_fit_tmp(:, :, 1);
+optWinSize = 100;
+max_init = 100;
+spk_tmp = spk_vec(1:max_init);
+theta0_tmp = [log(mean(spk_tmp)); 0];
+W0_tmp = diag([1 1]);
+F = diag([1 1]);
+[theta_fit_tmp,W_fit_tmp] =...
+    ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
+    W0_tmp,F,Qoptmatrix, optWinSize, windType);
+
+theta0 = theta_fit_tmp(:, 1);
+W0 = W_fit_tmp(:, :, 1);
 
 
 [theta_fit1,W_fit1] =...
@@ -166,8 +166,8 @@ W0 = W0_winSize(:, :, winIdx);
     W0,F,Qoptmatrix, optWinSize, windType);
 [est_mean2,est_var2]=getMeanVar(exp(theta_fit2(1,:)),exp(theta_fit2(2,:)));
 
-plotAll_filtSmoo(spk_vec, X_lam, G_nu, theta_true, theta_fit1, theta_fit2)
 
+plotAll_filtSmoo(spk_vec, X_lam, G_nu, theta_true, theta_fit1, theta_fit2)
 
 
 

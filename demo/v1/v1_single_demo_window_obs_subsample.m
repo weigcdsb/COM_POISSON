@@ -101,13 +101,13 @@ nObs = nSS;
 ry = reshape(trial_y(:,neuron),nObs,[]);
 
 %
-nknots=7;
-Gnknots=7;
+nknots=30;
+Gnknots=5;
 
 Xb = getCubicBSplineBasis(trial_x,nknots,true);
 Gb = getCubicBSplineBasis(trial_x,Gnknots,true);
 
-trial = 1:10;
+trial = 1:15;
 writematrix(reshape(ry(:, trial), [], 1), 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\y.csv')
 writematrix(Xb((nObs*(trial(1)-1)+1):nObs*trial(end), :),...
     'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\X.csv')

@@ -47,8 +47,7 @@ package 'Rcpp' was built under R version 4.0.5
 > fmlaG <- as.formula(paste('y~',
 +                           paste(gnam2, collapse= "+")))
 > 
-> cmpFit <- glm.cmp(fmlaX,
-+                   fmlaG, data = fitData)
+> cmpFit <- glm.cmp(fmlaX, fmlaG, data = fitData)
 > beta <- unname(cmpFit$beta)
 > gam <- unname(cmpFit$gamma)
 > 
@@ -59,4 +58,4 @@ package 'Rcpp' was built under R version 4.0.5
 > 
 > proc.time()
    user  system elapsed 
-   2.39    0.03    2.40 
+  15.04    0.03   15.11 
