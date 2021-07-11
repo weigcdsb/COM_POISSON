@@ -13,7 +13,6 @@ W   = zeros([size(W0) n_spk]);
 lam_pred = n_spk*0;
 nu_pred = n_spk*0;
 log_Zvec_pred = n_spk*0;
-
 np_lam = size(X_lam, 2);
 
 % Initialize

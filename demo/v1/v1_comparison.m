@@ -36,12 +36,13 @@ end
 trial_x_ss = trial_x_full(ssIdx);
 trial_y_ss = trial_y_full(ssIdx, :);
 
-neuron=13;
+% neuron=13;
+neuron = 11;
 nplot = 10;
 
 [~,theta_idx]=sort(theta);
 
-smoothing=10;
+smoothing=5;
 mff=[]; mmm=[];
 obs_ff = []; obs_mean = [];
 for i=1:size(data.EVENTS, 2)-smoothing
@@ -98,7 +99,8 @@ nObs = nSS;
 spk_vec = trial_y(:,neuron)';
 ry = reshape(trial_y(:,neuron),nObs,[]);
 
-nknots = 20;
+nknots = 5;
+% nknots = 10;
 
 % check if reasonable
 X = getCubicBSplineBasis(trial_x,nknots,true);
@@ -120,8 +122,9 @@ hold off
 %% fit 1: adaptive CMP, nBasis for nu = 3
 
 %
-nknots = 20;
+% nknots = 20;
 Gnknots_full = 5;
+% windSize = 30;
 
 Xb = getCubicBSplineBasis(trial_x,nknots,true);
 Gb_full = getCubicBSplineBasis(trial_x,Gnknots_full,true);
@@ -143,7 +146,7 @@ Q = diag([repmat(1e-3,nknots+1,1); repmat(1e-3,Gnknots_full + 1,1)]);
 
 [theta_fit_tmp,W_fit_tmp] =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec, Xb, Gb_full,...
-    eye(length(theta0)),eye(length(theta0)),Q, 5, windType); % initial: use window 5?
+    eye(length(theta0)),eye(length(theta0)),Q, 10, windType); % initial: use window 10?
 
 theta01 = theta_fit_tmp(:, 1);
 W01 = W_fit_tmp(:, :, 1);
@@ -155,6 +158,7 @@ DiffMinChange = QLB;
 DiffMaxChange = QUB*0.1;
 MaxFunEvals = 500;
 MaxIter = 500;
+% nSub = round(size(trial_y, 1)/3);
 
 f = @(Q) helper_window_v2(Q, theta01, trial_y(1:min(6000, size(trial_y, 1)),neuron)',Xb,Gb_full,...
     W01,eye(length(theta0)),1, windType);
@@ -167,10 +171,46 @@ Q_lam = [Qopt1(1) Qopt1(2)*ones(1, size(Xb, 2)-1)];
 Q_nu = [Qopt1(3) Qopt1(4)*ones(1, size(Gb_full, 2) - 1)];
 Qoptmatrix1 = diag([Q_lam Q_nu]);
 
+% window selection
+windSize0 = 5;
+searchStep = 5;
+windUB = 150;
+windSet = [1 windSize0:searchStep:windUB];
+nSearchMax = length(windSet);
+
+fWind = @(windSize) helper_window_v2_windSize(windSize, Qoptmatrix1,...
+    theta01, trial_y(1:min(6000, size(trial_y, 1)),neuron)',Xb,Gb_full, W01,...
+    eye(length(theta0)), windType, searchStep);
+
+llhd_filt = [];
+nDec = 0;
+llhd_pre = -Inf;
+
+for k = 1:nSearchMax
+    
+    llhd_tmp = -fWind(windSet(k));
+    llhd_filt = [llhd_filt llhd_tmp];
+    if(llhd_tmp < llhd_pre)
+        nDec = nDec + 1;
+    else
+        nDec = 0;
+    end
+    llhd_pre = llhd_tmp;    
+    
+    if nDec > 2
+        break
+    end  
+end
+
+plot(windSet(1:k), llhd_filt)
+[~, winIdx] = max(llhd_filt);
+optWinSize1 = windSet(winIdx);
+
+
 [theta_fit1,W_fit1,~,~,~,~,~,~,...
     lam1,nu1,logZ1] =...
     ppasmoo_compoisson_v2_window_fisher(theta01, spk_vec, Xb, Gb_full,...
-    W01,eye(length(theta01)),Qoptmatrix1, 10, windType);
+    W01,eye(length(theta01)),Qoptmatrix1, optWinSize1, windType);
     
 subplot(1,2,1)
 plot(theta_fit1(1:(nknots+1), :)')
@@ -197,7 +237,6 @@ CMP_ff1 = CMP_var1./CMP_mean1;
 
 %% fit 2: adaptive CMP, nBasis for nu = 1
 
-nknots=20;
 Gnknots=1;
 
 Xb = getCubicBSplineBasis(trial_x,nknots,true);
@@ -220,7 +259,7 @@ Q = diag([repmat(1e-3,nknots+1,1); repmat(1e-3,Gnknots,1)]); % single G
 
 [theta_fit_tmp,W_fit_tmp] =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec, Xb, Gb,...
-    eye(length(theta0)),eye(length(theta0)),Q, 5, windType); % initial: use window 5?
+    eye(length(theta0)),eye(length(theta0)),Q, 10, windType); % initial: use window 10?
 
 theta02 = theta_fit_tmp(:, 1);
 W02 = W_fit_tmp(:, :, 1);
@@ -244,10 +283,47 @@ Q_lam = [Qopt2(1) Qopt2(2)*ones(1, size(Xb, 2)-1)];
 Q_nu = Qopt2(3);
 Qoptmatrix2 = diag([Q_lam Q_nu]);
 
+
+% window selection
+windSize0 = 5;
+searchStep = 5;
+windUB = 150;
+windSet = [1 windSize0:searchStep:windUB];
+nSearchMax = length(windSet);
+
+fWind = @(windSize) helper_window_v2_windSize(windSize, Qoptmatrix2,...
+    theta02, trial_y(1:min(6000, size(trial_y, 1)),neuron)',Xb,Gb, W02,...
+    eye(length(theta02)), windType, searchStep);
+
+llhd_filt = [];
+nDec = 0;
+llhd_pre = -Inf;
+
+for k = 1:nSearchMax
+    
+    llhd_tmp = -fWind(windSet(k));
+    llhd_filt = [llhd_filt llhd_tmp];
+    if(llhd_tmp < llhd_pre)
+        nDec = nDec + 1;
+    else
+        nDec = 0;
+    end
+    llhd_pre = llhd_tmp;    
+    
+    if nDec > 2
+        break
+    end  
+end
+
+plot(windSet(1:k), llhd_filt)
+[~, winIdx] = max(llhd_filt);
+optWinSize2 = windSet(winIdx);
+
+
 [theta_fit2,W_fit2,~,~,~,~,~,~,...
     lam2,nu2,logZ2] =...
     ppasmoo_compoisson_v2_window_fisher(theta02, spk_vec, Xb, Gb,...
-    W02,eye(length(theta02)),Qoptmatrix2, 10, windType);
+    W02,eye(length(theta02)),Qoptmatrix2, optWinSize2, windType);
     
 subplot(1,2,1)
 plot(theta_fit2(1:(nknots+1), :)')
@@ -273,7 +349,7 @@ end
 CMP_ff2 = CMP_var2./CMP_mean2;
 
 %% fit 3: adaptive CMP: constant nu
-nknots=20;
+
 Gnknots=1;
 
 Xb = getCubicBSplineBasis(trial_x,nknots,true);
@@ -319,10 +395,46 @@ Qopt3 = fmincon(f,Q0,[],[],[],[],...
 Q_lam = [Qopt3(1) Qopt3(2)*ones(1, size(Xb, 2)-1)];
 Qoptmatrix3 = diag([Q_lam 0]);
 
+
+% window selection
+windSize0 = 5;
+searchStep = 5;
+windUB = 150;
+windSet = [1 windSize0:searchStep:windUB];
+nSearchMax = length(windSet);
+
+fWind = @(windSize) helper_window_v2_windSize(windSize, Qoptmatrix3,...
+    theta03, trial_y(1:min(6000, size(trial_y, 1)),neuron)',Xb,Gb, W03,...
+    eye(length(theta03)), windType, searchStep);
+
+llhd_filt = [];
+nDec = 0;
+llhd_pre = -Inf;
+
+for k = 1:nSearchMax
+    
+    llhd_tmp = -fWind(windSet(k));
+    llhd_filt = [llhd_filt llhd_tmp];
+    if(llhd_tmp < llhd_pre)
+        nDec = nDec + 1;
+    else
+        nDec = 0;
+    end
+    llhd_pre = llhd_tmp;    
+    
+    if nDec > 2
+        break
+    end  
+end
+
+plot(windSet(1:k), llhd_filt)
+[~, winIdx] = max(llhd_filt);
+optWinSize3 = windSet(winIdx);
+
 [theta_fit3,W_fit3,~,~,~,~,~,~,...
     lam3,nu3,logZ3] =...
     ppasmoo_compoisson_v2_window_fisher(theta03, spk_vec, Xb, Gb,...
-    W03,eye(length(theta03)),Qoptmatrix3, 10, windType);
+    W03,eye(length(theta03)),Qoptmatrix3, optWinSize3, windType);
     
 subplot(1,2,1)
 plot(theta_fit3(1:(nknots+1), :)')
@@ -422,12 +534,20 @@ llhd5 = sum(spk_vec'.*log((lam5+(lam5==0))) -...
         nu5.*gammaln(spk_vec' + 1) - logZ5);
 llhd6 = sum(-lam6' + log((lam6'+(lam6'==0))).*spk_vec - gammaln(spk_vec + 1));
 
+% mse1 = mean((spk_vec - CMP_mean1).^2);
+% mse2 = mean((spk_vec - CMP_mean2).^2);
+% mse3 = mean((spk_vec - CMP_mean3).^2);
+% mse4 = mean((spk_vec - lam4').^2);
+% mse5 = mean((spk_vec - CMP_mean5').^2);
+% mse6 = mean((spk_vec - lam6').^2);
+
 subplot(2, 3, 1)
 hold on
 plot(spk_vec, 'Color', [1, 0.5, 0, 0.2])
 plot(CMP_mean1, 'b', 'LineWidth', 1)
-title('adaptive CMP: nBasis-G = 3')
+title("adaptive CMP: nBasis-G = " + Gnknots_full)
 hold off
+
 
 subplot(2, 3, 2)
 hold on
@@ -470,7 +590,7 @@ nHo = nAll - nObs;
 trial_x_ho = trial_x_full(hoIdx);
 spk_vec_ho = trial_y_full(hoIdx,neuron)';
 
-nMin = 3;
+nMin =3;
 Xb_ho = getCubicBSplineBasis(trial_x_ho,nknots,true);
 Gb_ho_full = getCubicBSplineBasis(trial_x_ho,Gnknots_full,true);
 Gb_ho = getCubicBSplineBasis(trial_x_ho,Gnknots,true);
@@ -577,14 +697,26 @@ llhd5_ho = sum(spk_vec_ho'.*log((lam5_ho+(lam5_ho==0))) -...
 llhd6_ho = sum(-lam6_ho' + log((lam6_ho'+(lam6_ho'==0))).*spk_vec_ho - gammaln(spk_vec_ho + 1));
 
 
+% mse1_ho = mean((spk_vec_ho - CMP_mean1_ho').^2);
+% mse2_ho = mean((spk_vec_ho - CMP_mean2_ho').^2);
+% mse3_ho = mean((spk_vec_ho - CMP_mean3_ho').^2);
+% mse4_ho = mean((spk_vec_ho - lam4_ho').^2);
+% mse5_ho = mean((spk_vec_ho - CMP_mean5_ho').^2);
+% mse6_ho = mean((spk_vec_ho - lam6_ho').^2);
+
+
 [llhd1 llhd2 llhd3 llhd4 llhd5 llhd6;...
 llhd1_ho llhd2_ho llhd3_ho llhd4_ho llhd5_ho llhd6_ho]/120
+
+% [mse1 mse2 mse3 mse4 mse5 mse6;...
+%     mse1_ho mse2_ho mse3_ho mse4_ho mse5_ho mse6_ho]
+
 
 subplot(2, 3, 1)
 hold on
 plot(spk_vec_ho, 'Color', [1, 0.5, 0, 0.2])
 plot(CMP_mean1_ho, 'b', 'LineWidth', 1)
-title('adaptive CMP: nBasis-G = 3')
+title("adaptive CMP: nBasis-G = " + Gnknots_full)
 hold off
 
 subplot(2, 3, 2)
@@ -623,7 +755,7 @@ plot(lam6_ho, 'b', 'LineWidth', 1)
 title('static Poisson')
 hold off
 
-save('C:\Users\gaw19004\Desktop\COM_POI_data\v1_20_5_bin.mat')
+save('C:\Users\gaw19004\Desktop\COM_POI_data\v1_n11_5_5_bin.mat')
 
 %%
 param = figure;
@@ -740,7 +872,62 @@ xlabel('Trial')
 ylabel('Fano Factor')
 
 
+%%
 
+param = figure;
+subplot(1,2,1)
+plot(theta_fit3(1:(nknots+1), :)')
+title('beta')
+subplot(1,2,2)
+plot(theta_fit3((nknots+2):end, :)')
+title('gamma')
+
+
+x0 = linspace(0,2*pi,nplot);
+nMin = 1;
+
+basX = getCubicBSplineBasis(x0,nknots,true);
+basG = getCubicBSplineBasis(x0,Gnknots,true);
+
+CMP_mean_line = zeros(length(x0), size(data.EVENTS, 2));
+CMP_var_line = zeros(length(x0), size(data.EVENTS, 2));
+
+for i = 1:size(data.EVENTS, 2)
+    idx_tmp = ((i-1)*nObs+1):(i*nObs);
+    theta_ss = trial_x(idx_tmp);
+    for j = 1:length(x0)
+        
+        [~, sortIdx] = sort(abs(x0(j) - theta_ss));
+        id = sortIdx(1:nMin);
+        
+        lam = exp(basX(j,:)*mean(theta_fit3(1:(nknots+1), idx_tmp(id)), 2));
+        nu = exp(basG(j,:)*mean(theta_fit3((nknots+2):end, idx_tmp(id)), 2));
+        
+        logcum_app  = logsum_calc(lam, nu, 1000);
+        log_Z = logcum_app(1);
+        log_A = logcum_app(2);
+        log_B = logcum_app(3);
+        
+        CMP_mean_line(j, i) = exp(log_A - log_Z);
+        CMP_var_line(j, i) = exp(log_B - log_Z) - CMP_mean_line(j, i)^2;
+        
+    end
+end
+
+CMP_ff_line = CMP_var_line./CMP_mean_line;
+
+subplot(2,2,1)
+plot(CMP_mean_line')
+subplot(2,2,2)
+plot(CMP_ff_line')
+subplot(2,2,3)
+plot([1:(120-smoothing)]+smoothing/2,mmm')
+xlabel('Trial')
+ylabel('Mean')
+subplot(2,2,4)
+plot([1:(120-smoothing)]+smoothing/2,mff')
+xlabel('Trial')
+ylabel('Fano Factor')
 
 
 
