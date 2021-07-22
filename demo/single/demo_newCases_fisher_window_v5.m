@@ -1,7 +1,9 @@
 addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
+addpath(genpath('D:\github\COM_POISSON'));
+
 %%
 
-rng(1) %rng(5)
+rng(1)
 T = 10;
 dt = 0.005; % bin length (s)
 n = 1; % number of independent observations
@@ -73,3 +75,38 @@ save('C:\Users\gaw19004\Desktop\COM_POI_data\case2.mat')
 figure(2)
 plotAll_filtSmoo(spk_vec, X_lam, G_nu, theta_true, theta_fit1, theta_fit2)
 
+%% calculate the varCE
+[var_rate_exact1, var_rate_app1] = varCE(X_lam, G_nu, theta_fit1, W_fit1);
+[var_rate_exact2, var_rate_app2] = varCE(X_lam, G_nu, theta_fit2, W_fit2);
+
+subplot(2, 2, 1)
+hold on
+plot(theo_var./theo_mean, 'k');
+plot(est_var1./est_mean1, 'r')
+ylabel('Fano Factor')
+title('filtering')
+hold off
+
+subplot(2, 2, 2)
+hold on
+plot(theo_var./theo_mean, 'k');
+plot(est_var2./est_mean2, 'r')
+title('smoothing')
+hold off
+
+subplot(2, 2, 3)
+hold on
+plot(var_rate_exact1)
+plot(var_rate_app1)
+ylabel('varCE')
+% ylim([0 0.15])
+legend('exact', 'app')
+hold off
+
+subplot(2, 2, 4)
+hold on
+plot(var_rate_exact2)
+plot(var_rate_app2)
+% ylim([0 0.15])
+legend('exact', 'app')
+hold off
