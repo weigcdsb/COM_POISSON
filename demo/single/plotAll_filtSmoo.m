@@ -1,4 +1,4 @@
-function plotAll_filtSmoo(spk_vec, X_lam, G_nu, theta_true, theta_fit1, theta_fit2)
+function plotAll_filtSmoo(X_lam, G_nu, theta_true, theta_fit1, theta_fit2, W_fit1, W_fit2)
 
 lam_true = exp(X_lam.*theta_true(:, 1));
 nu_true = exp(G_nu.*theta_true(:, 2));
@@ -6,17 +6,21 @@ nu_true = exp(G_nu.*theta_true(:, 2));
 [theo_mean,theo_var]=getMeanVar(lam_true,nu_true);
 [est_mean1,est_var1]=getMeanVar(exp(theta_fit1(1,:)),exp(theta_fit1(2,:)));
 [est_mean2,est_var2]=getMeanVar(exp(theta_fit2(1,:)),exp(theta_fit2(2,:)));
+[var_rate_exact1, ~] = varCE(X_lam, G_nu, theta_fit1, W_fit1);
+[var_rate_exact2, ~] = varCE(X_lam, G_nu, theta_fit2, W_fit2);
 
 
 tiledlayout(2,3, 'TileSpacing', 'compact')
 nexttile
-plot(mean(spk_vec, 1));
+theo_ff = theo_var./theo_mean;
+plot(theo_ff, 'k');
 hold on
-plot(theo_mean, 'r', 'LineWidth', 2)
+plot(est_var1./est_mean1, 'r')
+plot(est_var2./est_mean2, 'b')
 hold off
-box off; set(gca,'TickDir','out')
-ylabel('Observations')
-ylim([round(min(spk_vec)) - 5 round(max(spk_vec)) + 5 ])
+ylim([0 4])
+ylabel('Fano Factor')
+ylim([0 round(max(theo_ff)) + 1.5 ])
 
 
 nexttile
@@ -40,15 +44,12 @@ ylim([round(min(theta_true(:,1))) - 5 round(max(theta_true(:,1))) + 5 ])
 
 
 nexttile
-theo_ff = theo_var./theo_mean;
-plot(theo_ff, 'k');
 hold on
-plot(est_var1./est_mean1, 'r')
-plot(est_var2./est_mean2, 'b')
+plot(var_rate_exact1, 'r')
+plot(var_rate_exact2, 'b')
+ylabel('varCE')
+ylim([0 max([var_rate_exact1(100:(end - 100)); var_rate_exact2(100:(end - 100))]) + .5])
 hold off
-ylim([0 4])
-ylabel('Fano Factor')
-ylim([round(min(theo_ff)) - 5 round(max(theo_ff)) + 5 ])
 
 
 nexttile

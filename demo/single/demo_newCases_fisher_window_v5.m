@@ -72,8 +72,19 @@ W0 = W_fit_tmp(:, :, 1);
 
 save('C:\Users\gaw19004\Desktop\COM_POI_data\case2.mat')
 
+load('C:\Users\gaw19004\Desktop\COM_POI_data\case3.mat')
+
+figure(1)
+plot(mean(spk_vec, 1));
+hold on
+plot(theo_mean, 'r', 'LineWidth', 2)
+hold off
+box off; set(gca,'TickDir','out')
+ylabel('Observations')
+ylim([round(min(spk_vec)) - 5 round(max(spk_vec)) + 5 ])
+
 figure(2)
-plotAll_filtSmoo(spk_vec, X_lam, G_nu, theta_true, theta_fit1, theta_fit2)
+plotAll_filtSmoo(X_lam, G_nu, theta_true, theta_fit1, theta_fit2, W_fit1, W_fit2)
 
 %% calculate the varCE
 [var_rate_exact1, var_rate_app1] = varCE(X_lam, G_nu, theta_fit1, W_fit1);
@@ -99,7 +110,7 @@ hold on
 plot(var_rate_exact1)
 plot(var_rate_app1)
 ylabel('varCE')
-% ylim([0 0.15])
+ylim([0 max(var_rate_exact1(100:(end - 100)))])
 legend('exact', 'app')
 hold off
 
@@ -107,6 +118,61 @@ subplot(2, 2, 4)
 hold on
 plot(var_rate_exact2)
 plot(var_rate_app2)
-% ylim([0 0.15])
+ylim([0 max(var_rate_exact2(100:(end - 100)))])
 legend('exact', 'app')
 hold off
+
+%% supplement: 
+% (1) no Fisher + no window
+% (2) no Fisher + window
+% (3) Fisher + no window
+% (4) Fihser + window (fitted)
+
+
+% (1) no Fisher + no window
+[theta_fitA1,W_fitA1] =...
+    ppafilt_compoisson_v2_window(theta0, spk_vec,X_lam,G_nu,...
+    W0,F,Qoptmatrix, 1, windType);
+[est_meanA1,est_varA1]=getMeanVar(exp(theta_fitA1(1,:)),exp(theta_fitA1(2,:)));
+
+[theta_fitA2,W_fitA2] =...
+    ppasmoo_compoisson_v2_window(theta0, spk_vec,X_lam,G_nu,...
+    W0,F,Qoptmatrix, 1, windType);
+[est_meanA2,est_varA2]=getMeanVar(exp(theta_fitA2(1,:)),exp(theta_fitA2(2,:)));
+
+figure(11)
+plotAll_filtSmoo_v2(theta_true, theta_fitA1, theta_fitA2)
+
+
+% (2) no Fisher + window
+[theta_fitB1,W_fitB1] =...
+    ppafilt_compoisson_v2_window(theta0, spk_vec,X_lam,G_nu,...
+    W0,F,Qoptmatrix, optWinSize, windType);
+[est_meanB1,est_varB1]=getMeanVar(exp(theta_fitB1(1,:)),exp(theta_fitB1(2,:)));
+
+[theta_fitB2,W_fitB2] =...
+    ppasmoo_compoisson_v2_window(theta0, spk_vec,X_lam,G_nu,...
+    W0,F,Qoptmatrix, optWinSize, windType);
+[est_meanB2,est_varB2]=getMeanVar(exp(theta_fitB2(1,:)),exp(theta_fitB2(2,:)));
+
+figure(12)
+plotAll_filtSmoo_v2(theta_true, theta_fitB1, theta_fitB2)
+
+% (3) Fisher + no window
+[theta_fitC1,W_fitC1] =...
+    ppafilt_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
+    W0,F,Qoptmatrix, 1, windType);
+[est_meanC1,est_varC1]=getMeanVar(exp(theta_fitC1(1,:)),exp(theta_fitC1(2,:)));
+
+[theta_fitC2,W_fitC2] =...
+    ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
+    W0,F,Qoptmatrix, 1, windType);
+[est_meanC2,est_varC2]=getMeanVar(exp(theta_fitC2(1,:)),exp(theta_fitC2(2,:)));
+
+figure(13)
+plotAll_filtSmoo_v2(theta_true, theta_fitC1, theta_fitC2)
+
+% (4) Fisher + window
+figure(14)
+plotAll_filtSmoo_v2(theta_true, theta_fit1, theta_fit2)
+

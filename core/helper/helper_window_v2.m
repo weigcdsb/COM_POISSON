@@ -19,8 +19,11 @@ end
 
 Qmatrix = diag([Q_lam Q_nu]);
 
+% [~,~, lam, nu, log_Zvec] =...
+%     ppafilt_compoisson_v2_window_fisher(theta0, N, X_lam, G_nu, W0, F, Qmatrix, windSize, windType);
+
 [~,~, lam, nu, log_Zvec] =...
-    ppafilt_compoisson_v2_window_fisher(theta0, N, X_lam, G_nu, W0, F, Qmatrix, windSize, windType);
+    ppafilt_compoisson_v2_window(theta0, N, X_lam, G_nu, W0, F, Qmatrix, windSize, windType);
 
 if(length(log_Zvec) == size(N, 2))
     llhd_pred = sum(N.*log((lam+(lam==0))) -...
