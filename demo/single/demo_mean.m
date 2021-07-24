@@ -131,7 +131,7 @@ plot(theta_fit2(1, :) + sqrt(squeeze(W_fit2(1, 1, :)))', 'c:', 'LineWidth', .5)
 plot(theta_fit2(1, :) - sqrt(squeeze(W_fit2(1, 1, :)))', 'c:', 'LineWidth', .5)
 legend([l1 l2 l3], 'true', 'filtering', 'smoothing', 'Location','northwest');
 ylim([min(theta_true(:, 1))-1 max(theta_true(:, 1))+1])
-title('\theta for \lambda')
+title('beta')
 xlabel('step')
 hold off
 
@@ -146,7 +146,7 @@ plot(theta_fit2(2, :) + sqrt(squeeze(W_fit2(2, 2, :)))', 'c:', 'LineWidth', .5)
 plot(theta_fit2(2, :) - sqrt(squeeze(W_fit2(2, 2, :)))', 'c:', 'LineWidth', .5)
 legend([l1 l2 l3], 'true', 'filtering', 'smoothing', 'Location','northwest');
 ylim([min(theta_true(:, 2))-1 max(theta_true(:, 2))+1])
-title('\theta for \nu')
+title('gamma')
 xlabel('step')
 hold off
 
@@ -196,6 +196,30 @@ legend([l1 l2 l3], 'true', 'filtering', 'smoothing', 'Location','northeast');
 ylim([0 2*max(theo_var)])
 title('var')
 xlabel('step')
+
+
+ff = figure;
+hold on
+plot(theo_var./theo_mean, 'k', 'LineWidth', 2);
+plot(fit1_var./fit1_mean, 'b', 'LineWidth', 1);
+plot(fit2_var./fit2_mean, 'c', 'LineWidth', 1);
+hold off
+legend('true', 'filtering', 'smoothing', 'Location','northeast');
+ylim([0 2*max(theo_var./theo_mean)])
+title('ff')
+xlabel('step')
+
+varCEPlot = figure;
+[var_rate_exact1, ~] = varCE(X_lam, G_nu, theta_fit1, W_fit1);
+[var_rate_exact2, ~] = varCE(X_lam, G_nu, theta_fit2, W_fit2);
+hold on
+plot(var_rate_exact1, 'b', 'LineWidth', 1);
+plot(var_rate_exact2, 'c', 'LineWidth', 1);
+hold off
+legend('filtering', 'smoothing', 'Location','northeast');
+title('varCE')
+xlabel('step')
+
 
 % saveas(mean_var, 'mean_var_mean.png')
 
