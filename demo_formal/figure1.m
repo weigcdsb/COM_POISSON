@@ -1,4 +1,5 @@
 addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
+% addpath(genpath('D:\github\COM_POISSON'));
 
 %% true underlying mean & FF
 nknots = 10;
