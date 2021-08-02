@@ -63,6 +63,7 @@ end
 
 %% plot
 
+figure(1)
 subplot(1,3,1)
 imagesc(dt:dt:T, x0,spk)
 title('obs. spike counts')
@@ -78,4 +79,26 @@ title('Fano Factor')
 xlabel('T')
 colorbar()
 
+%% could add something like this to help make the heatmaps more clear...
 
+t1=50;t2=150;
+
+figure(2)
+subplot(1,2,1)
+plot(CMP_mean(:,t1))
+hold on
+plot(spk(:,t1),'b.')
+plot(CMP_mean(:,t2))
+plot(spk(:,t2),'r.')
+hold off
+xlabel('Direction')
+ylabel('Mean')
+
+subplot(1,2,2)
+plot(CMP_var(:,t1)./CMP_mean(:,t1))
+hold on
+plot(CMP_var(:,t2)./CMP_mean(:,t2))
+hold off
+legend({'Time 1','Time 2'})
+xlabel('Direction')
+ylabel('Fano Factor')
