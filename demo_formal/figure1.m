@@ -85,10 +85,10 @@ t1=50;t2=150;
 
 figure(2)
 subplot(1,2,1)
-plot(CMP_mean(:,t1))
+plot(CMP_mean(:,t1),'b')
 hold on
 plot(spk(:,t1),'b.')
-plot(CMP_mean(:,t2))
+plot(CMP_mean(:,t2),'r')
 plot(spk(:,t2),'r.')
 hold off
 xlabel('Direction')
