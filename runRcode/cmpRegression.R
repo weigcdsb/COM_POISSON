@@ -5,7 +5,7 @@ library(COMPoissonReg)
 
 # wd <- dirname(rstudioapi::getSourceEditorContext()$path)
 # wd <- "D:/GitHub/COM_POISSON/runRcode"
-wd <- "C:/Users/gaw19004/Documents/GitHub/COM_POISSON/runRcode"
+wd <- "~/GitHub/COM_POISSON/runRcode"
 
 
 y <- read.csv(paste0(wd, '/y.csv'), header = F)

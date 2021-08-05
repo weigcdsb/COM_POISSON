@@ -30,6 +30,6 @@ end
 % axis tight
 % imagesc(b)
 
-if nknots>1
+if nknots>1 & ~isCirc
     b = [b(:,1)*0+1 b];
 end
