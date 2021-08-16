@@ -10,6 +10,8 @@ maxSum = 10*max(spk_vec(:));
 
 hessup = repmat((Q_tmp\F)', 1, 1, T-1);
 hessub = repmat(Q_tmp\F, 1, 1, T-1);
+
+% TODO: use approximation...
 hessmed = repmat(zeros(size(Theta, 1)),1,1,T);
 for t= 1:T
     lam = exp(X_lam(t,:)*beta(:,t)) ;

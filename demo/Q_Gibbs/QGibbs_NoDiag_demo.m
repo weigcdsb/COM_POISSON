@@ -1,12 +1,12 @@
-% addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
-addpath(genpath('D:\github\COM_POISSON'));
+addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
+% addpath(genpath('D:\github\COM_POISSON'));
 
 %%
 rng(123)
-T = 100;
-dt = 0.01; % bin length (s)
+T = 500;
+dt = 0.1; % bin length (s)
 N = 1; % number of independent observations
-Q_true = diag([1e-4 1e-5]);
+Q_true = diag([1e-3 1e-5]);
 
 
 % X_lam = ones(T/dt, 1);
@@ -27,7 +27,7 @@ spk_vec = com_rnd(lam_true, nu_true);
 theta_true = [beta_true gamma_true];
 
 %% MCMC setting
-ng = 1000;
+ng = 5000;
 windType = 'forward';
 F = diag([1 1]);
 windSize = 1;
@@ -61,7 +61,7 @@ nu0 = p+2;
 
 %% Let's do Gibbs Sampling
 for g = 2:ng
-    
+    disp(g)
     % (1) update state vectors
     % Adaptive smoothing
     theta0_tmp = theta0_fit(:,g-1);
@@ -92,12 +92,37 @@ for g = 2:ng
     nuQ = nStep-1 + nu0;
     Q_fit(:,:,g) = iwishrnd(PsiQ,nuQ);
     
-    % Q_fit(:,:,g)
+%     figure(1)
+%     subplot(1,2,1)
+%     plot(reshape(Q_fit(1,1,1:g), 1, []))
+%     subplot(1,2,2)
+%     plot(reshape(Q_fit(2,2,1:g), 1, []))
+    
 end
 
 %% diagnose
 idx = 200:ng;
 mean(Q_fit(:,:,idx), 3)
+
+% ans =
+% 
+%    1.0e-03 *
+% 
+%     0.5977    0.0027
+%     0.0027    0.0556
+
+figure(1)
+subplot(1,2,1)
+hold on
+plot(reshape(Q_fit(1,1,1:g), 1, []))
+yline(Q_true(1,1), 'r--', 'LineWidth', 2);
+hold off
+subplot(1,2,2)
+hold on
+plot(reshape(Q_fit(2,2,1:g), 1, []))
+yline(Q_true(2,2), 'r--', 'LineWidth', 2);
+hold off
+
 
 
 
