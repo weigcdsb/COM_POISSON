@@ -5,6 +5,7 @@ addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
 
 T = 200;
 t = linspace(0,1,T);
+x0 = linspace(0,2*pi,100);
 
 Xplot = repmat(x0',1,T);
 Tplot = repmat(t,length(x0),1);
@@ -40,7 +41,7 @@ xlabel('T')
 colorbar()
 
 %% sample from the model...
-
+x0_deg = x0*180/pi;
 ndir = 12;
 xsamp0 = linspace(0,2*pi-2*pi/ndir,ndir);
 xsamp=[];
@@ -89,15 +90,13 @@ nknots = 3;
 % basX = getCubicBSplineBasis(x0,nknots,false);
 
 % for periodic boundary condition
-x0 = linspace(0,2*pi,100);
 basX = getCubicBSplineBasis(x0,nknots,true);
-x0_deg = x0*180/pi;
 
 bassamp = getCubicBSplineBasis(xsamp,nknots,true);
 
 %% adaptive filtering
 
-% base_dir = 'C:\Users\gaw19004';
+% usr_dir = 'C:\Users\gaw19004';
 % r_path = 'C:\Users\gaw19004\Documents\R\R-4.0.2\bin';
 
 usr_dir = 'C:\Users\ian';
