@@ -29,7 +29,7 @@ package 'Rcpp' was built under R version 4.0.5
 > 
 > # wd <- dirname(rstudioapi::getSourceEditorContext()$path)
 > # wd <- "D:/GitHub/COM_POISSON/runRcode"
-> wd <- "C:/Users/gaw19004/Documents/GitHub/COM_POISSON/runRcode"
+> wd <- "~/GitHub/COM_POISSON/runRcode"
 > 
 > 
 > y <- read.csv(paste0(wd, '/y.csv'), header = F)
@@ -84,4 +84,4 @@ package 'Rcpp' was built under R version 4.0.5
 > 
 > proc.time()
    user  system elapsed 
-   2.07    0.07    2.14 
+   1.65    0.03    1.67 
