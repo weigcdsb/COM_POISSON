@@ -64,7 +64,7 @@ theta0_fit(:,1) = theta_fit_tmp(:, 1);
 
 
 %% Let's do Gibbs Sampling
-for g = 2:10
+for g = 2:ng
     disp(g)
     % (1) update state vectors
     % Adaptive smoothing
@@ -113,8 +113,8 @@ mean(Q_fit(:,:,idx), 3)
 % 
 %    1.0e-03 *
 % 
-%     0.5977    0.0027
-%     0.0027    0.0556
+%     0.8858    0.1452
+%     0.1452    0.0598
 
 figure(1)
 subplot(1,2,1)
