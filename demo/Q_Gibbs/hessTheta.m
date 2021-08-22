@@ -16,25 +16,16 @@ hessmed = repmat(zeros(size(Theta, 1)),1,1,T);
 for t= 1:T
     lam = exp(X_lam(t,:)*beta(:,t)) ;
     nu = exp(G_nu(t,:)*gam(:,t));
-    logcum_app = logsum_calc(lam, nu, maxSum);
-    
-    log_Z = logcum_app(1);
-    log_A = logcum_app(2);
-    log_B = logcum_app(3);
-    log_C = logcum_app(4);
-    log_D = logcum_app(5);
-    log_E = logcum_app(6);
-    
-    mean_Y = exp(log_A - log_Z);
-    var_Y = exp(log_B - log_Z) - mean_Y^2;
-    mean_logYfac = exp(log_C - log_Z);
-    var_logYfac = exp(log_D - log_Z) - mean_logYfac^2;
-    cov_Y_logYfac =  exp(log_E-log_Z)-exp(log_A+log_C-2*log_Z);
+    [~, var_Y, mean_logYfac, var_logYfac, cov_Y_logYfac, ~] = ...
+        CMPmoment(lam, nu, maxSum);
     
     hess1 = -var_Y*X_lam(t,:)'*X_lam(t,:);
     hess2 = nu*cov_Y_logYfac*X_lam(t,:)'*G_nu(t, :);
     hess3 = hess2';
-    hess4 = -nu*(nu*var_logYfac)*G_nu(t, :)'*G_nu(t, :);
+    % hess4 = -nu*(nu*var_logYfac)*G_nu(t, :)'*G_nu(t, :);
+    hess4 = -nu*(nu*var_logYfac - mean_logYfac +...
+        gammaln(spk_vec(t) + 1))*G_nu(t, :)'*G_nu(t, :);
+    
     hess = [hess1, hess2; hess3, hess4];
     
     if(t == 1)

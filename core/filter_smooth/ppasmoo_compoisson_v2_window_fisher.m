@@ -70,21 +70,11 @@ for i=2:n_spk
     idx = 1;
     
     for k = obsIdx
-        logcum_app = logsum_calc(lam_ext(idx), nu_ext(idx), maxSum);
-        log_Z = logcum_app(1);
-        log_A = logcum_app(2);
-        log_B = logcum_app(3);
-        log_C = logcum_app(4);
-        log_D = logcum_app(5);
-        log_E = logcum_app(6);
+        [mean_Y, var_Y, mean_logYfac, var_logYfac, cov_Y_logYfac, log_Z] = ...
+            CMPmoment(lam_ext(idx), nu_ext(idx), maxSum);
         
         if(idx == 1); log_Zvec_pred(i) = log_Z; end
         
-        mean_Y = exp(log_A - log_Z);
-        var_Y = exp(log_B - log_Z) - mean_Y^2;
-        mean_logYfac = exp(log_C - log_Z);
-        var_logYfac = exp(log_D - log_Z) - mean_logYfac^2;
-        cov_Y_logYfac =  exp(log_E-log_Z)-exp(log_A+log_C-2*log_Z);
         
         info1 = nCell*var_Y*X_lam(k,:)'*X_lam(k,:);
         info2 = -nCell*nu_ext(idx)*cov_Y_logYfac*X_lam(k,:)'*G_nu(k, :);
