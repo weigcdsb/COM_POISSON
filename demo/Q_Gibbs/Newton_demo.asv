@@ -50,7 +50,7 @@ W0_tmp = diag([1 1]);
 F = diag([1 1]);
 [theta_fit_tmp,W_fit_tmp] =...
     ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
-    W0_tmp,F,Q, 1, windType);
+    W0_tmp,F,Q, 10, windType);
 
 theta0 = theta_fit_tmp(:, 1);
 W0 = W_fit_tmp(:, :, 1);
@@ -61,7 +61,7 @@ theta_filt =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
     W0,F,Q, 1, windType);
 toc;
-% Elapsed time is 0.675340 seconds.
+% Elapsed time is 0.546593 seconds.
 
 % filtering: window = 20
 tic;
@@ -69,7 +69,7 @@ theta_filt2 =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
     W0,F,Q, 20, windType);
 toc;
-% Elapsed time is 1.338085 seconds.
+% Elapsed time is 1.298829 seconds.
 
 % filtering: window = 100
 tic;
@@ -77,7 +77,7 @@ theta_filt3 =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
     W0,F,Q, 100, windType);
 toc;
-% Elapsed time is 3.790261 seconds.
+% Elapsed time is 3.693056 seconds.
 
 
 % Newton-Raphson: Fisher hessian
