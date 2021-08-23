@@ -27,6 +27,7 @@ spk_vec = com_rnd(lam_true, nu_true);
 theta_true = [beta_true gamma_true];
 
 %% MCMC setting
+rng(3)
 ng = 1000;
 windType = 'forward';
 F = diag([1 1]);
@@ -61,11 +62,10 @@ Q_fit(:,:,1) = diag([1e-4 1e-4]);
 gradHess_tmp = @(vecTheta) gradHessTheta(vecTheta, X_lam,G_nu, theta0_tmp, W0,...
     F, Q_fit(:,:,1), spk_vec);
 theta_fit_tmp_vec = newtonGH(gradHess_tmp, repmat(theta0_tmp,nStep,1),1e-6,1000);
+theta_fit_tmp = reshape(theta_fit_tmp_vec, [], nStep);
 
 theta_fit(:,:,1) = theta_fit_tmp;
 theta0_fit(:,1) = theta_fit_tmp(:, 1);
-
-
 
 %% Let's do Gibbs Sampling
 for g = 2:ng
@@ -76,8 +76,8 @@ for g = 2:ng
     Q_tmp = Q_fit(:,:,g-1);
     
     % [theta_tmp,W_tmp] =...
-    ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
-        W0,F,Q_tmp, windSize, windType);
+%     ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
+%         W0,F,Q_tmp, windSize, windType);
     % hess_tmp = hessTheta(theta_tmp(:), X_lam,G_nu, W0,...
     % F, Q_tmp, spk_vec);
     

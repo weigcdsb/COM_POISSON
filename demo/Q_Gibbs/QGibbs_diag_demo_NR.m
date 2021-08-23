@@ -27,6 +27,7 @@ spk_vec = com_rnd(lam_true, nu_true);
 theta_true = [beta_true gamma_true];
 
 %% MCMC setting
+rng(3)
 ng = 1000;
 windType = 'forward';
 F = diag([1 1]);
@@ -39,7 +40,7 @@ nStep = size(theta_true, 1);
 W0 = eye(p)*1e-1;
 
 mu00 = zeros(p,1);
-Sig00 = eye(p)*1e2;
+Sig00 = eye(p)*25;
 
 nu0 = 4;
 sig20 = 1e-4;
@@ -62,8 +63,9 @@ Q_fit(:,:,1) = diag([1e-4 1e-4]);
 gradHess_tmp = @(vecTheta) gradHessTheta(vecTheta, X_lam,G_nu, theta0_tmp, W0,...
     F, Q_fit(:,:,1), spk_vec);
 theta_fit_tmp_vec = newtonGH(gradHess_tmp, repmat(theta0_tmp,nStep,1),1e-6,1000);
+theta_fit_tmp = reshape(theta_fit_tmp_vec, [], nStep);
 
-theta_fit(:,:,1) = reshape(theta_fit_tmp_vec, [], nStep);
+theta_fit(:,:,1) = theta_fit_tmp;
 theta0_fit(:,1) = theta_fit_tmp(:, 1);
 
 %% Let's do Gibbs Sampling
@@ -74,23 +76,32 @@ for g = 2:ng
     theta0_tmp = theta0_fit(:,g-1);
     Q_tmp = Q_fit(:,:,g-1);
     
-    %     [theta_tmp,W_tmp] =...
-    %         ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
-    %         W0,F,Q_tmp, windSize, windType);
-    %     hess_tmp = hessTheta(theta_tmp(:), X_lam,G_nu, W0,...
-    %         F, Q_tmp, spk_vec);
+        [theta_tmp,W_tmp] =...
+            ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
+            W0,F,Q_tmp, windSize, windType);
+        hess_tmp = hessTheta(theta_tmp(:), X_lam,G_nu, W0,...
+            F, Q_tmp, spk_vec);
     
     % let's do newton directly
-    gradHess_tmp = @(vecTheta) gradHessTheta(vecTheta, X_lam,G_nu, theta0_tmp, W0,...
-        F, Q_tmp, spk_vec);
-    [theta_tmp_vec,~,hess_tmp,~] = newtonGH(gradHess_tmp,...
-        repmat(theta0_tmp,nStep,1),1e-6,1000);
+%     gradHess_tmp = @(vecTheta) gradHessTheta(vecTheta, X_lam,G_nu, theta0_tmp, W0,...
+%         F, Q_tmp, spk_vec);
+%     [theta_tmp_vec,~,hess_tmp,~] = newtonGH(gradHess_tmp,...
+%         repmat(theta0_tmp,nStep,1),1e-6,1000);
+%     
+%     if isnan(theta_tmp_vec)
+%         theta_tmp_vec = theta_tmp_vec_pre;
+%         hess_tmp  = hess_tmp_pre;
+%     end
     
     % use Cholesky decomposition to sample efficiently
     R = chol(-hess_tmp,'lower'); % sparse
     z = randn(length(theta_tmp_vec), 1) + R'*theta_tmp_vec;
     thetaSamp = R'\z;
     theta_fit(:,:,g) = reshape(thetaSamp,[], nStep);
+    
+    theta_tmp_vec_pre = theta_tmp_vec;
+    hess_tmp_pre = hess_tmp;
+    
     
     % (2) update theta0_fit
     Sig0 = inv(inv(Sig00) + inv(W0));
@@ -120,11 +131,12 @@ idx = 200:ng;
 mean(Q_fit(:,:,idx), 3)
 
 % ans =
-%
+% 
 %    1.0e-03 *
-%
-%     0.5507         0
-%          0    0.0764
+% 
+%     0.7796         0
+%          0    0.0674
+
 
 
 figure(1)
