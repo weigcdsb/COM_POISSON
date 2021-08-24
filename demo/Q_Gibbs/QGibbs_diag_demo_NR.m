@@ -76,22 +76,21 @@ for g = 2:ng
     theta0_tmp = theta0_fit(:,g-1);
     Q_tmp = Q_fit(:,:,g-1);
     
-        [theta_tmp,W_tmp] =...
-            ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
-            W0,F,Q_tmp, windSize, windType);
-        hess_tmp = hessTheta(theta_tmp(:), X_lam,G_nu, W0,...
-            F, Q_tmp, spk_vec);
+    theta_tmp =...
+        ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
+        W0,F,Q_tmp, windSize, windType);
+    %         hess_tmp = hessTheta(theta_tmp(:), X_lam,G_nu, W0,...
+    %             F, Q_tmp, spk_vec);
     
     % let's do newton directly
-%     gradHess_tmp = @(vecTheta) gradHessTheta(vecTheta, X_lam,G_nu, theta0_tmp, W0,...
-%         F, Q_tmp, spk_vec);
-%     [theta_tmp_vec,~,hess_tmp,~] = newtonGH(gradHess_tmp,...
-%         repmat(theta0_tmp,nStep,1),1e-6,1000);
-%     
-%     if isnan(theta_tmp_vec)
-%         theta_tmp_vec = theta_tmp_vec_pre;
-%         hess_tmp  = hess_tmp_pre;
-%     end
+    gradHess_tmp = @(vecTheta) gradHessTheta(vecTheta, X_lam,G_nu, theta0_tmp, W0,...
+        F, Q_tmp, spk_vec);
+    [theta_tmp_vec,~,hess_tmp,~] = newtonGH(gradHess_tmp,theta_tmp(:),1e-6,1000);
+    
+    if isnan(theta_tmp_vec)
+        theta_tmp_vec = theta_tmp_vec_pre;
+        hess_tmp  = hess_tmp_pre;
+    end
     
     % use Cholesky decomposition to sample efficiently
     R = chol(-hess_tmp,'lower'); % sparse
@@ -131,9 +130,9 @@ idx = 200:ng;
 mean(Q_fit(:,:,idx), 3)
 
 % ans =
-% 
+%
 %    1.0e-03 *
-% 
+%
 %     0.7796         0
 %          0    0.0674
 

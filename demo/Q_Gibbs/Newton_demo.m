@@ -19,21 +19,21 @@ theta_true = zeros(T/dt,2);
 % Q=diag([1e-2 1e-6]);
 
 % Case 2 -- Var decrease - constant(ish) mean (not bad)
-target_mean = 10;
-theta_true(:,2) = 5*(t-0.2)/.05.*exp(-(t-0.2)/.05).*(t>.2);
-nu_true = exp(G_nu.*theta_true(:, 2));
-% theta_true(:,1) = log(10.^nu_true); % better approximation...
-theta_true(:,1) = nu_true.*log(target_mean + (nu_true - 1)./ (2*nu_true));
-Q=diag([1e-3 1e-3]);
-
-% % Case 3 -- Mean increase + Var decrease
-% theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
+% target_mean = 10;
+% theta_true(:,2) = 5*(t-0.2)/.05.*exp(-(t-0.2)/.05).*(t>.2);
 % nu_true = exp(G_nu.*theta_true(:, 2));
-% % theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
-% % to run fast... use approximation again
-% target_mean = exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1);
-% theta_true(:,1) = nu_true.*log(target_mean' + (nu_true - 1)./ (2*nu_true));
+% % theta_true(:,1) = log(10.^nu_true); % better approximation...
+% theta_true(:,1) = nu_true.*log(target_mean + (nu_true - 1)./ (2*nu_true));
 % Q=diag([1e-3 1e-3]);
+
+% Case 3 -- Mean increase + Var decrease
+theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
+nu_true = exp(G_nu.*theta_true(:, 2));
+% theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
+% to run fast... use approximation again
+target_mean = exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1);
+theta_true(:,1) = nu_true.*log(target_mean' + (nu_true - 1)./ (2*nu_true));
+Q=diag([1e-3 1e-3]);
 
 
 lam_true = exp(X_lam.*theta_true(:, 1));
@@ -61,52 +61,69 @@ theta_filt =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
     W0,F,Q, 1, windType);
 toc;
-% Elapsed time is 0.675340 seconds.
+% case 2: Elapsed time is 0.507953 seconds.
+% case 3: Elapsed time is 0.552154 seconds.
 
-% filtering: window = 20
+
+% filtering: smaller window
+% windSize1 = 20;
+windSize1 = 10;
 tic;
 theta_filt2 =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
-    W0,F,Q, 20, windType);
+    W0,F,Q, windSize1, windType);
 toc;
-% Elapsed time is 1.338085 seconds.
+% case 2 (wind = 20): Elapsed time is 1.286366 seconds.
+% case 3 (wind = 10): Elapsed time is 1.127127 seconds.
 
-% filtering: window = 100
+
+% filtering: larger window
+% windSize2 = 100;
+windSize2 = 50;
 tic;
 theta_filt3 =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
-    W0,F,Q, 100, windType);
+    W0,F,Q, windSize2, windType);
 toc;
-% Elapsed time is 3.790261 seconds.
+% case 2 (wind = 100): Elapsed time is 3.746579 seconds.
+% case 3 (wind = 50): Elapsed time is 2.687056 seconds.
 
 
 % Newton-Raphson: Fisher hessian
+% if theta_fit_tmp is from window > 1, NR will get stuck
+% Because when window is turned on, although the fitting is much better,
+% it's far from MLE.
 nStep = size(spk_vec, 2);
 tic;
 gradHess_tmp = @(vecTheta) gradHessTheta(vecTheta, X_lam,G_nu, theta0, W0,...
     F, Q, spk_vec);
 [theta_newton_vec,~,~,~] = newtonGH(gradHess_tmp,theta_fit_tmp(:),1e-6,1000);
-theta_newton = reshape(theta_newton_vec, [], nStep);
 toc;
-% Elapsed time is 1.994968 seconds.
+theta_newton = reshape(theta_newton_vec, [], nStep);
+% case 2: Elapsed time is 2.149235 seconds.
+% case 3: Elapsed time is 1.203469 seconds.
+
 
 % Newton-Raphson: exact hessian
+% if theta_fit_tmp is from window > 1, will get stuck
 tic;
 gradHess_tmp = @(vecTheta) gradHessThetaExact(vecTheta, X_lam,G_nu, theta0, W0,...
     F, Q, spk_vec);
 [theta_newton2_vec,~,~,~] = newtonGH(gradHess_tmp,theta_fit_tmp(:),1e-6,1000);
-theta_newton2 = reshape(theta_newton2_vec, [], nStep);
 toc;
-% Elapsed time is 1.319081 seconds.
+theta_newton2 = reshape(theta_newton2_vec, [], nStep);
+% case 2: Elapsed time is 1.394820 seconds.
+% case 3: Elapsed time is 1.098722 seconds.
 
 
 subplot(1,2,1)
 hold on
 plot(theta_true(:,1),'k')
 plot(theta_filt(1,:),'r')
-plot(theta_newton2(1,:),'b')
-plot(theta_filt2(1,:),'g')
-plot(theta_filt3(1,:),'c')
+plot(theta_filt2(1,:),'m')
+plot(theta_filt3(1,:),'g')
+plot(theta_newton(1,:),'b')
+plot(theta_newton2(1,:),'c')
 title('\beta')
 hold off
 
@@ -114,12 +131,134 @@ subplot(1,2,2)
 hold on
 plot(theta_true(:,2),'k')
 plot(theta_filt(2,:),'r')
-plot(theta_newton2(2,:),'b')
-plot(theta_filt2(2,:),'g')
-plot(theta_filt3(2,:),'c')
+plot(theta_filt2(2,:),'m')
+plot(theta_filt3(2,:),'g')
+plot(theta_newton(2,:),'b')
+plot(theta_newton2(2,:),'c')
 title('\gamma')
-legend('true', 'smoother', 'newton', 'window-20', 'window-100')
+lgd = legend('true', 'smoother', "window-"+windSize1,...
+    "window-"+windSize2,'newton-fisher','newton-exact');
+lgd.FontSize = 6;
 hold off
+
+%% llhd & MSE
+
+fitted_theta = [theta_filt; theta_filt2; theta_filt3; theta_newton];
+mean_Y = zeros(4, nStep);
+log_Z = zeros(4, nStep);
+lam_all = zeros(4, nStep);
+nu_all = zeros(4, nStep);
+for m = 1:4
+    fit = fitted_theta(((m-1)*2+1):2*m,:);
+    lam_all(m,:) = exp(X_lam'.*fit(1,:));
+    nu_all(m,:) = exp(G_nu'.*fit(2,:));
+    for t = 1:nStep
+        [mean_Y(m,t), ~, ~, ~, ~, log_Z(m,t)] = CMPmoment(lam_all(m,t),...
+            nu_all(m,t), 1000);
+    end
+end
+
+% single new dataset
+llhd_sing = zeros(m,1);
+mse_sing = zeros(m,1);
+rng(6);
+spk_vec_new = com_rnd(lam_true, nu_true);
+for m = 1:4
+    llhd_sing(m) = sum(spk_vec_new.*log((lam_all(m,:)+(lam_all(m,:)==0))) -...
+        nu_all(m,:).*gammaln(spk_vec_new + 1) - log_Z(m,:))/sum(spk_vec_new);
+    mse_sing(m) = mean((spk_vec_new - mean_Y(m,:)).^2);
+end
+
+llhd_sing
+mse_sing
+
+% case 2:
+% llhd_sing =
+% 
+%    -0.2509
+%    -0.2493
+%    -0.2458
+%    -0.2522
+% 
+% 
+% mse_sing =
+% 
+%     9.5376
+%     9.3424
+%     8.8332
+%     9.4483
+
+
+% case 3:
+% llhd_sing =
+% 
+%    -0.3106
+%    -0.3124
+%    -0.3101
+%    -0.3067
+% 
+% 
+% mse_sing =
+% 
+%     4.7866
+%     4.9216
+%     4.8994
+%     4.2639
+
+% multiple new dataset
+rng(8)
+nNew = 500;
+llhd = zeros(4, nNew);
+mse = zeros(4, nNew);
+for k = 1:nNew
+    spk_vec_new = com_rnd(lam_true, nu_true);
+    for m = 1:4
+        llhd(m,k) = sum(spk_vec_new.*log((lam_all(m,:)+(lam_all(m,:)==0))) -...
+            nu_all(m,:).*gammaln(spk_vec_new + 1) - log_Z(m,:))/sum(spk_vec_new);
+        mse(m,k) = mean((spk_vec_new - mean_Y(m,:)).^2);
+    end
+end
+
+mean(llhd,2)
+mean(mse,2)
+
+% csae 2:
+% ans =
+% 
+%    -0.2512
+%    -0.2503
+%    -0.2466
+%    -0.2517
+% 
+% 
+% ans =
+% 
+%     9.2789
+%     9.1391
+%     8.6788
+%     9.1667
+
+
+% case 3:
+% ans =
+% 
+%    -0.3102
+%    -0.3126
+%    -0.3110
+%    -0.3055
+% 
+% 
+% ans =
+% 
+%     4.8025
+%     4.9387
+%     4.9361
+%     4.2386
+
+
+
+
+
 
 %% use filtering results as warm start
 tic;
@@ -128,5 +267,6 @@ gradHess_tmp = @(vecTheta) gradHessThetaExact(vecTheta, X_lam,G_nu, theta0, W0,.
 [theta_newton2_vec,~,niSigTheta_newton,~] = newtonGH(gradHess_tmp,theta_filt(:),1e-6,1000);
 theta_newton2 = reshape(theta_newton2_vec, [], nStep);
 toc;
-% Elapsed time is 2.022655 seconds.
+% case 2: Elapsed time is 1.452179 seconds.
+% case 3: Elapsed time is 1.082235 seconds.
 
