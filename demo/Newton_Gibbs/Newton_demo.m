@@ -55,6 +55,15 @@ F = diag([1 1]);
 theta0 = theta_fit_tmp(:, 1);
 W0 = W_fit_tmp(:, :, 1);
 
+% filtering: no window-exact hessian
+tic;
+theta_filt_exact =...
+    ppasmoo_compoisson_v2_window(theta0, spk_vec,X_lam,G_nu,...
+    W0,F,Q, 1, windType);
+toc;
+% Elapsed time is 0.338408 seconds.
+
+
 % filtering: no window
 tic;
 theta_filt =...
@@ -119,36 +128,39 @@ theta_newton2 = reshape(theta_newton2_vec, [], nStep);
 subplot(1,2,1)
 hold on
 plot(theta_true(:,1),'k')
+plot(theta_filt_exact(1,:),'y')
 plot(theta_filt(1,:),'r')
 plot(theta_filt2(1,:),'m')
 plot(theta_filt3(1,:),'g')
 plot(theta_newton(1,:),'b')
-plot(theta_newton2(1,:),'c')
+% plot(theta_newton2(1,:),'c')
 title('\beta')
 hold off
 
 subplot(1,2,2)
 hold on
 plot(theta_true(:,2),'k')
+plot(theta_filt_exact(2,:),'y')
 plot(theta_filt(2,:),'r')
 plot(theta_filt2(2,:),'m')
 plot(theta_filt3(2,:),'g')
 plot(theta_newton(2,:),'b')
-plot(theta_newton2(2,:),'c')
+% plot(theta_newton2(2,:),'c')
 title('\gamma')
-lgd = legend('true', 'smoother', "window-"+windSize1,...
-    "window-"+windSize2,'newton-fisher','newton-exact');
+lgd = legend('true', 'smoother-exact', 'smoother', "window-"+windSize1,...
+    "window-"+windSize2,'newton');
 lgd.FontSize = 6;
 hold off
 
 %% llhd & MSE
 
-fitted_theta = [theta_filt; theta_filt2; theta_filt3; theta_newton];
-mean_Y = zeros(4, nStep);
-log_Z = zeros(4, nStep);
-lam_all = zeros(4, nStep);
-nu_all = zeros(4, nStep);
-for m = 1:4
+fitted_theta = [theta_filt_exact; theta_filt;...
+    theta_filt2; theta_filt3; theta_newton];
+mean_Y = zeros(5, nStep);
+log_Z = zeros(5, nStep);
+lam_all = zeros(5, nStep);
+nu_all = zeros(5, nStep);
+for m = 1:5
     fit = fitted_theta(((m-1)*2+1):2*m,:);
     lam_all(m,:) = exp(X_lam'.*fit(1,:));
     nu_all(m,:) = exp(G_nu'.*fit(2,:));
@@ -161,7 +173,7 @@ end
 % training llhd/spk & mse
 llhd_tr = zeros(m,1);
 mse_tr = zeros(m,1);
-for m = 1:4
+for m = 1:5
     llhd_tr(m) = sum(spk_vec.*log((lam_all(m,:)+(lam_all(m,:)==0))) -...
         nu_all(m,:).*gammaln(spk_vec + 1) - log_Z(m,:))/sum(spk_vec);
     mse_tr(m) = mean((spk_vec - mean_Y(m,:)).^2);
@@ -173,6 +185,7 @@ mse_tr
 % case 2:
 % llhd_tr =
 % 
+%    -0.2398
 %    -0.2389
 %    -0.2440
 %    -0.2439
@@ -181,6 +194,7 @@ mse_tr
 % 
 % mse_tr =
 % 
+%     7.5998
 %     7.3371
 %     8.7116
 %     8.6456
@@ -192,6 +206,7 @@ mse_tr
 % case 3:
 % llhd_tr =
 % 
+%    -0.3478
 %    -0.3015
 %    -0.3036
 %    -0.3084
@@ -200,6 +215,7 @@ mse_tr
 % 
 % mse_tr =
 % 
+%     6.2152
 %     3.9766
 %     4.5034
 %     4.8317
@@ -214,7 +230,7 @@ llhd_sing = zeros(m,1);
 mse_sing = zeros(m,1);
 rng(6);
 spk_vec_new = com_rnd(lam_true, nu_true);
-for m = 1:4
+for m = 1:5
     llhd_sing(m) = sum(spk_vec_new.*log((lam_all(m,:)+(lam_all(m,:)==0))) -...
         nu_all(m,:).*gammaln(spk_vec_new + 1) - log_Z(m,:))/sum(spk_vec_new);
     mse_sing(m) = mean((spk_vec_new - mean_Y(m,:)).^2);
@@ -226,6 +242,7 @@ mse_sing
 % case 2:
 % llhd_sing =
 % 
+%    -0.2626
 %    -0.2509
 %    -0.2493
 %    -0.2458
@@ -234,15 +251,16 @@ mse_sing
 % 
 % mse_sing =
 % 
+%    10.1064
 %     9.5376
 %     9.3424
 %     8.8332
 %     9.4483
 
-
 % case 3:
 % llhd_sing =
 % 
+%    -0.3614
 %    -0.3106
 %    -0.3124
 %    -0.3101
@@ -251,19 +269,21 @@ mse_sing
 % 
 % mse_sing =
 % 
+%     7.0263
 %     4.7866
 %     4.9216
 %     4.8994
 %     4.2639
 
+
 % multiple new dataset
 rng(8)
 nNew = 500;
-llhd = zeros(4, nNew);
-mse = zeros(4, nNew);
+llhd = zeros(5, nNew);
+mse = zeros(5, nNew);
 for k = 1:nNew
     spk_vec_new = com_rnd(lam_true, nu_true);
-    for m = 1:4
+    for m = 1:5
         llhd(m,k) = sum(spk_vec_new.*log((lam_all(m,:)+(lam_all(m,:)==0))) -...
             nu_all(m,:).*gammaln(spk_vec_new + 1) - log_Z(m,:))/sum(spk_vec_new);
         mse(m,k) = mean((spk_vec_new - mean_Y(m,:)).^2);
@@ -276,6 +296,7 @@ mean(mse,2)
 % csae 2:
 % ans =
 % 
+%    -0.2612
 %    -0.2512
 %    -0.2503
 %    -0.2466
@@ -284,6 +305,7 @@ mean(mse,2)
 % 
 % ans =
 % 
+%     9.7732
 %     9.2789
 %     9.1391
 %     8.6788
@@ -293,6 +315,7 @@ mean(mse,2)
 % case 3:
 % ans =
 % 
+%    -0.3596
 %    -0.3102
 %    -0.3126
 %    -0.3110
@@ -301,6 +324,7 @@ mean(mse,2)
 % 
 % ans =
 % 
+%     7.0118
 %     4.8025
 %     4.9387
 %     4.9361
