@@ -61,8 +61,8 @@ theta_filt_exact =...
     ppasmoo_compoisson_v2_window(theta0, spk_vec,X_lam,G_nu,...
     W0,F,Q, 1, windType);
 toc;
-% Elapsed time is 0.338408 seconds.
-
+% case 2: Elapsed time is 0.423872 seconds.
+% case 3: Elapsed time is 0.435019 seconds.
 
 % filtering: no window
 tic;
