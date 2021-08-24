@@ -11,7 +11,7 @@ for k = 1:MaxIter
     dfdx = dh{2};
     dx = -dfdx\fx;
     xx(:,k+1) = xx(:,k)+dx;
-    dhPre = dh;
+%     dhPre = dh;
     dh = feval(fdf,xx(:,k+1));
     fx = dh{1};
     if(norm(fx)<TolFun || norm(dx) < TolX)

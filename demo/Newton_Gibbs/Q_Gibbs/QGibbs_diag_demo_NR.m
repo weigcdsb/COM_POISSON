@@ -83,14 +83,14 @@ for g = 2:ng
     %             F, Q_tmp, spk_vec);
     
     % let's do newton directly
-    gradHess_tmp = @(vecTheta) gradHessTheta(vecTheta, X_lam,G_nu, theta0_tmp, W0,...
+    gradHess_tmp = @(vecTheta) gradHessThetaExact(vecTheta, X_lam,G_nu, theta0_tmp, W0,...
         F, Q_tmp, spk_vec);
     [theta_tmp_vec,~,hess_tmp,~] = newtonGH(gradHess_tmp,theta_tmp(:),1e-6,1000);
     
-    if isnan(theta_tmp_vec)
-        theta_tmp_vec = theta_tmp_vec_pre;
-        hess_tmp  = hess_tmp_pre;
-    end
+%     if isnan(theta_tmp_vec)
+%         theta_tmp_vec = theta_tmp_vec_pre;
+%         hess_tmp  = hess_tmp_pre;
+%     end
     
     % use Cholesky decomposition to sample efficiently
     R = chol(-hess_tmp,'lower'); % sparse
@@ -130,11 +130,11 @@ idx = 200:ng;
 mean(Q_fit(:,:,idx), 3)
 
 % ans =
-%
+% 
 %    1.0e-03 *
-%
-%     0.7796         0
-%          0    0.0674
+% 
+%     0.7494         0
+%          0    0.0669
 
 
 

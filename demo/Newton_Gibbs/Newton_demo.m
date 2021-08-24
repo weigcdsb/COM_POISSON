@@ -19,21 +19,21 @@ theta_true = zeros(T/dt,2);
 % Q=diag([1e-2 1e-6]);
 
 % Case 2 -- Var decrease - constant(ish) mean (not bad)
-% target_mean = 10;
-% theta_true(:,2) = 5*(t-0.2)/.05.*exp(-(t-0.2)/.05).*(t>.2);
-% nu_true = exp(G_nu.*theta_true(:, 2));
-% % theta_true(:,1) = log(10.^nu_true); % better approximation...
-% theta_true(:,1) = nu_true.*log(target_mean + (nu_true - 1)./ (2*nu_true));
-% Q=diag([1e-3 1e-3]);
+target_mean = 10;
+theta_true(:,2) = 5*(t-0.2)/.05.*exp(-(t-0.2)/.05).*(t>.2);
+nu_true = exp(G_nu.*theta_true(:, 2));
+% theta_true(:,1) = log(10.^nu_true); % better approximation...
+theta_true(:,1) = nu_true.*log(target_mean + (nu_true - 1)./ (2*nu_true));
+Q=diag([1e-3 1e-3]);
 
 % Case 3 -- Mean increase + Var decrease
-theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
-nu_true = exp(G_nu.*theta_true(:, 2));
-% theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
-% to run fast... use approximation again
-target_mean = exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1);
-theta_true(:,1) = nu_true.*log(target_mean' + (nu_true - 1)./ (2*nu_true));
-Q=diag([1e-3 1e-3]);
+% theta_true(:,2) = 3*(t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2);
+% nu_true = exp(G_nu.*theta_true(:, 2));
+% % theta_true(:,1) = log(matchMean(exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1),nu_true));
+% % to run fast... use approximation again
+% target_mean = exp((t-0.2)/.1.*exp(-(t-0.2)/.1).*(t>.2)*6+1);
+% theta_true(:,1) = nu_true.*log(target_mean' + (nu_true - 1)./ (2*nu_true));
+% Q=diag([1e-3 1e-3]);
 
 
 lam_true = exp(X_lam.*theta_true(:, 1));
@@ -66,8 +66,8 @@ toc;
 
 
 % filtering: smaller window
-% windSize1 = 20;
-windSize1 = 10;
+windSize1 = 20;
+% windSize1 = 10;
 tic;
 theta_filt2 =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
@@ -78,8 +78,8 @@ toc;
 
 
 % filtering: larger window
-% windSize2 = 100;
-windSize2 = 50;
+windSize2 = 100;
+% windSize2 = 50;
 tic;
 theta_filt3 =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
@@ -157,6 +157,57 @@ for m = 1:4
             nu_all(m,t), 1000);
     end
 end
+
+% training llhd/spk & mse
+llhd_tr = zeros(m,1);
+mse_tr = zeros(m,1);
+for m = 1:4
+    llhd_tr(m) = sum(spk_vec.*log((lam_all(m,:)+(lam_all(m,:)==0))) -...
+        nu_all(m,:).*gammaln(spk_vec + 1) - log_Z(m,:))/sum(spk_vec);
+    mse_tr(m) = mean((spk_vec - mean_Y(m,:)).^2);
+end
+
+llhd_tr
+mse_tr
+
+% case 2:
+% llhd_tr =
+% 
+%    -0.2389
+%    -0.2440
+%    -0.2439
+%    -0.2326
+% 
+% 
+% mse_tr =
+% 
+%     7.3371
+%     8.7116
+%     8.6456
+%     6.8210
+
+
+
+
+% case 3:
+% llhd_tr =
+% 
+%    -0.3015
+%    -0.3036
+%    -0.3084
+%    -0.2937
+% 
+% 
+% mse_tr =
+% 
+%     3.9766
+%     4.5034
+%     4.8317
+%     3.2648
+
+
+
+
 
 % single new dataset
 llhd_sing = zeros(m,1);
