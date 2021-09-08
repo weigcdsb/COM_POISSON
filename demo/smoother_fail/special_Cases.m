@@ -1,22 +1,23 @@
 addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
 % addpath(genpath('D:\github\COM_POISSON'));
 
-%%
-rng(2)
+%% see special cases
+rng(1)
 k = 200;
 X_lam = ones(k, 1);
 G_nu = ones(k, 1);
 
 theta_true = zeros(2,k);
-% betaPre = 0.5; betaPost = 3;
-% gamPre = -1.5; gamPost = 2;
-% theta_true(1,:) = [ones(1, round(k/2))*betaPre ones(1, k-round(k/2))*betaPost];
-% theta_true(2,:) = [ones(1, round(k/2))*gamPre ones(1, k-round(k/2))*gamPost];
 
-betaStart = 0; betaEnd = 1;
-gamStart = -1; gamEnd = 2;
-theta_true(1,:) = linspace(betaStart, betaEnd, k);
-theta_true(2,:) = linspace(gamStart, gamEnd, k);
+% constant
+theta_true(1,:) = 2*ones(1,k); % min = 0.5, max = 3
+theta_true(2,:) = 1*ones(1,k); % min = -.5, max = 2.5
+
+% linear 
+% betaStart = 0; betaEnd = 2;
+% gamStart = -1; gamEnd = 1;
+% theta_true(1,:) = linspace(betaStart, betaEnd, k);
+% theta_true(2,:) = linspace(gamStart, gamEnd, k);
 
 lamSeq = exp(X_lam'.*theta_true(1,:));
 nuSeq = exp(G_nu'.*theta_true(2,:));
@@ -53,10 +54,72 @@ theta_filt =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
     W0,F,Q, 1, windType);
 
-windSize = 5;
+% set arbitrary window size
+% windSize = 5;
+% theta_filt_wind =...
+%     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
+%     W0,F,Q, windSize, windType);
+
+% select by forward chaining: 
+% brute-force implementation: need careful coding later
+windSize0 = 1;
+searchStep = 2;
+windUB = 150;
+windSet = windSize0:searchStep:windUB;
+nSearchMax = length(windSet);
+
+llhd_ho = [];
+nDec = 0;
+llhd_ho_pre = -Inf;
+for w = 1:nSearchMax
+    windTmp = windSet(w);
+    theta_tmp = zeros(2, k-1);
+    [theta_windAll_tmp, W_windAll_tmp] =...
+        ppafilt_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
+        W0,F,Q, windTmp, windType);
+    for t = 1:(k-1)
+        if (t <= windTmp)
+            theta_windTmp =...
+            ppafilt_compoisson_v2_window_fisher(theta0, spk_vec(1:t),X_lam(1:t),G_nu(1:t),...
+            W0,F,Q, windTmp, windType, 'maxSum', 10*max(spk_vec));
+        else
+            theta_windTmp =...
+            ppafilt_compoisson_v2_window_fisher(theta_windAll_tmp(:, t-windTmp),...
+            spk_vec((t-windTmp):t),...
+            X_lam((t-windTmp):t),G_nu((t-windTmp):t),...
+             W_windAll_tmp(:,:,t-windTmp),F,Q, windTmp, windType, 'maxSum', 10*max(spk_vec));
+        end
+        theta_tmp(:,t) = theta_windTmp(:,end);
+    end
+    
+    lam_ho = exp(theta_tmp(1,:));
+    nu_ho = exp(theta_tmp(2,:));
+    
+    log_Z_ho = zeros(1, k-1);
+    for h = 1:(k-1)
+        [~, ~, ~, ~, ~, log_Z_ho(h)] = CMPmoment(lam_ho(h),nu_ho(h), 1000);
+    end
+    
+    llhd_ho_tmp = sum(spk_vec(2:k).*log((lam_ho+(lam_ho==0))) -...
+        nu_ho.*gammaln(spk_vec(2:k) + 1) - log_Z_ho)/sum(spk_vec(2:k));
+    llhd_ho = [llhd_ho llhd_ho_tmp];
+    if(llhd_ho_tmp < llhd_ho_pre)
+        nDec = nDec + 1;
+    else
+        nDec = 0;
+    end
+    llhd_ho_pre = llhd_ho_tmp;
+    
+    if nDec > 2
+        break
+    end 
+end
+[~, wIdx] = max(llhd_ho);
+windSize = windSet(wIdx);
 theta_filt_wind =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
     W0,F,Q, windSize, windType);
+
 
 gradHess_tmp = @(vecTheta) gradHessTheta(vecTheta, X_lam,G_nu, theta0, W0,...
     F, Q, spk_vec);
@@ -74,7 +137,7 @@ plot(theta_filt_wind(1,:))
 plot(theta_newton(1,:))
 hold off
 title('\beta')
-legend('true', 'smoother-exact', 'smoother', 'window-5','NR',...
+legend('true', 'smoother-exact', 'smoother', "window-"+windSize,'NR',...
     'Location','northwest')
 subplot(1,2,2)
 hold on
@@ -96,7 +159,7 @@ plot(exp(X_lam'.*theta_filt_wind(1,:)))
 plot(exp(X_lam'.*theta_newton(1,:)))
 hold off
 title('\lambda')
-legend('true', 'smoother-exact', 'smoother', 'window-5','NR',...
+legend('true', 'smoother-exact', 'smoother', "window-"+windSize,'NR',...
     'Location','best')
 subplot(1,2,2)
 hold on
@@ -127,7 +190,7 @@ plot(est_mean_filt_wind)
 plot(est_mean_newton)
 hold off
 title('Mean')
-legend('true', 'smoother-exact', 'smoother', 'window-5','NR',...
+legend('true', 'smoother-exact', 'smoother', "window-"+windSize,'NR',...
     'Location','best')
 subplot(1,2,2)
 hold on
@@ -138,73 +201,6 @@ plot(est_var_filt_wind./ est_mean_filt_wind)
 plot(est_var_newton./ est_mean_newton)
 title('FF')
 hold off
-
-%% plot grid of llhd
-clear all; close all; clc;
-rng(3)
-
-betaStart = 0; 
-gamStart = -1;
-
-nGrid_nu = 5;
-nGrid_lam = 10;
-betaRange = linspace(0,3,nGrid_lam);
-gamRange = linspace(0,3,nGrid_nu);
-
-testLlhd_filt_exact = zeros(nGrid_nu, nGrid_lam);
-testLlhd_filt = zeros(nGrid_nu, nGrid_lam);
-testLlhd_filt_wind = zeros(nGrid_nu, nGrid_lam);
-testLlhd_newton = zeros(nGrid_nu, nGrid_lam);
-
-for i = 1:nGrid_lam
-    for j = 1:nGrid_nu
-        llhd_mean_tmp = testLlhdCalc(betaStart,betaStart + betaRange(i),...
-            gamStart,gamStart + gamRange(j),200,10);
-        
-        testLlhd_filt_exact(j,i) = llhd_mean_tmp(1);
-        testLlhd_filt(j,i) = llhd_mean_tmp(2);
-        testLlhd_filt_wind(j,i) = llhd_mean_tmp(3);
-        testLlhd_newton(j,i) = llhd_mean_tmp(4);
-        
-    end
-end
-
-% compare to fisher scoring smoother
-cLim_all = [min([testLlhd_filt_exact(:) - testLlhd_filt(:);...
-    testLlhd_filt_wind(:) - testLlhd_filt(:);...
-    testLlhd_newton(:) - testLlhd_filt(:)])...
-    max([testLlhd_filt_exact(:) - testLlhd_filt(:);...
-    testLlhd_filt_wind(:) - testLlhd_filt(:);...
-    testLlhd_newton(:) - testLlhd_filt(:)])];
-subplot(1,3,1)
-imagesc(betaRange, gamRange,testLlhd_filt_exact - testLlhd_filt)
-ylabel('range of \gamma')
-title('exact - fisher')
-colorbar()
-set(gca,'CLim',cLim_all)
-subplot(1,3,2)
-imagesc(betaRange, gamRange,testLlhd_filt_wind - testLlhd_filt)
-title('window 5 - fisher')
-colorbar()
-set(gca,'CLim',cLim_all)
-subplot(1,3,3)
-imagesc(betaRange, gamRange,testLlhd_newton - testLlhd_filt)
-xlabel('range of \beta')
-title('newton - fisher')
-colorbar()
-set(gca,'CLim',cLim_all)
-
-% newton vs. window 5
-imagesc(betaRange, gamRange,testLlhd_newton - testLlhd_filt_wind)
-title('newton - window 5')
-colorbar()
-
-
-
-
-
-
-
 
 
 

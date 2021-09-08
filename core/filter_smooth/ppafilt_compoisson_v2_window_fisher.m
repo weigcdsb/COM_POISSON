@@ -1,10 +1,21 @@
 function [theta,W,lam_pred,nu_pred,log_Zvec_pred,...
     lam_filt,nu_filt,log_Zvec_filt] =...
-    ppafilt_compoisson_v2_window_fisher(theta0, N,X_lam,G_nu,W0,F,Q, windSize, windType)
+    ppafilt_compoisson_v2_window_fisher(theta0, N,X_lam,G_nu,W0,F,Q, windSize, windType, varargin)
 
 n_spk = size(N, 2);
 nCell = size(N, 1);
 maxSum = 10*max(N(:)); % max number for sum estimation;
+
+if (~isempty(varargin))
+    c = 1 ;
+    while c <= length(varargin)
+        switch varargin{c}
+            case {'maxSum'}
+                maxSum = varargin{c+1};
+        end % switch
+        c = c + 2;
+    end % for
+end % if
 
 % Preallocate
 theta   = zeros(length(theta0), n_spk);
