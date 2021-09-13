@@ -86,7 +86,7 @@ for w = 1:nSearchMax
 end
 [~, wIdx] = max(llhd_ho);
 windSize = windSet(wIdx);
-disp(windSize)
+% disp(windSize)
 theta_filt_wind =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
     W0,F,Q, windSize, windType);
@@ -94,7 +94,7 @@ theta_filt_wind =...
 
 gradHess_tmp = @(vecTheta) gradHessTheta(vecTheta, X_lam,G_nu, theta0, W0,...
     F, Q, spk_vec);
-[theta_newton_vec,~,~,~] = newtonGH(gradHess_tmp,theta_filt(:),1e-10,1000);
+[theta_newton_vec,~,~,~] = newtonGH(gradHess_tmp,theta_filt(:),1e-8,5000);
 theta_newton = reshape(theta_newton_vec, [], k);
 
 % test llhd

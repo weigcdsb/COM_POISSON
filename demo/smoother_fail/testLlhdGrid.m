@@ -3,28 +3,32 @@ addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
 
 %% plot grid of llhd: linear
 clear all; close all; clc;
-rng(1)
+rng(2)
 
-betaStart = 0; 
+% betaStart = 0; 
 % gamStart = -1;
-
+% 
 % nGrid_nu = 10;
 % nGrid_lam = 10;
 % betaRange = linspace(0,3,nGrid_lam);
 % gamRange = linspace(1,3,nGrid_nu);
 
 % nu constant:
-gamStart = .5;
-nGrid_lam = 10;
-nGrid_nu = 1;
-betaRange = linspace(0,4,nGrid_lam);
-gamRange = linspace(0,0,nGrid_nu);
+% betaStart = 0;
+% gamStart = .5;
+% nGrid_lam = 10;
+% nGrid_nu = 1;
+% betaRange = linspace(0,4,nGrid_lam);
+% gamRange = linspace(0,0,nGrid_nu);
 
+% beta constant
+betaStart = -0.5;
+gamStart = -1;
+nGrid_lam = 1;
+nGrid_nu = 10;
+betaRange = linspace(0,0,nGrid_lam);
+gamRange = linspace(0,3,nGrid_nu);
 
-testLlhd_filt_exact = zeros(nGrid_nu, nGrid_lam);
-testLlhd_filt = zeros(nGrid_nu, nGrid_lam);
-testLlhd_filt_wind = zeros(nGrid_nu, nGrid_lam);
-testLlhd_newton = zeros(nGrid_nu, nGrid_lam);
 
 % arbitrary window size
 % windSize = 5;
@@ -42,29 +46,43 @@ testLlhd_newton = zeros(nGrid_nu, nGrid_lam);
 % end
 
 % windSize select by forward chaining
-windSize_opt = zeros(nGrid_nu, nGrid_lam);
 
 nRep = 100;
+windSize_opt_all = zeros(nGrid_nu, nGrid_lam, nRep);
+testLlhd_filt_exact_all = zeros(nGrid_nu, nGrid_lam, nRep);
+testLlhd_filt_all = zeros(nGrid_nu, nGrid_lam, nRep);
+testLlhd_filt_wind_all = zeros(nGrid_nu, nGrid_lam, nRep);
+testLlhd_newton_all = zeros(nGrid_nu, nGrid_lam, nRep);
+
 for k = 1:nRep
+    disp(k)
     for i = 1:nGrid_lam
         for j = 1:nGrid_nu
-            [llhd_mean_tmp, windSize_tmp]= testLlhdCalc_linear_CV(betaStart,betaStart + betaRange(i),...
-                gamStart,gamStart + gamRange(j),200,1);
             
-            windSize_opt(j,i) = windSize_opt(j,i) + windSize_tmp;
-            testLlhd_filt_exact(j,i) = testLlhd_filt_exact(j,i) + llhd_mean_tmp(1);
-            testLlhd_filt(j,i) = testLlhd_filt(j,i) + llhd_mean_tmp(2);
-            testLlhd_filt_wind(j,i) = testLlhd_filt_wind(j,i) + llhd_mean_tmp(3);
-            testLlhd_newton(j,i) = testLlhd_newton(j,i) + llhd_mean_tmp(4);
+            nanFlag = true;
+            while(nanFlag)
+                [llhd_mean_tmp, windSize_opt_all(j,i,k)]=...
+                    testLlhdCalc_linear_CV(betaStart,betaStart + betaRange(i),...
+                    gamStart,gamStart + gamRange(j),200,1);
+                
+                if(sum(isnan(llhd_mean_tmp)) == 0)
+                    nanFlag = false;
+                end
+            end
+            
+            testLlhd_filt_exact_all(j,i,k) = llhd_mean_tmp(1);
+            testLlhd_filt_all(j,i,k) = llhd_mean_tmp(2);
+            testLlhd_filt_wind_all(j,i,k) = llhd_mean_tmp(3);
+            testLlhd_newton_all(j,i,k) = llhd_mean_tmp(4);
         end
     end
 end
 
-windSize_opt = windSize_opt/nRep;
-testLlhd_filt_exact = testLlhd_filt_exact/nRep;
-testLlhd_filt = testLlhd_filt/nRep;
-testLlhd_filt_wind = testLlhd_filt_wind/nRep;
-testLlhd_newton = testLlhd_newton/nRep;
+windSize_opt = mean(windSize_opt_all, 3);
+testLlhd_filt_exact = mean(testLlhd_filt_exact_all,3);
+testLlhd_filt =  mean(testLlhd_filt_all, 3);
+testLlhd_filt_wind =  mean(testLlhd_filt_wind_all, 3);
+testLlhd_newton =  mean(testLlhd_newton_all, 3);
 
 %% plot grid of llhd: constant
 % clear all; close all; clc;
@@ -162,3 +180,6 @@ title('selected window size')
 ylabel("range of \gamma, start from " + gamStart)
 xlabel("range of \beta, start from" + betaStart)
 colorbar()
+
+
+save('C:\Users\gaw19004\Desktop\COM_POI_data\compare_test_llhd\double_grid.mat')
