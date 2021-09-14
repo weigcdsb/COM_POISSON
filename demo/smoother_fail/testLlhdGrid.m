@@ -115,6 +115,13 @@ testLlhd_newton =  mean(testLlhd_newton_all, 3);
 
 %% plot
 % compare to fisher scoring smoother
+windSize_opt = windSize_opt(1:(end-1),:);
+testLlhd_filt_exact = testLlhd_filt_exact(1:(end-1),:);
+testLlhd_filt =  testLlhd_filt(1:(end-1),:);
+testLlhd_filt_wind =  testLlhd_filt_wind(1:(end-1),:);
+testLlhd_newton =  testLlhd_newton(1:(end-1),:);
+
+
 cLim_all = [min([testLlhd_filt_exact(:) - testLlhd_filt(:);...
     testLlhd_filt_wind(:) - testLlhd_filt(:);...
     testLlhd_newton(:) - testLlhd_filt(:)])...
@@ -124,7 +131,8 @@ cLim_all = [min([testLlhd_filt_exact(:) - testLlhd_filt(:);...
 figure;
 subplot(1,3,1)
 imagesc(betaRange, gamRange,testLlhd_filt_exact - testLlhd_filt)
-ylabel("range of \gamma, start from " + gamStart)
+% ylabel("range of \gamma, start from " + gamStart)
+ylabel("\gamma")
 title('exact - fisher')
 colorbar()
 set(gca,'CLim',cLim_all)
@@ -136,7 +144,8 @@ colorbar()
 set(gca,'CLim',cLim_all)
 subplot(1,3,3)
 imagesc(betaRange, gamRange,testLlhd_newton - testLlhd_filt)
-xlabel("range of \beta, start from" + betaStart)
+% xlabel("range of \beta, start from" + betaStart)
+xlabel("\beta")
 title('newton - fisher')
 colorbar()
 set(gca,'CLim',cLim_all)
@@ -145,7 +154,8 @@ set(gca,'CLim',cLim_all)
 figure;
 subplot(1,3,1)
 imagesc(betaRange, gamRange,testLlhd_filt_exact - testLlhd_filt)
-ylabel("range of \gamma, start from " + gamStart)
+% ylabel("range of \gamma, start from " + gamStart)
+ylabel("\gamma")
 title('exact - fisher')
 colorbar()
 subplot(1,3,2)
@@ -155,7 +165,8 @@ title('window - fisher')
 colorbar()
 subplot(1,3,3)
 imagesc(betaRange, gamRange,testLlhd_newton - testLlhd_filt)
-xlabel("range of \beta, start from" + betaStart)
+% xlabel("range of \beta, start from" + betaStart)
+xlabel("\beta")
 title('newton - fisher')
 colorbar()
 
@@ -164,21 +175,25 @@ figure;
 subplot(1,2,1)
 imagesc(betaRange, gamRange,(testLlhd_newton - testLlhd_filt_wind)>0)
 title('newton - window: >0 ?')
-ylabel("range of \gamma, start from " + gamStart)
+% ylabel("range of \gamma, start from " + gamStart)
+ylabel("\gamma")
 colorbar()
 subplot(1,2,2)
 imagesc(betaRange, gamRange,testLlhd_newton - testLlhd_filt_wind)
 % title('newton - window 5')
 title('newton - window: value')
-xlabel("range of \beta, start from" + betaStart)
+% xlabel("range of \beta, start from" + betaStart)
+xlabel("\beta")
 colorbar()
 
 % selected window size
 figure;
 imagesc(betaRange, gamRange,windSize_opt)
 title('selected window size')
-ylabel("range of \gamma, start from " + gamStart)
-xlabel("range of \beta, start from" + betaStart)
+% ylabel("range of \gamma, start from " + gamStart)
+ylabel("\gamma")
+% xlabel("range of \beta, start from" + betaStart)
+xlabel("\beta")
 colorbar()
 
 
