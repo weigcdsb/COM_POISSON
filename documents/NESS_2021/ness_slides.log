@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.12.6)  28 SEP 2021 20:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.12.6)  28 SEP 2021 22:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -808,7 +808,7 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \sympureletters=\mathgroup6
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
 (Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on inp
-ut line 83.
+ut line 84.
 
 (e:/software/texlive/2020/texmf-dist/tex/latex/tools/bm.sty
 Package: bm 2019/07/24 v1.2d Bold Symbol Support (DPC/FMi)
@@ -827,22 +827,22 @@ File: l3backend-pdftex.def 2020-09-24 L3 backend support: PDF output (pdfTeX)
 (./ness_slides.aux)
 \openout1 = `ness_slides.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -899,7 +899,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 99.
+Package hyperref Info: Link coloring OFF on input line 119.
 
 (e:/software/texlive/2020/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
@@ -913,67 +913,67 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count335
 )
-LaTeX Info: Redefining \ref on input line 99.
-LaTeX Info: Redefining \pageref on input line 99.
-LaTeX Info: Redefining \nameref on input line 99.
+LaTeX Info: Redefining \ref on input line 119.
+LaTeX Info: Redefining \pageref on input line 119.
+LaTeX Info: Redefining \nameref on input line 119.
  (./ness_slides.out) (./ness_slides.out)
 \@outlinefile=\write5
 \openout5 = `ness_slides.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 99.
+(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 119.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 99.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 119.
 \symnumbers=\mathgroup11
-LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 99.
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 119.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
-(Font)                  OT1/mathkerncmss/m/sl --> OT1/cmss/m/it on input line 9
-9.
+(Font)                  OT1/mathkerncmss/m/sl --> OT1/cmss/m/it on input line 1
+19.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
 (Font)                  OT1/mathkerncmss/bx/sl --> OT1/cmss/m/it on input line 
-99.
+119.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 99.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 99.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 99.
+(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 119.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 119.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 99.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 99.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 99.
+(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 119.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 99.
+(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 99.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 99.
+(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 119.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 99.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 99.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 119.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 99.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 119.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 99.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/cmss/b/n --> OT1/cmr/b/n on input line 99.
+(Font)                  OT1/cmss/b/n --> OT1/cmr/b/n on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmss/b/n --> OT1/cmss/b/n on input line 99.
+(Font)                  OT1/cmss/b/n --> OT1/cmss/b/n on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 99.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 99.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 119.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/b/n on input line 99.
-LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 99.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/b/n on input line 119.
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 119.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
-(Font)                  OT1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 9
-9.
+(Font)                  OT1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 1
+19.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  OT1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 9
-9.
+(Font)                  OT1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 1
+19.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
 (Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on inp
-ut line 99.
+ut line 119.
 
 (e:/software/texlive/2020/texmf-dist/tex/latex/translator/translator-basic-dict
 ionary-English.dict
@@ -998,46 +998,47 @@ Dictionary: translator-numbers-dictionary, Language: English
 (e:/software/texlive/2020/texmf-dist/tex/latex/translator/translator-theorem-di
 ctionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
-) (./ness_slides.nav) [1
-
-{e:/software/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 125
+) (./ness_slides.nav)
+LaTeX Font Info:    Trying to load font information for U+msa on input line 123
 .
 
 (e:/software/texlive/2020/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 125
+LaTeX Font Info:    Trying to load font information for U+msb on input line 123
 .
 
 (e:/software/texlive/2020/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on inp
-ut line 125.
+ut line 123.
 
 (e:/software/texlive/2020/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.f
 d
 File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/ma
 thkerncmss.
-)
-<neuron.png, id=56, 338.76563pt x 181.80421pt>
+) [1
+
+{e:/software/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+<neuron.png, id=58, 338.76563pt x 181.80421pt>
 File: neuron.png Graphic file (type png)
 <use neuron.png>
-Package pdftex.def Info: neuron.png  used on input line 125.
+Package pdftex.def Info: neuron.png  used on input line 145.
 (pdftex.def)             Requested size: 136.91603pt x 73.48048pt.
-<spike.png, id=58, 564.1075pt x 242.9075pt>
+<spike.png, id=60, 564.1075pt x 242.9075pt>
 File: spike.png Graphic file (type png)
 <use spike.png>
-Package pdftex.def Info: spike.png  used on input line 125.
+Package pdftex.def Info: spike.png  used on input line 145.
 (pdftex.def)             Requested size: 136.91603pt x 58.95503pt.
- [2
+
+[2
 
  <./neuron.png> <./spike.png>]
-<ff.jpg, id=94, 388.07484pt x 228.855pt>
+<ff.jpg, id=96, 388.07484pt x 228.855pt>
 File: ff.jpg Graphic file (type jpg)
 <use ff.jpg>
-Package pdftex.def Info: ff.jpg  used on input line 143.
+Package pdftex.def Info: ff.jpg  used on input line 163.
 (pdftex.def)             Requested size: 171.14764pt x 100.93047pt.
  [3
 
@@ -1050,23 +1051,23 @@ Package pdftex.def Info: ff.jpg  used on input line 143.
 ] [7
 
 ]
-<smoother.png, id=238, 420.82219pt x 315.42844pt>
+<smoother.png, id=240, 420.82219pt x 315.42844pt>
 File: smoother.png Graphic file (type png)
 <use smoother.png>
-Package pdftex.def Info: smoother.png  used on input line 239.
+Package pdftex.def Info: smoother.png  used on input line 259.
 (pdftex.def)             Requested size: 171.14764pt x 128.28206pt.
-<window.png, id=239, 420.82219pt x 315.42844pt>
+<window.png, id=241, 420.82219pt x 315.42844pt>
 File: window.png Graphic file (type png)
 <use window.png>
-Package pdftex.def Info: window.png  used on input line 239.
+Package pdftex.def Info: window.png  used on input line 259.
 (pdftex.def)             Requested size: 171.14764pt x 128.28206pt.
  [8
 
  <./smoother.png> <./window.png>]
-<hippo.jpg, id=269, 469.755pt x 351.93985pt>
+<hippo.jpg, id=271, 469.755pt x 351.93985pt>
 File: hippo.jpg Graphic file (type jpg)
 <use hippo.jpg>
-Package pdftex.def Info: hippo.jpg  used on input line 248.
+Package pdftex.def Info: hippo.jpg  used on input line 268.
 (pdftex.def)             Requested size: 239.60567pt x 179.50842pt.
  [9
 
@@ -1075,7 +1076,7 @@ Package pdftex.def Info: hippo.jpg  used on input line 248.
 ]
 
 LaTeX Font Warning: Font shape `OT1/cmss/b/n' undefined
-(Font)              using `OT1/cmss/m/n' instead on input line 288.
+(Font)              using `OT1/cmss/m/n' instead on input line 308.
 
 [11
 
@@ -1100,13 +1101,13 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 18314 strings out of 479383
- 353717 string characters out of 5868871
- 656413 words of memory out of 5000000
- 34918 multiletter control sequences out of 15000+600000
- 417650 words of font info for 68 fonts, out of 8000000 for 9000
+ 18340 strings out of 479383
+ 354039 string characters out of 5868871
+ 657020 words of memory out of 5000000
+ 34936 multiletter control sequences out of 15000+600000
+ 423619 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 125i,19n,126p,415b,564s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 125i,19n,126p,466b,595s stack positions out of 5000i,500n,10000p,200000b,80000s
 {e:/software/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc
 }<e:/software/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmbsy
 6.pfb><e:/software/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx1
@@ -1130,10 +1131,10 @@ msy8.pfb><e:/software/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbo
 ls/msbm10.pfb><e:/software/texlive/2020/texmf-dist/fonts/type1/public/cm-super/
 sfso0800.pfb><e:/software/texlive/2020/texmf-dist/fonts/type1/public/cm-super/s
 fso1000.pfb>
-Output written on ness_slides.pdf (12 pages, 687722 bytes).
+Output written on ness_slides.pdf (12 pages, 689120 bytes).
 PDF statistics:
- 450 PDF objects out of 1000 (max. 8388607)
- 390 compressed objects within 4 object streams
+ 452 PDF objects out of 1000 (max. 8388607)
+ 392 compressed objects within 4 object streams
  26 named destinations out of 1000 (max. 500000)
  105 words of extra memory for PDF output out of 10000 (max. 10000000)
 

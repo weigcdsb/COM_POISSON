@@ -16,6 +16,7 @@
 %----------------------------------------------------------------------------------------
 
 \documentclass{beamer}
+\setbeamerfont{institute}{size=\fontsize{7pt}{8pt}}
 
 \mode<presentation> {
 	
@@ -84,16 +85,35 @@
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
-
+\useoutertheme{infolines}
 \title[Dynamic CMP Neuron]{Dynamic modeling of neural spike count data with non-Poisson variability} % The short title appears at the bottom of every slide, the full title is only on the title page
 
-\author{Ganchao Wei \and Ian H. Stevenson} % Your name
-\institute[UConn] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
-{
-University of Connecticut \\ % Your institution for the title page
-%\medskip
-%\textit{ganchao.wei@uconn.edu} % Your email address
+%\author{Ganchao Wei \textsuperscript{1} \and Ian H. Stevenson \textsuperscript{2, 3}} % Your name
+
+\author[G.\, Wei \& I. H.\, Stevenson]
+{%
+	\texorpdfstring{
+		\begin{columns}%[onlytextwidth]
+			\column{.45\linewidth}
+			\centering
+			Ganchao Wei \textsuperscript{1}\\
+			\href{mailto:ganchao.wei@uconn.edu}{ganchao.wei@uconn.edu}
+			\column{.45\linewidth}
+			\centering
+			Ian H. Stevenson \textsuperscript{1, 2}\\
+			\href{mailto:ian.stevenson@uconn.edu}{ian.stevenson@uconn.edu}
+		\end{columns}
+	}
+	{Ganchao Wei \& Ian H. Stevenson}
 }
+
+\institute[UConn]{
+	\textsuperscript{1} Department of Statistics, University of Connecticut   \and
+	 \inst{2} Department of Psychological Sciences, University of Connecticut  \and 
+	 \inst{3} Department of Biomedical Engineering, University of Connecticut
+ }
+
+
 \date{October 1, 2021} % Date, can be changed to a custom date
 
 \begin{document}
