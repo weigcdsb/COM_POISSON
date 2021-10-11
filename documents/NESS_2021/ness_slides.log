@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.12.6)  28 SEP 2021 22:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.12.6)  1 OCT 2021 16:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1054,12 +1054,12 @@ Package pdftex.def Info: ff.jpg  used on input line 163.
 <smoother.png, id=240, 420.82219pt x 315.42844pt>
 File: smoother.png Graphic file (type png)
 <use smoother.png>
-Package pdftex.def Info: smoother.png  used on input line 259.
+Package pdftex.def Info: smoother.png  used on input line 256.
 (pdftex.def)             Requested size: 171.14764pt x 128.28206pt.
 <window.png, id=241, 420.82219pt x 315.42844pt>
 File: window.png Graphic file (type png)
 <use window.png>
-Package pdftex.def Info: window.png  used on input line 259.
+Package pdftex.def Info: window.png  used on input line 256.
 (pdftex.def)             Requested size: 171.14764pt x 128.28206pt.
  [8
 
@@ -1067,7 +1067,7 @@ Package pdftex.def Info: window.png  used on input line 259.
 <hippo.jpg, id=271, 469.755pt x 351.93985pt>
 File: hippo.jpg Graphic file (type jpg)
 <use hippo.jpg>
-Package pdftex.def Info: hippo.jpg  used on input line 268.
+Package pdftex.def Info: hippo.jpg  used on input line 265.
 (pdftex.def)             Requested size: 239.60567pt x 179.50842pt.
  [9
 
@@ -1076,7 +1076,7 @@ Package pdftex.def Info: hippo.jpg  used on input line 268.
 ]
 
 LaTeX Font Warning: Font shape `OT1/cmss/b/n' undefined
-(Font)              using `OT1/cmss/m/n' instead on input line 308.
+(Font)              using `OT1/cmss/m/n' instead on input line 305.
 
 [11
 
@@ -1131,7 +1131,7 @@ msy8.pfb><e:/software/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbo
 ls/msbm10.pfb><e:/software/texlive/2020/texmf-dist/fonts/type1/public/cm-super/
 sfso0800.pfb><e:/software/texlive/2020/texmf-dist/fonts/type1/public/cm-super/s
 fso1000.pfb>
-Output written on ness_slides.pdf (12 pages, 689120 bytes).
+Output written on ness_slides.pdf (12 pages, 688622 bytes).
 PDF statistics:
  452 PDF objects out of 1000 (max. 8388607)
  392 compressed objects within 4 object streams

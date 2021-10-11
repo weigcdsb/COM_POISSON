@@ -100,7 +100,7 @@
 			\href{mailto:ganchao.wei@uconn.edu}{ganchao.wei@uconn.edu}
 			\column{.45\linewidth}
 			\centering
-			Ian H. Stevenson \textsuperscript{1, 2}\\
+			Ian H. Stevenson \textsuperscript{2, 3}\\
 			\href{mailto:ian.stevenson@uconn.edu}{ian.stevenson@uconn.edu}
 		\end{columns}
 	}
@@ -198,7 +198,7 @@
 		Normal approximation: at recursive prior.
 		\begin{itemize}
 			\item 
-			Assume approximated (posterior) gradient \& hessian are the equal to true values.
+			Assume approximated (log-posterior) gradient \& hessian are the equal to true values.
 			\item
 			fast: one-time calculation.
 		\end{itemize}
@@ -239,10 +239,7 @@
 			Ensure positive-definite covariance (robustness): use expected information (like Fisher scoring).
 			\item
 			Do exact Laplace approximation at the posterior mode: Because of Markovian assumption, the hessian for log-posterior is tri-block diagonal $\Rightarrow$ can update efficiently in $\mathcal{O}(T)$ by Newton-Raphson, starting with smoother estimates.
-			\item
-			Enlarge the local sample size at each step, by assuming stationary state vectors within a pre-specified window. (select window size by forward-chaining)
 		\end{enumerate}
-		Both (3) and (4) have their own strengths. When spikes are sparse, (4) is better.
 	\end{frame}
 	
 	%------------------------------------------------
