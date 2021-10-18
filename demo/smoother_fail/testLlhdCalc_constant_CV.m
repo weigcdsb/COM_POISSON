@@ -81,7 +81,7 @@ for w = 1:nSearchMax
 end
 [~, wIdx] = max(llhd_ho);
 windSize = windSet(wIdx);
-disp(windSize)
+% disp(windSize)
 theta_filt_wind =...
     ppasmoo_compoisson_v2_window_fisher(theta0, spk_vec,X_lam,G_nu,...
     W0,F,Q, windSize, windType);

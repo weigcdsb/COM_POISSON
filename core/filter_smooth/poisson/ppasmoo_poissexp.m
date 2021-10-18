@@ -21,6 +21,7 @@ Wpred = W;
 
 I = eye(size(X,2));
 
+lastwarn('')
 % Forward-Pass (Filtering)
 for i=2:length(n)
     bpred(:,i) = F*b(:,i-1);

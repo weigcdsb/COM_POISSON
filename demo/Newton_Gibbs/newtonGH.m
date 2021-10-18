@@ -14,6 +14,10 @@ for k = 1:MaxIter
 %     dhPre = dh;
     dh = feval(fdf,xx(:,k+1));
     fx = dh{1};
+    if(sum(isnan(xx(:,k+1)))>0)
+        break;
+    end
+    
     if(norm(fx)<TolFun || norm(dx) < TolX)
         break;
     end

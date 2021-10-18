@@ -10,9 +10,9 @@ maxSum = 10*max(N(:)); % max number for sum estimation;
 % Preallocate
 theta   = zeros(length(theta0), n_spk);
 W   = zeros([size(W0) n_spk]);
-lam_pred = n_spk*0;
-nu_pred = n_spk*0;
-log_Zvec_pred = n_spk*0;
+lam_pred = zeros(1,n_spk);
+nu_pred = zeros(1,n_spk);
+log_Zvec_pred = zeros(1,n_spk);
 np_lam = size(X_lam, 2);
 
 % Initialize
