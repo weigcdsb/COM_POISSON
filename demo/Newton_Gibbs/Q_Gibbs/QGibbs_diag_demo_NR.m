@@ -69,6 +69,9 @@ theta_fit(:,:,1) = theta_fit_tmp;
 theta0_fit(:,1) = theta_fit_tmp(:, 1);
 
 %% Let's do Gibbs Sampling
+tau = sqrt(nStep);
+theta_all = reshape(theta_fit(:,:,1),[],1);
+
 for g = 2:ng
     disp(g)
     % (1) update state vectors
@@ -93,6 +96,12 @@ for g = 2:ng
 %     end
     
     % use Cholesky decomposition to sample efficiently
+    
+    
+    
+    
+    
+    
     R = chol(-hess_tmp,'lower'); % sparse
     z = randn(length(theta_tmp_vec), 1) + R'*theta_tmp_vec;
     thetaSamp = R'\z;

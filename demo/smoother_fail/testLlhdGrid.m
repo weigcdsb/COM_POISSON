@@ -133,6 +133,13 @@ testLlhd_newton =  mean(testLlhd_newton_all, 3);
 
 %% plot
 % compare to fisher scoring smoother
+windSize_opt = windSize_opt(1:(end-1),:);
+testLlhd_filt_exact = testLlhd_filt_exact(1:(end-1),:);
+testLlhd_filt =  testLlhd_filt(1:(end-1),:);
+testLlhd_filt_wind =  testLlhd_filt_wind(1:(end-1),:);
+testLlhd_newton =  testLlhd_newton(1:(end-1),:);
+
+
 cLim_all = [min([testLlhd_filt_exact(:) - testLlhd_filt(:);...
     testLlhd_filt_wind(:) - testLlhd_filt(:);...
     testLlhd_newton(:) - testLlhd_filt(:)])...

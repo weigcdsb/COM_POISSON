@@ -2,7 +2,8 @@ addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
 % addpath(genpath('D:\github\COM_POISSON'));
 
 %% see special cases
-rng(1)
+clear all;close all;clc
+rng(4)
 k = 200;
 X_lam = ones(k, 1);
 G_nu = ones(k, 1);
@@ -10,12 +11,12 @@ G_nu = ones(k, 1);
 theta_true = zeros(2,k);
 
 % constant
-theta_true(1,:) = 2*ones(1,k); % min = 0.5, max = 3
-theta_true(2,:) = 1*ones(1,k); % min = -.5, max = 2.5
+theta_true(1,:) = 1.5*ones(1,k); % min = 0.5, max = 3
+theta_true(2,:) = 3*ones(1,k); % min = -.5, max = 2.5
 
 % linear 
-% betaStart = 0; betaEnd = 2;
-% gamStart = -1; gamEnd = 1;
+% betaStart = -0.5; betaEnd = -0.5;
+% gamStart = -1; gamEnd = 2;
 % theta_true(1,:) = linspace(betaStart, betaEnd, k);
 % theta_true(2,:) = linspace(gamStart, gamEnd, k);
 

@@ -6,7 +6,7 @@ rng(123)
 T = 100;
 dt = 0.1; % bin length (s)
 N = 1; % number of independent observations
-Q_true = diag([1e-3 1e-5]);
+Q_true = diag([1e-2 1e-5]);
 
 
 % X_lam = ones(T/dt, 1);
@@ -27,7 +27,7 @@ spk_vec = com_rnd(lam_true, nu_true);
 theta_true = [beta_true gamma_true];
 
 %% MCMC setting
-ng = 1000;
+ng = 100;
 windType = 'forward';
 F = diag([1 1]);
 windSize = 1;
@@ -62,7 +62,6 @@ theta_fit(:,:,1) = theta_fit_tmp;
 theta0_fit(:,1) = theta_fit_tmp(:, 1);
 
 
-
 %% Let's do Gibbs Sampling
 for g = 2:ng
     disp(g)
@@ -70,19 +69,27 @@ for g = 2:ng
     % Adaptive smoothing
     theta0_tmp = theta0_fit(:,g-1);
     Q_tmp = Q_fit(:,:,g-1);
-    
     [theta_tmp,W_tmp] =...
         ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
         W0,F,Q_tmp, windSize, windType);
     
-    % vecTheta = theta_tmp(:);
-    hess_tmp = hessTheta(theta_tmp(:), X_lam,G_nu, W0,...
-        F, Q_tmp, spk_vec);
-    % use Cholesky decomposition to sample efficiently
-    R = chol(-hess_tmp,'lower'); % sparse
-    z = randn(length(theta_tmp(:)), 1) + R'*theta_tmp(:);
-    thetaSamp = R'\z;
-    theta_fit(:,:,g) = reshape(thetaSamp,[], nStep);
+    logpdf = @(vecTheta)logpdfTheta(vecTheta, X_lam,G_nu, theta0_tmp, W0_tmp,...
+    F, Q_tmp, spk_vec);
+    smp = hmcSampler(logpdf,theta_tmp(:), 'CheckGradient',0);
+    vecTheta_HMC = drawSamples(smp,'Burnin',0,'NumSamples',1);
+    
+    theta_fit(:,:,g) = reshape(vecTheta,[], nStep);
+    
+    subplot(2,1,1)
+    hold on
+    plot(theta_true)
+    plot(theta_tmp')
+    hold off
+    subplot(2,1,2)
+    hold on
+    plot(theta_true)
+    plot(theta_fit(:,:,g)')
+    hold off
     
     % (2) update theta0_fit
     Sig0 = inv(inv(Sig00) + inv(W0));
@@ -106,7 +113,8 @@ for g = 2:ng
 end
 
 %% diagnose
-idx = 200:ng;
+% idx = 200:ng;
+idx = 5:20;
 mean(Q_fit(:,:,idx), 3)
 
 % ans =
@@ -127,6 +135,21 @@ hold on
 plot(reshape(Q_fit(2,2,1:g), 1, []))
 yline(Q_true(2,2), 'r--', 'LineWidth', 2);
 hold off
+
+Theta_fit = mean(theta_fit(:,:,idx), 3);
+
+subplot(2,1,1)
+hold on
+plot(theta_true(:, 1), 'k', 'LineWidth', 2);
+plot(Theta_fit(1, :), 'b', 'LineWidth', 1);
+hold off
+subplot(2,1,2)
+hold on
+plot(theta_true(:, 2), 'k', 'LineWidth', 2);
+plot(Theta_fit(2, :), 'b', 'LineWidth', 1);
+hold off
+
+
 
 
 

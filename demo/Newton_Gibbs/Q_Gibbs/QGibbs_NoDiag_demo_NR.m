@@ -86,17 +86,14 @@ for g = 2:ng
     [theta_tmp_vec,~,hess_tmp,~] = newtonGH(gradHess_tmp,...
         theta_tmp(:),1e-6,1000);
     
-    %     if isnan(theta_tmp_vec)
-%         theta_tmp_vec = theta_tmp_vec_pre;
-%         hess_tmp  = hess_tmp_pre;
-%     end
     
+    logpdf = @(vecTheta)logpdfTheta(vecTheta, X_lam,G_nu, theta0_tmp, W0_tmp,...
+    F, Q_tmp, spk_vec);
+    smp = hmcSampler(logpdf,theta_tmp_vec, 'CheckGradient',0);
+    vecTheta_HMC = drawSamples(smp,'Burnin',0,'NumSamples',1);
     
-    % use Cholesky decomposition to sample efficiently
-    R = chol(-hess_tmp,'lower'); % sparse
-    z = randn(length(theta_tmp_vec), 1) + R'*theta_tmp_vec;
-    thetaSamp = R'\z;
-    theta_fit(:,:,g) = reshape(thetaSamp,[], nStep);
+    theta_fit(:,:,g) = reshape(vecTheta,[], nStep);
+    
     
     % (2) update theta0_fit
     Sig0 = inv(inv(Sig00) + inv(W0));

@@ -27,7 +27,7 @@ spk_vec = com_rnd(lam_true, nu_true);
 theta_true = [beta_true gamma_true];
 
 %% MCMC setting
-ng = 1000;
+ng = 50;
 windType = 'forward';
 F = diag([1 1]);
 windSize = 1;
@@ -62,6 +62,9 @@ theta_fit(:,:,1) = theta_fit_tmp;
 theta0_fit(:,1) = theta_fit_tmp(:, 1);
 
 %% Let's do Gibbs Sampling
+opt.M=1;
+opt.Madapt=0;
+
 for g = 2:ng
     disp(g)
     % (1) update state vectors
@@ -69,23 +72,21 @@ for g = 2:ng
     theta0_tmp = theta0_fit(:,g-1);
     Q_tmp = Q_fit(:,:,g-1);
     
-    [theta_tmp,W_tmp] =...
-        ppasmoo_compoisson_v2_window_fisher(theta0_tmp, spk_vec,X_lam,G_nu,...
-        W0,F,Q_tmp, windSize, windType);
-    
-    % vecTheta = theta_tmp(:);
-    hess_tmp = hessTheta(theta_tmp(:), X_lam,G_nu, W0,...
+    logpdf = @(vecTheta_r) logpdfTheta(vecTheta_r', X_lam,G_nu, theta0_tmp, W0,...
         F, Q_tmp, spk_vec);
-    % use Cholesky decomposition to sample efficiently
-    R = chol(-hess_tmp,'lower'); % sparse
-    z = randn(length(theta_tmp(:)), 1) + R'*theta_tmp(:);
-    thetaSamp = R'\z;
-    theta_fit(:,:,g) = reshape(thetaSamp,[], nStep);
+    
+    [vecTheta_NUTS, ~, diagn]=...
+        hmc_nuts(logpdf, reshape(theta_fit(:,:,g-1),[],1)',opt);
+    
+    theta_fit(:,:,g) = reshape(vecTheta_NUTS,[], nStep);
     
     % (2) update theta0_fit
     Sig0 = inv(inv(Sig00) + inv(W0));
     mu0 = Sig0*(Sig00\mu00 + W0\theta_fit(:,1,g));
     theta0_fit(:,g) = mvnrnd(mu0, Sig0)';
+    
+    % debug
+    %     theta_fit(:,:,g) = theta_true';
     
     % (3) update Q: diagonal version
     for k = 1:size(theta_fit, 1)
@@ -97,7 +98,9 @@ for g = 2:ng
         Q_fit(k,k,g) = 1/gamrnd(alphq, 1/betaq);
     end
     
-    figure(1)
+    %     Q_fit(1,1,g)
+    
+    figure(2)
     subplot(1,2,1)
     plot(reshape(Q_fit(1,1,1:g), 1, []))
     subplot(1,2,2)
@@ -106,13 +109,14 @@ for g = 2:ng
 end
 
 %% diagnose
-idx = 200:ng;
+% idx = 200:ng;
+idx = 1:10
 mean(Q_fit(:,:,idx), 3)
 
 % ans =
-% 
+%
 %    1.0e-03 *
-% 
+%
 %     0.5507         0
 %          0    0.0764
 

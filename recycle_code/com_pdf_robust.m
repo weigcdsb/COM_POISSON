@@ -1,7 +1,6 @@
 
-function pdf = com_pdf_robust(y, lambda, nu)
+function pdf = com_pdf_robust(y, lambda, nu, summax)
 
-summax=1000;
 n=0:summax;
 log_p = (n*log(lambda) - (nu*gammaln(n+1)));
 log_pmax = max(log_p);
