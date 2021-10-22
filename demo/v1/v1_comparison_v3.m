@@ -376,14 +376,18 @@ lam4 = exp(sum(Xb .* theta_fit4', 2));
 
 writematrix(spk_vec', 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\yAll.csv')
 writematrix(Xb, 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\XAll.csv')
-writematrix(Gb_full, 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\GAll.csv')
+% writematrix(Gb_full, 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\GAll.csv')
+writematrix(Gb_full(:,1), 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\GAll.csv')
+
+
 
 RunRcode('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\cmpRegression_all.r',...
     'C:\Users\gaw19004\Documents\R\R-4.0.2\bin');
 theta_fit5 = readmatrix('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\cmp_all.csv');
 
 lam5 = exp(Xb*theta_fit5(1:(nknots+1), :));
-nu5 = exp(Gb_full*theta_fit5((nknots+2):end, :));
+% nu5 = exp(Gb_full*theta_fit5((nknots+2):end, :));
+nu5 = exp(Gb_full(:,1)*theta_fit5((nknots+2):end, :));
 logZ5 = 0*lam5;
 
 CMP_mean5 = 0*lam5;
@@ -460,8 +464,11 @@ end
 
 
 lam4_ho = exp(sum(Xb_ho .* theta_ho4', 2));
+% [lam5_ho, nu5_ho, logZ5_ho, CMP_mean5_ho, CMP_var5_ho] =...
+%     CMP_seq_calc(repmat(theta_fit5,1,T_ho), Xb_ho, Gb_ho_full, nknots, 1000);
 [lam5_ho, nu5_ho, logZ5_ho, CMP_mean5_ho, CMP_var5_ho] =...
-    CMP_seq_calc(repmat(theta_fit5,1,T_ho), Xb_ho, Gb_ho_full, nknots, 1000);
+    CMP_seq_calc(repmat(theta_fit5,1,T_ho), Xb_ho, Gb_ho_full(:,1), nknots, 1000);
+
 lam6_ho = exp(Xb_ho*theta_fit6);
 
 llhd1_ho = sum(spk_vec_ho.*log((lam1_ho+(lam1_ho==0))) -...
