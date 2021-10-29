@@ -1,11 +1,25 @@
 function [theta,W,lam_pred,nu_pred,log_Zvec_pred,...
     lam_filt,nu_filt,log_Zvec_filt,...
     lam_smoo,nu_smoo,log_Zvec_smoo] =...
-    ppasmoo_compoisson_v2_window_fisher(theta0, N,X_lam,G_nu,W0,F,Q, windSize, windType)
+    ppasmoo_compoisson_v2_window_fisher(theta0, N,X_lam,G_nu,W0,F,Q, windSize, windType, varargin)
 
 n_spk = size(N, 2);
 nCell = size(N, 1);
 maxSum = 10*max(N(:)); % max number for sum estimation;
+obsIdxAll = 1:n_spk;
+
+if (~isempty(varargin))
+    c = 1 ;
+    while c <= length(varargin)
+        switch varargin{c}
+            case {'obsIdx'}
+                obsIdxAll = varargin{c+1};
+        end % switch
+        c = c + 2;
+    end % for
+end % if
+
+h = diff(obsIdxAll);
 
 % Preallocate
 theta   = zeros(length(theta0), n_spk);
@@ -45,8 +59,13 @@ end
 % warning('Message 1.')
 % Forward-Pass (Filtering)
 for i=2:n_spk
-    thetapred(:,i) = F*theta(:,i-1);
-    Wpred(:,:,i) = F*W(:,:,i-1)*F' + Q;
+    Ftmp = F^(h(i-1));
+    Fsum = 0;
+    for l = 1:h(i-1);Fsum = Fsum + F^(l-1);end
+    Qtmp = Fsum*Q*Fsum';
+    
+    thetapred(:,i) = Ftmp*theta(:,i-1);
+    Wpred(:,:,i) = Ftmp*W(:,:,i-1)*Ftmp' + Qtmp;
     
     switch windType
         case{'forward'}
@@ -114,12 +133,19 @@ nu_smoo = nu_filt;
 log_Zvec_smoo = log_Zvec_filt;
 
 for i=(n_spk-1):-1:1
+    
+    Ftmp = F^(h(i));
+    Qtmp = 0;
+    for l = 1:h(i)
+        Qtmp = Qtmp + (F^(l-1))*Q*(F^(l-1))';
+    end
+    
     Wi = inv(Wpred(:,:,i+1));
-    Fsquig = inv(F)*(I-Q*Wi);
-    Ksquig = inv(F)*Q*Wi;
+    Fsquig = inv(Ftmp)*(I-Qtmp*Wi);
+    Ksquig = inv(Ftmp)*Qtmp*Wi;
     
     theta(:,i)=Fsquig*theta(:,i+1) + Ksquig*thetapred(:,i+1);
-    C = W(:,:,i)*F'*Wi;
+    C = W(:,:,i)*Ftmp'*Wi;
     W(:,:,i) = W(:,:,i) + C*(W(:,:,i+1)-Wpred(:,:,i+1))*C';
     
     lam_smoo(i) = exp(X_lam(i,:)*theta(1:np_lam, i));

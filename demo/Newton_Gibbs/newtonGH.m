@@ -14,8 +14,8 @@ for k = 1:MaxIter
 %     dhPre = dh;
     dh = feval(fdf,xx(:,k+1));
     fx = dh{1};
-    if(sum(isnan(xx(:,k+1)))>0)
-        break;
+    if(sum(isnan(xx(:,k+1)))>0 || sum(isinf(xx(:,k+1)))>0)
+        error('not converge');
     end
     
     if(norm(fx)<TolFun || norm(dx) < TolX)
@@ -38,7 +38,7 @@ warning('on');
 x = xx(:,k + 1);
 dfdx = dh{2};
 if(k == MaxIter)
-    fprintf('The best in %d iterations\n',MaxIter)
+    error('increase the iteration')
 end
 
 end

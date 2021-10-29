@@ -5,6 +5,7 @@ function [theta,W,lam_pred,nu_pred,log_Zvec_pred,...
 n_spk = size(N, 2);
 nCell = size(N, 1);
 maxSum = 10*max(N(:)); % max number for sum estimation;
+obsIdxAll = 1:n_spk;
 
 if (~isempty(varargin))
     c = 1 ;
@@ -12,10 +13,14 @@ if (~isempty(varargin))
         switch varargin{c}
             case {'maxSum'}
                 maxSum = varargin{c+1};
+            case {'obsIdx'}
+                obsIdxAll = varargin{c+1};
         end % switch
         c = c + 2;
     end % for
 end % if
+
+h = diff(obsIdxAll);
 
 % Preallocate
 theta   = zeros(length(theta0), n_spk);
@@ -50,8 +55,15 @@ end
 % warning('Message 1.')
 % Forward-Pass (Filtering)
 for i=2:n_spk
-    thetapred(:,i) = F*theta(:,i-1);
-    Wpred(:,:,i) = F*W(:,:,i-1)*F' + Q;
+    
+    Ftmp = F^(h(i-1));
+    Qtmp = 0;
+    for l = 1:h(i-1)
+        Qtmp = Qtmp + (F^(l-1))*Q*(F^(l-1))';
+    end
+    
+    thetapred(:,i) = Ftmp*theta(:,i-1);
+    Wpred(:,:,i) = Ftmp*W(:,:,i-1)*Ftmp' + Qtmp;
     
     switch windType
         case{'forward'}
