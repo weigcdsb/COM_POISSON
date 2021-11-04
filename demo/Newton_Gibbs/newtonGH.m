@@ -7,7 +7,6 @@ fx = dh{1};
 % disp(norm(fx))
 warning('off');
 for k = 1:MaxIter
-%     disp(k)
     dfdx = dh{2};
     dx = -dfdx\fx;
     xx(:,k+1) = xx(:,k)+dx;
@@ -18,6 +17,7 @@ for k = 1:MaxIter
         error('not converge');
     end
     
+    disp("iter: " + k + ", norm(fx) = " + norm(fx))
     if(norm(fx)<TolFun || norm(dx) < TolX)
         break;
     end

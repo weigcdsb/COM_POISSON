@@ -121,6 +121,7 @@ for i=2:n_spk
     [~, msgid] = lastwarn;
     if strcmp(msgid,'MATLAB:nearlySingularMatrix') || strcmp(msgid,'MATLAB:illConditionedMatrix')
         lastwarn('')
+        error('singular')
         return;
 %         keyboard
     end

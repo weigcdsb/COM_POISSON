@@ -37,15 +37,18 @@ LLHD_ho = ones(size(trial_y_full,2), nModel + 1)*NaN;
 
 LLHD_spk = [];
 BIT_spk = [];
-% SSIDX = []; % use selected from previous...
+% SSIDX = []; 
+load('ssidx.mat')% use selected from previous...
 
-for n = 1:size(trial_y_full,2)
+failIdx = find(isnan(sum(LLHD, 2)));
+
+for n = failIdx'%1:size(trial_y_full,2)
     
     LLHD_spk{n} = NaN*ones(2,nModel + 1);
     BIT_spk{n} = NaN*ones(2,nModel);
     c = 0;
     flag = false;
-    while(sum(isnan(LLHD_spk{n}),'all') > 0 && c < 2)
+    while(sum(isnan(LLHD_spk{n}),'all') > 0 && c < 10)
         c = c + 1;
         if flag
             ssIdx = zeros(size(data.EVENTS, 2)*nSS, 1);

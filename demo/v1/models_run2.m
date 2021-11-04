@@ -3,8 +3,9 @@ function [llhd_spk, bit_spk, llhd, llhd_ho] = models_run2(neuron, trial_x_full, 
 
 
 % to debug
-% neuron = n;
-% ssIdx = SSIDX{n};
+% n = 9;
+neuron = n;
+ssIdx = SSIDX{n};
 
 trial_x_ss = trial_x_full(ssIdx);
 trial_y_ss = trial_y_full(ssIdx, :);
@@ -25,17 +26,19 @@ Gnknots_full = 3;
 Xb = getCubicBSplineBasis(trial_x,nknots,true);
 Gb_full = getCubicBSplineBasis(trial_x,Gnknots_full,true);
 
-trial = 1:15;
-writematrix(reshape(ry(:, trial), [], 1), [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\y.csv'])
-writematrix(Xb((nObs*(trial(1)-1)+1):nObs*trial(end), :),...
+% trial = 1:15;
+initIdx = max(10*nObs, find(cumsum(spk_vec) > 200, 1, 'first'));
+writematrix(spk_vec(1:initIdx)', [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\y.csv'])
+writematrix(Xb(1:initIdx, :),...
     [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\X.csv'])
-writematrix(Gb_full((nObs*(trial(1)-1)+1):nObs*trial(end), :),...
+writematrix(Gb_full(1:initIdx, :),...
     [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\G.csv'])
+
+
 
 windType = 'forward';
 RunRcode([usr_dir '\Documents\GitHub\COM_POISSON\runRcode\cmpRegression.r'],r_path);
 theta0 = readmatrix([usr_dir '\Documents\GitHub\COM_POISSON\runRcode\cmp_t1.csv']);
-
 
 Q = diag([repmat(1e-4,nknots+1,1); repmat(1e-4,Gnknots_full + 1,1)]);
 [theta_fit_tmp,W_fit_tmp] =...
@@ -94,12 +97,10 @@ Gnknots=1;
 
 Xb = getCubicBSplineBasis(trial_x,nknots,true);
 Gb = getCubicBSplineBasis(trial_x,Gnknots,true);
-
-trial = 1:15;
-writematrix(reshape(ry(:, trial), [], 1), [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\y.csv'])
-writematrix(Xb((nObs*(trial(1)-1)+1):nObs*trial(end), :),...
+writematrix(spk_vec(1:initIdx)', [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\y.csv'])
+writematrix(Xb(1:initIdx, :),...
     [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\X.csv'])
-writematrix(Gb((nObs*(trial(1)-1)+1):nObs*trial(end), :),...
+writematrix(Gb(1:initIdx, :),...
     [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\G.csv'])
 
 windType = 'forward';
@@ -159,12 +160,12 @@ end
 CMP_ff2 = CMP_var2./CMP_mean2;
 
 %% fit 4: adaptive Poisson
-trial = 1:15;
-b0 = glmfit(Xb((nObs*(trial(1)-1)+1):nObs*trial(end), :),...
-    reshape(ry(:, trial), [], 1),'poisson','constant','off');
+initIdx = max(15*nObs, find(cumsum(spk_vec) > 200, 1, 'first'));
+b0 = glmfit(Xb(1:initIdx, :),...
+    spk_vec(1:initIdx)','poisson','constant','off');
 
 [theta_fit_tmp,W_fit_tmp] =...
-ppasmoo_poissexp(spk_vec,Xb, b0,eye(length(b0))*1e-1,eye(length(b0)),1e-4*eye(length(b0)), 'obsIdx', ssIdx);
+ppasmoo_poissexp(spk_vec,Xb, b0,eye(length(b0)),eye(length(b0)),1e-4*eye(length(b0)), 'obsIdx', ssIdx);
 
 theta04 = theta_fit_tmp(:, 1);
 W04 = W_fit_tmp(:, :, 1);
@@ -202,17 +203,19 @@ for g = 2:iterMax
     % (1) update lambda_i
     if smoo_flag
         [theta_lam(:,:,g),~,~] = ppasmoo_cmp_fixNu(spk_vec,Xb,nu_trace(g-1),...
-            theta_lam(:,1,g-1),eye(size(Xb, 2))*1e-1,eye(size(Xb, 2)),Qoptmatrix3, 'obsIdx', ssIdx);
+            theta02(1:(end-1)),W02(1:(end-1), 1:(end-1)),...
+            eye(size(Xb, 2)),Qoptmatrix3, 'obsIdx', ssIdx);
     else
         theta_tmp = theta_lam(:,:,g-1);
         gradHess_tmp = @(vecTheta) gradHessTheta_CMP_fixNu(vecTheta, Xb,...
-            nu_trace(g-1),theta_lam(:,1,g-1),eye(size(Xb, 2))*1e-1,...
+            nu_trace(g-1),theta02(1:(end-1)),W02(1:(end-1), 1:(end-1)),...
             eye(size(Xb, 2)), Qoptmatrix3, spk_vec, 'obsIdx', ssIdx);
         [theta_newton_vec,~,~,~] = newtonGH(gradHess_tmp,theta_tmp(:),1e-10,1000);
         if(sum(isnan(theta_newton_vec)) ~= 0)
             disp('use smoother')
             [theta_tmp,~,~] = ppasmoo_cmp_fixNu(spk_vec,Xb,nu_trace(g-1),...
-                theta_lam(:,1,g-1),eye(size(Xb, 2))*1e-1,eye(size(Xb, 2)),Qoptmatrix3, 'obsIdx', ssIdx);
+                theta02(1:(end-1)),W02(1:(end-1), 1:(end-1)),...
+                eye(size(Xb, 2)),Qoptmatrix3, 'obsIdx', ssIdx);
             [theta_newton_vec,~,~,~] = newtonGH(gradHess_tmp,theta_tmp(:),1e-10,1000);
         end
         theta_lam(:,:,g)  = reshape(theta_newton_vec, [], T);
