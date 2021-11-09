@@ -40,8 +40,6 @@ BIT_spk = [];
 % SSIDX = []; 
 load('ssidx.mat')% use selected from previous...
 
-% failIdx = find(isnan(sum(LLHD, 2)));
-
 for n = 1:size(trial_y_full,2)
     
     LLHD_spk{n} = NaN*ones(2,nModel + 1);
@@ -51,6 +49,7 @@ for n = 1:size(trial_y_full,2)
     while(sum(isnan(LLHD_spk{n}),'all') > 0 && c < 10)
         c = c + 1;
         if flag
+            disp('sampling')
             ssIdx = zeros(size(data.EVENTS, 2)*nSS, 1);
             for k = 1:size(data.EVENTS, 2)
                 ssIdx(((k-1)*nSS + 1):(k*nSS)) =...
@@ -74,8 +73,9 @@ for n = 1:size(trial_y_full,2)
 end
 
 %% let's plot
-% failIdx = find(isnan(sum(LLHD, 2)));
-failIdx = find(isnan(sum(LLHD, 2)) | LLHD(:,4) < LLHD(:,8));
+failIdx = find(isnan(sum(LLHD, 2)));
+% failIdx = find(LLHD(:,4) < LLHD(:,8));
+% failIdx = find(LLHD(:,4) < LLHD(:,7) | LLHD(:,1) < LLHD(:,4));
 
 bit_mat = cell2mat(BIT_spk');
 bit_train = bit_mat(1:2:end,:);
@@ -110,7 +110,8 @@ plot(medVal,'r', 'LineWidth',2)
 plot(q1, 'r--', 'LineWidth',2)
 plot(q3, 'r--', 'LineWidth',2)
 for t = 1:numel(medVal)
-  text(t-0.3,medVal(t)+0.3,num2str(round(medVal(t),3)),'Color','red','FontSize',15)
+%   text(t-0.3,medVal(t)+0.3,num2str(round(medVal(t),3)),'Color','red','FontSize',15)
+  text(t-0.25,medVal(t)+0.015,num2str(round(medVal(t),3)),'Color','red','FontSize',15)
 end
 hold off
 xlim([0.5 7.5])
@@ -130,7 +131,7 @@ plot(medVal,'r', 'LineWidth',2)
 plot(q1, 'r--', 'LineWidth',2)
 plot(q3, 'r--', 'LineWidth',2)
 for t = 1:numel(medVal)
-  text(t-0.3,medVal(t)+0.3,num2str(round(medVal(t),3)),'Color','red','FontSize',15)
+  text(t-0.25,medVal(t)+0.015,num2str(round(medVal(t),3)),'Color','red','FontSize',15)
 end
 hold off
 xlim([0.5 7.5])

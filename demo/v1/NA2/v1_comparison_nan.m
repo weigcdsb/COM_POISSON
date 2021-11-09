@@ -404,9 +404,6 @@ basX = getCubicBSplineBasis(x0,nknots,true);
 basG_full = getCubicBSplineBasis(x0,Gnknots_full,true);
 [mean1, var1, ff1] = cmp_grid(theta_fit1(:,1:50:T), nknots, basX, basG_full, 1000);
 
-
-
-
 nplot = 10;
 [~,theta_idx]=sort(theta);
 
