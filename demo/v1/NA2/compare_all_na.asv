@@ -72,71 +72,14 @@ for n = 1:size(trial_y_full,2)
     
 end
 
-failIdx = find(LLHD(:,4) < LLHD(:,7) | LLHD(:,1) < LLHD(:,4));
-while(~isempty(failIdx))
-    for n = failIdx'
-        LLHD_spk{n} = NaN*ones(2,nModel + 1);
-        BIT_spk{n} = NaN*ones(2,nModel);
-        c = 0;
-        flag = false;
-        while(sum(isnan(LLHD_spk{n}),'all') > 0 && c < 10)
-            c = c + 1;
-            if flag | c==0
-                disp('sampling')
-                ssIdx = zeros(size(data.EVENTS, 2)*nSS, 1);
-                for k = 1:size(data.EVENTS, 2)
-                    ssIdx(((k-1)*nSS + 1):(k*nSS)) =...
-                        sort(randsample(((k-1)*nAll+1): k*nAll,nSS));
-                end
-                SSIDX{n} = ssIdx;
-            end
-            
-            try
-                disp("iter:" + n)
-                [~,LLHD_spk{n}, BIT_spk{n}, LLHD(n,:), LLHD_ho(n,:)] =...
-                    evalc('models_run_na(n, trial_x_full, trial_y_full,SSIDX{n}, nSS, nAll, usr_dir, r_path)');
-                flag = false;
-            catch
-                flag = true;
-                disp('error: resample...')
-            end
-            
-        end
-    end
-    failIdx = find(LLHD(:,4) < LLHD(:,7) | LLHD(:,1) < LLHD(:,4));
-    disp(failIdx)
-end
-    
-    
-
-
-
-
-
 %% let's plot
-% failIdx = find(isnan(sum(LLHD, 2)));
+failIdx = find(isnan(sum(LLHD, 2)));
 % failIdx = find(LLHD(:,4) < LLHD(:,8));
-failIdx = find(LLHD(:,4) < LLHD(:,7) | LLHD(:,1) < LLHD(:,4));
+% failIdx = find(LLHD(:,4) < LLHD(:,7) | LLHD(:,1) < LLHD(:,4));
 
 bit_mat = cell2mat(BIT_spk');
 bit_train = bit_mat(1:2:end,:);
 bit_test = bit_mat(2:2:end,:);
-
-bit_train2 = zeros(size(bit_train));
-bit_test2 = zeros(size(bit_test));
-% bit/trial
-for k = 1:size(bit_train, 1)
-    spkTmp = sum(trial_y_full(SSIDX{k}, k));
-    spkTmp_ho = sum(trial_y_full(setdiff(1:length(trial_x_full), SSIDX{k}), k));
-    
-    bit_train2(k,:) = spkTmp*bit_train(k,:)/size(data.EVENTS,2);
-    bit_test2(k,:) = spkTmp_ho*bit_test(k,:)/size(data.EVENTS,2);
-end
-
-bit_train = bit_train(setdiff(1:size(trial_y_full,2), failIdx),:);
-bit_test = bit_test(setdiff(1:size(trial_y_full,2), failIdx),:);
-
-
 
 figure(1)
 subplot(2,1,1)
@@ -288,7 +231,6 @@ xticks(1:2)
 xticklabels({'train','test'})
 title('diff: dCMP-(5,3) - sCMP-(5,3)')
 sgtitle('dCMP-(5,3) vs. sCMP-(5,3): bit/spk')
-set(gcf,'Position',[0 0 800 500])
 
 
 
@@ -343,38 +285,10 @@ xticks(1:2)
 xticklabels({'train','test'})
 title('diff: dCMP-(5,1) - dCMP-(5,const)')
 sgtitle('dCMP-(5,1) vs. dCMP-(5,const): bit/spk')
-set(gcf,'Position',[0 0 800 500])
 
-figure(7)
-subplot(1,3,1)
-d3_train = bit_train(:, [2 6]);
-d3_train_x = repelem(1:2, size(d3_train, 1));
-% boxplot(d1_train)
-beeswarm(d3_train_x',d3_train(:),'sort_style','square',...
-    'dot_size',1,'overlay_style','box');
-xticks(1:2)
-xticklabels({'dCMP-(5,1)','sCMP-(5,1)'})
-title('train')
 
-subplot(1,3,2)
-d3_test = bit_test(:, [2 6]);
-d3_test_x = repelem(1:2, size(d3_test, 1));
-beeswarm(d3_test_x',d3_test(:),'sort_style','square',...
-    'dot_size',1,'overlay_style','box');
-xticks(1:2)
-xticklabels({'dCMP-(5,1)','sCMP-(5,1)'})
-title('test')
 
-subplot(1,3,3)
-d3_diff = [bit_train(:,2) - bit_train(:,6) bit_test(:,2) - bit_test(:,6)];
-d3_diff_x = repelem(1:2, size(d3_diff, 1));
-beeswarm(d3_diff_x',d3_diff(:),'sort_style','square',...
-    'dot_size',1,'overlay_style','box');
-xticks(1:2)
-xticklabels({'train','test'})
-title('diff: dCMP-(5,1) - sCMP-(5,1)')
-sgtitle('dCMP-(5,1) vs. sCMP-(5,1): bit/spk')
-set(gcf,'Position',[0 0 800 500])
+
 
 
 
