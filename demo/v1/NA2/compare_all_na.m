@@ -72,46 +72,6 @@ for n = 1:size(trial_y_full,2)
     
 end
 
-failIdx = find(LLHD(:,4) < LLHD(:,7) | LLHD(:,1) < LLHD(:,4));
-while(~isempty(failIdx))
-    for n = failIdx'
-        LLHD_spk{n} = NaN*ones(2,nModel + 1);
-        BIT_spk{n} = NaN*ones(2,nModel);
-        c = 0;
-        flag = false;
-        while(sum(isnan(LLHD_spk{n}),'all') > 0 && c < 10)
-            c = c + 1;
-            if flag | c==0
-                disp('sampling')
-                ssIdx = zeros(size(data.EVENTS, 2)*nSS, 1);
-                for k = 1:size(data.EVENTS, 2)
-                    ssIdx(((k-1)*nSS + 1):(k*nSS)) =...
-                        sort(randsample(((k-1)*nAll+1): k*nAll,nSS));
-                end
-                SSIDX{n} = ssIdx;
-            end
-            
-            try
-                disp("iter:" + n)
-                [~,LLHD_spk{n}, BIT_spk{n}, LLHD(n,:), LLHD_ho(n,:)] =...
-                    evalc('models_run_na(n, trial_x_full, trial_y_full,SSIDX{n}, nSS, nAll, usr_dir, r_path)');
-                flag = false;
-            catch
-                flag = true;
-                disp('error: resample...')
-            end
-            
-        end
-    end
-    failIdx = find(LLHD(:,4) < LLHD(:,7) | LLHD(:,1) < LLHD(:,4));
-    disp(failIdx)
-end
-    
-    
-
-
-
-
 
 %% let's plot
 % failIdx = find(isnan(sum(LLHD, 2)));
