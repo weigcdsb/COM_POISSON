@@ -53,7 +53,6 @@ end
 
 
 %%
-neuron=13;
 
 for i=1:length(theta)
     s(i,2)=var(trial_y(i:100:6000,neuron));
@@ -112,21 +111,21 @@ ylabel('Fano Factor')
 %%
 
 
-figure(11)
-neuron=13;
-[~,idx]=sort(theta);
-ry = reshape(trial_y(:,neuron),100,[]);
-
-
-% compare
-subplot(1, 2, 1)
-hold on
-for k = 1:120
-    plot(theta', ry(:, k),'.')
-end
-hold off
-subplot(1, 2, 2)
-plot(trial_x,trial_y(:,neuron),'.')
+% figure(11)
+% neuron=13;
+% [~,idx]=sort(theta);
+% ry = reshape(trial_y(:,neuron),100,[]);
+% 
+% 
+% % compare
+% subplot(1, 2, 1)
+% hold on
+% for k = 1:120
+%     plot(theta', ry(:, k),'.')
+% end
+% hold off
+% subplot(1, 2, 2)
+% plot(trial_x,trial_y(:,neuron),'.')
 
 
 figure(12)
@@ -146,7 +145,7 @@ ylabel('Stimulus Number')
 
 
 %% Example tuning curve fit
-nknots=7;
+nknots=5;
 X = getCubicBSplineBasis(trial_x,nknots,true);
 x0 = linspace(0,2*pi,256);
 bas = getCubicBSplineBasis(x0,nknots,true);

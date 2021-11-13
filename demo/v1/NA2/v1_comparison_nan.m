@@ -401,34 +401,125 @@ bit_trial = diag([size(data.EVENTS,2) size(data.EVENTS,2)])\...
 %%
 x0 = linspace(0,2*pi,256);
 basX = getCubicBSplineBasis(x0,nknots,true);
+basG = getCubicBSplineBasis(x0,Gnknots,true);
 basG_full = getCubicBSplineBasis(x0,Gnknots_full,true);
 [mean1, var1, ff1] = cmp_grid(theta_fit1(:,1:50:T), nknots, basX, basG_full, 1000);
+[mean2, var2, ff2] = cmp_grid(theta_fit2(:,1:50:T), nknots, basX, basG, 1000);
 
-nplot = 10;
-[~,theta_idx]=sort(theta);
+% nplot = 10;
+% [~,theta_idx]=sort(theta);
+% 
+% smoothing=2;
+% mff=[]; mmm=[];
+% obs_ff = []; obs_mean = [];
+% for i=1:size(data.EVENTS, 2)-smoothing
+%     
+%     c=1;
+%     for j = theta_idx
+%         tid = [j:nAll:(nAll*smoothing)]+i*nAll;
+%         ff = getFF(trial_y_full(tid, neuron));
+%         obs_ff(c, i) = ff;
+%         obs_mean(c, i) = mean(trial_y_full(tid, neuron));
+%         c = c+1;
+%     end
+%     
+%     ff=[];
+%     c=1;
+%     for stim=linspace(0,2*pi,nplot)
+%         tv=[];
+%         tv = find(abs(theta-stim)<pi/5);
+%         tid=[];
+%         for s=1:length(tv)
+%             tid = [tid [tv(s):nAll:(nAll*smoothing)]+i*nAll];
+%         end
+%         ff = getFF(trial_y_full(tid,neuron));
+%         mff(c,i) = mean(ff);
+%         mmm(c,i) = mean(trial_y_full(tid,neuron));
+%         c=c+1;
+%     end
+% end
+% 
+% 
+% figure(3)
+% subplot(2,2,1)
+% imagesc([1 (120-smoothing)]+smoothing/2, [min(theta) max(theta)], obs_mean)
+% colorbar()
+% title('Mean-obs')
+% subplot(2,2,2)
+% imagesc([1 (120-smoothing)]+smoothing/2, [min(theta) max(theta)], obs_ff)
+% title('FF-obs')
+% colorbar()
+% subplot(2,2,3)
+% imagesc(mean1)
+% title('Mean-fit')
+% colorbar()
+% subplot(2,2,4)
+% imagesc(ff1)
+% title('FF-fit')
+% colorbar()
 
-smoothing=5;
+
+figure(3)
+subplot(1,2,1)
+imagesc(1:size(data.EVENTS, 2),x0, mean1)
+ylabel('Stimulus Direction [rad]')
+title('Mean-fit')
+colorbar()
+subplot(1,2,2)
+imagesc(1:size(data.EVENTS, 2),x0, ff1)
+title('FF-fit')
+colorbar()
+xlabel('Trail')
+
+
+%% single nu doesn't roughly give single FF
+figure(4)
+subplot(1,2,1)
+imagesc(1:size(data.EVENTS, 2),x0, mean2)
+ylabel('Stimulus Direction [rad]')
+title('Mean-fit')
+colorbar()
+subplot(1,2,2)
+imagesc(1:size(data.EVENTS, 2),x0, ff2)
+title('FF-fit')
+colorbar()
+xlabel('Trail')
+
+%%
+for i=1:length(theta)
+    s(i,2)=var(trial_y_full(i:100:6000,neuron));
+    s(i,1)=mean(trial_y_full(i:100:6000,neuron));
+end
+
+figure(5)
+subplot(1,3,1)
+plot(s(:,1),s(:,2),'.','MarkerSize',20)
+
+for i=1:length(theta)
+    s(i,2)=var(trial_y_full([i:100:6000]+6000,neuron));
+    s(i,1)=mean(trial_y_full([i:100:6000]+6000,neuron));
+end
+hold on
+plot(s(:,1),s(:,2),'.','MarkerSize',10)
+hold off
+line(xlim,xlim)
+xlabel('Mean')
+ylabel('Variance')
+legend({'First Half','Second Half'})
+
+%
+
+smoothing=20;
 mff=[]; mmm=[];
-obs_ff = []; obs_mean = [];
-for i=1:size(data.EVENTS, 2)-smoothing
-    
-    c=1;
-    for j = theta_idx
-        tid = [j:nAll:(nAll*smoothing)]+i*nAll;
-        ff = getFF(trial_y_full(tid, neuron));
-        obs_ff(c, i) = ff;
-        obs_mean(c, i) = mean(trial_y_full(tid, neuron));
-        c = c+1;
-    end
-    
+for i=1:(120-smoothing)
     ff=[];
     c=1;
-    for stim=linspace(0,2*pi,nplot)
+    for stim=linspace(0,2*pi,20)
         tv=[];
         tv = find(abs(theta-stim)<pi/5);
         tid=[];
         for s=1:length(tv)
-            tid = [tid [tv(s):nAll:(nAll*smoothing)]+i*nAll];
+            tid = [tid [tv(s):100:(100*smoothing)]+i*100];
         end
         ff = getFF(trial_y_full(tid,neuron));
         mff(c,i) = mean(ff);
@@ -436,36 +527,33 @@ for i=1:size(data.EVENTS, 2)-smoothing
         c=c+1;
     end
 end
+subplot(1,3,2)
+plot([1:(120-smoothing)]+smoothing/2,mmm')
+xlabel('Trial')
+ylabel('Mean')
+subplot(1,3,3)
+plot([1:(120-smoothing)]+smoothing/2,mff')
+xlabel('Trial')
+ylabel('Fano Factor')
 
 
-figure(3)
-subplot(2,2,1)
-imagesc([1 (120-smoothing)]+smoothing/2, [min(theta) max(theta)], obs_mean)
-colorbar()
-title('Mean-obs')
-subplot(2,2,2)
-imagesc([1 (120-smoothing)]+smoothing/2, [min(theta) max(theta)], obs_ff)
-title('FF-obs')
-colorbar()
-subplot(2,2,3)
-imagesc(mean1)
-title('Mean-fit')
-colorbar()
-subplot(2,2,4)
-imagesc(ff1)
-title('FF-fit')
-colorbar()
+%%
+nknots=5;
+X = getCubicBSplineBasis(trial_x_full,nknots,true);
+x0 = linspace(0,2*pi,256);
+bas = getCubicBSplineBasis(x0,nknots,true);
+
+[b,dev,stats] = glmfit(X,trial_y_full(:,neuron),'poisson','constant','off');
+[yhat,dylo,dyhi]=glmval(b,bas,'log',stats,'constant','off');
 
 
+figure(6)
+plot(trial_x_full,trial_y_full(:,neuron),'.')
+hold on
+plot(x0,yhat)
+plot(x0,yhat-dylo)
+plot(x0,yhat+dyhi)
+hold off
+xlim([0 max(x0)]);
+xlabel('Stimulus Direction [rad]')
 
-
-% 
-% figure(3)
-% subplot(1,2,1)
-% imagesc(mean1)
-% title('Mean-fit')
-% colorbar()
-% subplot(1,2,2)
-% imagesc(ff1)
-% title('FF-fit')
-% colorbar()
