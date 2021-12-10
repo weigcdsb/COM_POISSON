@@ -58,4 +58,4 @@ package 'Rcpp' was built under R version 4.0.5
 > 
 > proc.time()
    user  system elapsed 
-  19.51    0.01   19.56 
+  20.17    0.06   21.35 

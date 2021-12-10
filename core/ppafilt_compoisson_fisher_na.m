@@ -12,7 +12,7 @@ theta   = zeros(length(theta0), n_spk);
 W   = zeros([size(W0) n_spk]);
 lam_pred = n_spk*0;
 nu_pred = n_spk*0;
-log_Zvec_pred = zeros(1,n_spk)*nan;
+log_Zvec_pred = n_spk*nan;
 np_lam = size(X_lam, 2);
 
 % Initialize
@@ -73,7 +73,7 @@ for i=2:n_spk
     [~, msgid] = lastwarn;
     if strcmp(msgid,'MATLAB:nearlySingularMatrix') || strcmp(msgid,'MATLAB:illConditionedMatrix')
         lastwarn('')
-        error('singular')
+%         error('singular')
         return;
     end
 end

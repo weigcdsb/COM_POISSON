@@ -95,6 +95,9 @@ nknots = 3;
 basX = getCubicBSplineBasis(x0,nknots,true);
 bassamp = getCubicBSplineBasis(xsamp,nknots,true);
 
+basX = basX(:,2:end);
+bassamp = bassamp(:,2:end);
+
 %% adaptive filtering
 
 usr_dir = 'C:\Users\gaw19004';

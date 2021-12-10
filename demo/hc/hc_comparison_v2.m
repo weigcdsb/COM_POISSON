@@ -78,11 +78,11 @@ RunRcode('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\demo\hc\cmpreg.r',...
     'C:\Users\gaw19004\Documents\R\R-4.0.2\bin');
 theta0 = readmatrix('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\demo\hc\cmp_t1.csv');
 
-windType = 'forward';
 Q = eye(length(theta0))*1e-4;
 [theta_fit_tmp,W_fit_tmp] =...
-    ppasmoo_compoisson_v2_window_fisher(theta0, spk', X, G,...
-    eye(length(theta0))*1e-1,eye(length(theta0)),Q, 1, windType);
+    ppasmoo_compoisson_fisher_na(theta0, spk', X, G,...
+    eye(length(theta0))*1e-1,eye(length(theta0)),Q);
+
 
 theta02 = theta_fit_tmp(:, 1);
 W02 = W_fit_tmp(:, :, 1);
@@ -97,8 +97,8 @@ MaxIter = 500;
 % nSub = round(length(spk)/5);
 nSub1 = round(length(spk));
 
-f = @(Q) helper_window_v2(Q, theta02, spk(1:nSub1)',X(1:nSub1, :),G(1:nSub1, :),...
-    W02,eye(length(theta0)),1, windType);
+f = @(Q) helper_na(Q, theta02, spk(1:nSub1)',X(1:nSub1, :),G(1:nSub1, :),...
+    W02,eye(length(theta0)));
 options = optimset('DiffMinChange',DiffMinChange,'DiffMaxChange',DiffMaxChange,...
     'MaxFunEvals', MaxFunEvals, 'MaxIter', MaxIter);
 Qopt = fmincon(f,Q0,[],[],[],[],...
@@ -112,8 +112,9 @@ Q_nu = Qopt(min(size(X, 2), 2)+1); % single
 Qoptmatrix = diag([Q_lam Q_nu]);
 
 
-gradHess_tmp = @(vecTheta) gradHessTheta(vecTheta, X,G, theta02, W02,...
+gradHess_tmp = @(vecTheta) gradHessTheta_na(vecTheta, X,G, theta02, W02,...
     eye(length(theta02)), Qoptmatrix, spk');
+
 [theta_newton_vec,~,hess_tmp,~] = newtonGH(gradHess_tmp,theta_fit_tmp(:),1e-10,1000);
 theta_fit = reshape(theta_newton_vec, [], T);
 
@@ -134,14 +135,8 @@ CMP_mean = zeros(size(lam, 1), 1);
 CMP_var = zeros(size(lam, 1), 1);
 logZ = zeros(size(lam, 1), 1);
 for k = 1:length(lam)
-    logcum_app = logsum_calc(lam(k), nu(k), 500);
-    log_Z = logcum_app(1);
-    log_A = logcum_app(2);
-    log_B = logcum_app(3);
-    
-    logZ(k) = log_Z;
-    CMP_mean(k) = exp(log_A - log_Z);
-    CMP_var(k) = exp(log_B - log_Z) - CMP_mean(k)^2;
+    [CMP_mean(k), CMP_var(k), ~, ~, ~, logZ(k)] = ...
+            CMPmoment(lam(k), nu(k), 1000);
 end
 
 
@@ -182,13 +177,8 @@ heatmap_var = zeros(size(heatmap_lam));
 
 for t = 1:size(heatmap_lam,2)
     for i=1:size(heatmap_lam,1)
-        logcum_app = logsum_calc(heatmap_lam(i,t), heatmap_nu(i,t), 500);
-        log_Z = logcum_app(1);
-        log_A = logcum_app(2);
-        log_B = logcum_app(3);
-    
-        heatmap_mean(i,t) = exp(log_A - log_Z);
-        heatmap_var(i,t) = exp(log_B - log_Z) - heatmap_mean(i,t)^2;
+        [heatmap_mean(i,t), heatmap_var(i,t), ~, ~, ~, ~] = ...
+            CMPmoment(heatmap_lam(i,t), heatmap_nu(i,t), 1000);
     end
 end
 
