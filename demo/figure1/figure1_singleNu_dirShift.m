@@ -16,10 +16,10 @@ nuSing = nu(1, :);
 
 %
 beta = zeros(size(basX, 2), kStep);
-basMean = 3;
+basMean = 2;
 logLamBas = nuSing.*log(basMean + (nuSing - 1)./ (2*nuSing));
 
-targetMean = linspace(6, 15, kStep) - basMean;
+targetMean = linspace(5, 10, kStep) - basMean;
 logLam = nuSing.*log(targetMean + (nuSing - 1)./ (2*nuSing));
 weightSum = logLam/max(max(basX(:,2:end)));
 weightKnots = 3;
@@ -40,14 +40,8 @@ CMP_var = zeros(size(lam));
 
 for m = 1:size(lam, 1)
     for n = 1:size(lam, 2)
-        logcum_app = logsum_calc(lam(m,n), nu(m,n), 100);
-        log_Z = logcum_app(1);
-        log_A = logcum_app(2);
-        log_B = logcum_app(3);
-        
-        CMP_mean(m,n) = exp(log_A - log_Z);
-        CMP_var(m,n) = exp(log_B - log_Z) - CMP_mean(m,n)^2;
-        
+        [CMP_mean(m,n), CMP_var(m,n), ~, ~, ~, ~] = ...
+            CMPmoment(lam(m,n), nu(m,n), 1000);
     end
 end
 
@@ -63,58 +57,17 @@ for m = 1:size(lam, 1)
     end
 end
 
-%% plot
-
-figure(1)
-subplot(1,3,1)
-imagesc(dt:dt:T, x0,spk)
-title('obs. spike counts')
-ylabel('direction(rad)')
-colorbar()
-subplot(1,3,2)
-imagesc(dt:dt:T, x0, CMP_mean)
-title('Mean Firing Rate')
-colorbar()
-subplot(1,3,3)
-imagesc(dt:dt:T, x0,CMP_var./CMP_mean)
-title('Fano Factor')
-xlabel('T')
-colorbar()
-
-t1=round(kStep/5);
-t2=round(kStep*4/5);
-
-figure(2)
-subplot(1,2,1)
-plot(CMP_mean(:,t1),'b')
-hold on
-plot(spk(:,t1),'b.')
-plot(CMP_mean(:,t2),'r')
-plot(spk(:,t2),'r.')
-hold off
-xlabel('Direction')
-ylabel('Mean')
-
-subplot(1,2,2)
-plot(CMP_var(:,t1)./CMP_mean(:,t1),'b')
-hold on
-plot(CMP_var(:,t2)./CMP_mean(:,t2),'r')
-hold off
-legend({"t1 = "+t1,"t2 = "+t2})
-xlabel('Direction')
-ylabel('Fano Factor')
-
-%% adaptive filtering
+%% model fit
 % still use single observation each step
 % to match model fitting in the application part...
 basX_trans = repmat(basX, kStep, 1);
 spk_vec = spk(:);
+Tall = length(x0)*kStep;
 
-b0 = glmfit(basX_trans(1:length(x0),:),spk_vec(1:length(x0)),'poisson','constant','off');
-
-[theta_POI,W_POI, ~, lam_POI] =...
-ppasmoo_poissexp(spk(:),basX_trans, b0,eye(length(b0)),eye(length(b0)),1e-4*eye(length(b0)));
-lam_POI_all = exp(basX*theta_POI);
+% b0 = glmfit(basX_trans(1:length(x0),:),spk_vec(1:length(x0)),'poisson','constant','off');
+% [theta_POI,W_POI, ~, lam_POI] =...
+% ppasmoo_poissexp(spk(:),basX_trans, b0,eye(length(b0)),eye(length(b0)),1e-4*eye(length(b0)));
+% lam_POI_all = exp(basX*theta_POI);
 
 writematrix(spk_vec(1:length(x0)), 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\y.csv')
 writematrix(basX_trans(1:length(x0),:),...
@@ -127,45 +80,110 @@ RunRcode('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\cmpRegression.
     'C:\Users\gaw19004\Documents\R\R-4.0.2\bin');
 theta0 = readmatrix('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\cmp_t1.csv');
 
-[theta_CMP,W_CMP,~,~,~,~,~,~,...
-    lam_CMP,nu_CMP,logZ_CMP] =...
-    ppasmoo_compoisson_v2_window_fisher(theta0, spk(:)',basX_trans, ones(length(x0)*kStep, 1),...
-    eye(length(theta0)),eye(length(theta0)),1e-4*eye(length(theta0)), 20, windType);
 
-CMP_mean_fit = 0*lam_CMP;
-CMP_var_fit = 0*lam_CMP;
+Q = 1e-4*eye(length(theta0));
+[theta_fit_tmp,W_fit_tmp] =...
+    ppasmoo_compoisson_fisher_na(theta0, spk_vec', basX_trans, ones(Tall, 1),...
+    eye(length(theta0)),eye(length(theta0)),Q);
 
-for m = 1:size(theta_CMP, 2)
-    logcum_app  = logsum_calc(lam_CMP(m), nu_CMP(m), 1000);
-    log_Z = logcum_app(1);
-    log_A = logcum_app(2);
-    log_B = logcum_app(3);
-    
-    CMP_mean_fit(m) = exp(log_A - log_Z);
-    CMP_var_fit(m) = exp(log_B - log_Z) - CMP_mean_fit(m)^2;
-    
+
+theta01 = theta_fit_tmp(:, 1);
+W01 = W_fit_tmp(:, :, 1);
+
+QLB = 1e-8;
+QUB = 1e-3;
+Q0 = 1e-4*ones(1, min(2, size(basX_trans, 2))+ min(2, size(ones(Tall, 1), 2)));
+DiffMinChange = QLB;
+DiffMaxChange = QUB*0.1;
+MaxFunEvals = 500;
+MaxIter = 500;
+
+f = @(Q) helper_na(Q, theta01, spk_vec',basX_trans,ones(Tall, 1),...
+    W01,eye(length(theta0)));
+options = optimset('DiffMinChange',DiffMinChange,'DiffMaxChange',DiffMaxChange,...
+    'MaxFunEvals', MaxFunEvals, 'MaxIter', MaxIter);
+Qopt = fmincon(f,Q0,[],[],[],[],...
+    QLB*ones(1, length(Q0)),QUB*ones(1, length(Q0)), [], options);
+
+Q_lam = [Qopt(1) Qopt(2)*ones(1, size(basX_trans, 2)-1)];
+Q_nu = Qopt(3);
+Qoptmatrix = diag([Q_lam Q_nu]);
+
+gradHess_tmp = @(vecTheta) gradHessTheta_na(vecTheta, basX_trans,ones(Tall, 1),...
+    theta01, W01,eye(length(theta01)), Qoptmatrix, spk_vec');
+[theta_newton_vec,~,hess_tmp,~] = newtonGH(gradHess_tmp,theta_fit_tmp(:),1e-10,1000);
+theta_fit = reshape(theta_newton_vec, [], Tall);
+
+lam_fit = zeros(1, Tall);
+nu_fit = zeros(1, Tall);
+CMP_mean_fit = zeros(1, Tall);
+CMP_var_fit = zeros(1, Tall);
+logZ_fit = zeros(1,Tall);
+
+for m = 1:Tall
+    lam_fit(m) = exp(basX_trans(m,:)*theta_fit(1:(nknots+1), m));
+    nu_fit(m) = exp(theta_fit((nknots+2):end, m));
+    [CMP_mean_fit(m), CMP_var_fit(m), ~, ~, ~, logZ_fit(m)] = ...
+            CMPmoment(lam_fit(m), nu_fit(m), 1000);
 end
 
-% lam_CMP_all = exp(basX*theta_CMP(1:(end-1), :));
-% nu_CMP_all = exp(theta_CMP(end,:));
-% 
-% CMP_mean_fit_all = 0*lam_CMP_all;
-% CMP_var_fit_all = 0*lam_CMP_all;
-% 
-% for m = 1:length(x0)
-%     for n = 1:size(theta_CMP, 2)
-%         logcum_app  = logsum_calc(lam_CMP_all(m, n), nu_CMP_all(n), 1000);
-%         log_Z = logcum_app(1);
-%         log_A = logcum_app(2);
-%         log_B = logcum_app(3);
-%         
-%         CMP_mean_fit_all(m, n) = exp(log_A - log_Z);
-%         CMP_var_fit_all(m, n) = exp(log_B - log_Z) - CMP_mean_fit_all(m, n)^2;
-%         
-%     end
-% end
+CMP_ff_fit = CMP_var_fit./CMP_mean_fit;
+
+CMP_mean_fit_trans = reshape(CMP_mean_fit, [], kStep);
+CMP_ff_fit_trans = reshape(CMP_ff_fit, [], kStep);
+
+%% plot
+
+figure(1)
+% subplot(3,1,1)
+% imagesc(1:dt:T, x0,spk)
+% title('obs. spike counts')
+% colorbar()
+subplot(2,1,1)
+imagesc(1:dt:T, x0, CMP_mean)
+title('Mean Firing Rate')
+ylabel('Direction(rad)')
+colorbar()
+subplot(2,1,2)
+imagesc(1:dt:T, x0,CMP_var./CMP_mean)
+title('Fano Factor')
+xlabel('Trial')
+colorbar()
 
 
+t1=round(kStep/5);
+t2=round(kStep*4/5);
+
+figure(2)
+plot(x0, CMP_mean(:,t1),'b')
+[maxt1,idt1] = max(CMP_mean(:,t1));
+hold on
+plot(x0, CMP_mean(:,t2),'r')
+[maxt2,idt2] = max(CMP_mean(:,t2));
+plot(x0, CMP_mean_fit_trans(:,t1),'b--')
+plot(x0, CMP_mean_fit_trans(:,t2),'r--')
+plot(x0, spk(:,t1),'b.')
+plot(x0, spk(:,t2),'r.')
+plot(x0(idt1), maxt1, 'o', 'Color', 'b',...
+    'LineWidth', 2, 'markerfacecolor', 'b', 'MarkerSize',5)
+plot(x0(idt2), maxt2, 'o', 'Color', 'r',...
+    'LineWidth', 2, 'markerfacecolor', 'r', 'MarkerSize',5)
+hold off
+xlabel('Direction(rad)')
+ylabel('Mean')
+legend({"true: t_1 = "+t1,"true: t_2 = "+t2,"fit: t_1 = "+t1,"fit: t_2 = "+t2})
+
+figure(3)
+plot(CMP_var(idt1,:)./CMP_mean(idt1,:),'b')
+hold on
+plot(CMP_var(idt2,:)./CMP_mean(idt2,:),'r')
+plot(CMP_ff_fit_trans(idt1,:), 'b--')
+plot(CMP_ff_fit_trans(idt2,:), 'r--')
+hold off
+legend({"true: pos_1 = "+round(x0(idt1), 3),"true: pos_2 = "+round(x0(idt2), 3),...
+    "fit: pos_1 = "+round(x0(idt1), 3),"fit: pos_2 = "+round(x0(idt2), 3)})
+xlabel('trial')
+ylabel('Fano Factor')
 
 %% fitting plot
 

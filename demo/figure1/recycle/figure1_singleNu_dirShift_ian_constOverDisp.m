@@ -5,6 +5,7 @@ addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
 
 T = 200;
 t = linspace(0,1,T);
+x0 = linspace(0,2*pi,100);
 generator_nutype = 'overdisp';
 generator_seed = 9;
 
