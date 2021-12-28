@@ -1,6 +1,10 @@
 addpath(genpath('C:\Users\gaw19004\Documents\GitHub\COM_POISSON'));
 % addpath(genpath('D:\github\COM_POISSON'));
 
+usr_dir = 'C:\Users\gaw19004';
+r_path = 'C:\Users\gaw19004\Documents\R\R-4.0.2\bin';
+r_wd = [usr_dir '\Documents\GitHub\COM_POISSON\core\runRcode'];
+
 %% true underlying mean & FF
 nknots = 10;
 x0 = linspace(0,1,100);
@@ -25,7 +29,7 @@ weightSum = logLam/max(max(basX(:,2:end)));
 weightKnots = 3;
 
 weightBas = getCubicBSplineBasis(linspace(0,1,kStep),weightKnots,false);
-plot(weightBas(:,2:end))
+% plot(weightBas(:,2:end))
 weight = weightBas(:,2:end)./repmat(sum(weightBas(:,2:end), 2), 1, weightKnots);
 
 beta(1,:) = logLamBas;
@@ -69,17 +73,12 @@ Tall = length(x0)*kStep;
 % ppasmoo_poissexp(spk(:),basX_trans, b0,eye(length(b0)),eye(length(b0)),1e-4*eye(length(b0)));
 % lam_POI_all = exp(basX*theta_POI);
 
-writematrix(spk_vec(1:length(x0)), 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\y.csv')
-writematrix(basX_trans(1:length(x0),:),...
-    'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\X.csv')
-writematrix(ones(length(x0), 1),...
-    'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\G.csv')
+writematrix(spk_vec(1:length(x0)), [r_wd '\y.csv'])
+writematrix(basX_trans(1:length(x0),:),[r_wd '\X.csv'])
+writematrix(ones(length(x0), 1),[r_wd '\G.csv'])
 
-windType = 'forward';
-RunRcode('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\cmpRegression.r',...
-    'C:\Users\gaw19004\Documents\R\R-4.0.2\bin');
-theta0 = readmatrix('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\cmp_t1.csv');
-
+RunRcode([r_wd '\cmpRegression.r'],r_path);
+theta0 = readmatrix([r_wd '\cmp_t1.csv']);
 
 Q = 1e-4*eye(length(theta0));
 [theta_fit_tmp,W_fit_tmp] =...
@@ -259,36 +258,36 @@ ylabel('Fano Factor')
 
 
 % version 3: plot each point seperately
-figure(5)
-subplot(2,3,1)
-imagesc(CMP_mean)
-cLim_mean = caxis;
+% figure(5)
+% subplot(2,3,1)
+% imagesc(CMP_mean)
+% cLim_mean = caxis;
+% % colorbar()
+% title('true mean')
+% subplot(2,3,2)
+% imagesc(reshape(lam_POI,length(x0),[]))
+% % colorbar()
+% set(gca,'CLim',cLim_mean)
+% title('Poisson mean: point')
+% subplot(2,3,3)
+% imagesc(reshape(CMP_mean_fit,length(x0),[]))
 % colorbar()
-title('true mean')
-subplot(2,3,2)
-imagesc(reshape(lam_POI,length(x0),[]))
+% set(gca,'CLim',cLim_mean)
+% title('CMP mean: point')
+% subplot(2,3,4)
+% imagesc(CMP_var./CMP_mean)
+% cLim_ff = caxis;
+% % colorbar()
+% title('true FF')
+% subplot(2,3,5)
+% imagesc(ones(size(CMP_mean)))
+% % colorbar()
+% set(gca,'CLim',cLim_ff)
+% title('Poisson FF: point')
+% subplot(2,3,6)
+% imagesc(reshape(CMP_var_fit,length(x0),[])./reshape(CMP_mean_fit,length(x0),[]))
 % colorbar()
-set(gca,'CLim',cLim_mean)
-title('Poisson mean: point')
-subplot(2,3,3)
-imagesc(reshape(CMP_mean_fit,length(x0),[]))
-colorbar()
-set(gca,'CLim',cLim_mean)
-title('CMP mean: point')
-subplot(2,3,4)
-imagesc(CMP_var./CMP_mean)
-cLim_ff = caxis;
-% colorbar()
-title('true FF')
-subplot(2,3,5)
-imagesc(ones(size(CMP_mean)))
-% colorbar()
-set(gca,'CLim',cLim_ff)
-title('Poisson FF: point')
-subplot(2,3,6)
-imagesc(reshape(CMP_var_fit,length(x0),[])./reshape(CMP_mean_fit,length(x0),[]))
-colorbar()
-set(gca,'CLim',cLim_ff)
-title('CMP FF: point')
+% set(gca,'CLim',cLim_ff)
+% title('CMP FF: point')
 
 

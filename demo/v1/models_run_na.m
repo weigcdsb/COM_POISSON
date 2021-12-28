@@ -1,9 +1,9 @@
 function [llhd_spk, bit_spk, llhd, llhd_ho] = models_run_na(neuron, trial_x_full, trial_y_full,...
-    ssIdx, nSS, nAll, usr_dir, r_path)
+    ssIdx, nSS, nAll, usr_dir, r_path, r_wd)
 
 
 % to debug
-% n = 9;
+% n = 1;
 % neuron = n;
 % ssIdx = SSIDX{n};
 
@@ -11,14 +11,12 @@ trial_y = trial_y_full*nan;
 trial_y(ssIdx,:) = trial_y_full(ssIdx,:);
 trial_y_narm = trial_y_full(ssIdx, :);
 
-neuron=13;
 spk_vec = trial_y(:,neuron)';
 spk_vec_narm = trial_y_narm(:, neuron)';
 T = length(trial_x_full);
 nknots = 5;
 
 %% fit 1: adaptive CMP, nBasis for lambda = 5, nBasis for nu = 3
-
 Gnknots_full = 3;
 
 Xb = getCubicBSplineBasis(trial_x_full,nknots,true);
@@ -28,14 +26,12 @@ Xb_narm = Xb(ssIdx,:);
 Gb_full_narm = Gb_full(ssIdx,:);
 
 initIdx = max(10*nSS, find(cumsum(spk_vec_narm) > 200, 1, 'first'));
-writematrix(spk_vec_narm(1:initIdx)', [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\y.csv'])
-writematrix(Xb_narm(1:initIdx, :),...
-    [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\X.csv'])
-writematrix(Gb_full_narm(1:initIdx, :),...
-    [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\G.csv'])
+writematrix(spk_vec_narm(1:initIdx)', [r_wd '\y.csv'])
+writematrix(Xb_narm(1:initIdx, :),[r_wd '\X.csv'])
+writematrix(Gb_full_narm(1:initIdx, :),[r_wd '\G.csv'])
 
-RunRcode([usr_dir '\Documents\GitHub\COM_POISSON\runRcode\cmpRegression.r'],r_path);
-theta0 = readmatrix([usr_dir '\Documents\GitHub\COM_POISSON\runRcode\cmp_t1.csv']);
+RunRcode([r_wd '\cmpRegression.r'],r_path);
+theta0 = readmatrix([r_wd '\cmp_t1.csv']);
 
 Q = diag([repmat(1e-4,nknots+1,1); repmat(1e-4,Gnknots_full + 1,1)]);
 [theta_fit_tmp,W_fit_tmp] =...
@@ -93,14 +89,12 @@ Gb = getCubicBSplineBasis(trial_x_full,Gnknots,true);
 Xb_narm = Xb(ssIdx,:);
 Gb_narm = Gb(ssIdx,:);
 
-writematrix(spk_vec_narm(1:initIdx)', [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\y.csv'])
-writematrix(Xb_narm(1:initIdx, :),...
-    [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\X.csv'])
-writematrix(Gb_narm(1:initIdx, :),...
-    [usr_dir '\Documents\GitHub\COM_POISSON\runRcode\G.csv'])
+writematrix(spk_vec_narm(1:initIdx)', [r_wd '\y.csv'])
+writematrix(Xb_narm(1:initIdx, :),[r_wd '\X.csv'])
+writematrix(Gb_narm(1:initIdx, :),[r_wd '\G.csv'])
 
-RunRcode([usr_dir '\Documents\GitHub\COM_POISSON\runRcode\cmpRegression.r'],r_path);
-theta0 = readmatrix([usr_dir '\Documents\GitHub\COM_POISSON\runRcode\cmp_t1.csv']);
+RunRcode([r_wd '\cmpRegression.r'],r_path);
+theta0 = readmatrix([r_wd '\cmp_t1.csv']);
 
 Q = eye(length(theta0))*1e-4;
 [theta_fit_tmp,W_fit_tmp] =...
@@ -237,13 +231,12 @@ end
 CMP_ff3 = CMP_var3./CMP_mean3;
 
 %% fit 5: static CMP(5,3)
-writematrix(spk_vec_narm', 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\yAll.csv')
-writematrix(Xb_narm, 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\XAll.csv')
-writematrix(Gb_full_narm, 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\GAll.csv')
+writematrix(spk_vec_narm', [r_wd '\y.csv'])
+writematrix(Xb_narm, [r_wd '\X.csv'])
+writematrix(Gb_full_narm, [r_wd '\G.csv'])
 
-RunRcode('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\cmpRegression_all.r',...
-    'C:\Users\gaw19004\Documents\R\R-4.0.2\bin');
-theta_fit5 = readmatrix('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\cmp_all.csv');
+RunRcode([r_wd '\cmpRegression.r'],r_path);
+theta_fit5 = readmatrix([r_wd '\cmp_t1.csv']);
 
 lam5 = exp(Xb*theta_fit5(1:(nknots+1), :));
 nu5 = exp(Gb_full*theta_fit5((nknots+2):end, :));
@@ -253,27 +246,19 @@ CMP_mean5 = 0*lam5;
 CMP_var5 = 0*lam5;
 
 for m = 1:length(lam5)
-    logcum_app  = logsum_calc(lam5(m), nu5(m), 1000);
-    log_Z = logcum_app(1);
-    log_A = logcum_app(2);
-    log_B = logcum_app(3);
-    
-    logZ5(m) = log_Z;
-    CMP_mean5(m) = exp(log_A - log_Z);
-    CMP_var5(m) = exp(log_B - log_Z) - CMP_mean5(m)^2;
-    
+    [CMP_mean5(m), CMP_var5(m), ~, ~, ~, logZ5(m)] = ...
+            CMPmoment(lam5(m), nu5(m), 1000);
 end
 
 CMP_ff5 = CMP_var5./CMP_mean5;
 
 %% fit 6: static CMP(5,1)
-writematrix(spk_vec_narm', 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\yAll.csv')
-writematrix(Xb_narm, 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\XAll.csv')
-writematrix(Gb_full_narm(:,1), 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\GAll.csv')
+writematrix(spk_vec_narm', [r_wd '\y.csv'])
+writematrix(Xb_narm, [r_wd '\X.csv'])
+writematrix(Gb_full_narm(:,1), [r_wd '\G.csv'])
 
-RunRcode('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\cmpRegression_all.r',...
-    'C:\Users\gaw19004\Documents\R\R-4.0.2\bin');
-theta_fit6 = readmatrix('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\runRcode\cmp_all.csv');
+RunRcode([r_wd '\cmpRegression.r'],r_path);
+theta_fit6 = readmatrix([r_wd '\cmp_t1.csv']);
 
 lam6 = exp(Xb*theta_fit6(1:(nknots+1), :));
 nu6 = exp(Gb_full(:,1)*theta_fit6((nknots+2):end, :));
@@ -283,15 +268,8 @@ CMP_mean6 = 0*lam6;
 CMP_var6 = 0*lam6;
 
 for m = 1:length(lam6)
-    logcum_app  = logsum_calc(lam6(m), nu6(m), 1000);
-    log_Z = logcum_app(1);
-    log_A = logcum_app(2);
-    log_B = logcum_app(3);
-    
-    logZ6(m) = log_Z;
-    CMP_mean6(m) = exp(log_A - log_Z);
-    CMP_var6(m) = exp(log_B - log_Z) - CMP_mean6(m)^2;
-    
+    [CMP_mean6(m), CMP_var6(m), ~, ~, ~, logZ6(m)] = ...
+            CMPmoment(lam6(m), nu6(m), 1000);
 end
 
 CMP_ff6 = CMP_var6./CMP_mean6;
