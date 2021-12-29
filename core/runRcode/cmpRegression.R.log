@@ -54,3 +54,17 @@ package 'Rcpp' was built under R version 4.0.5
 > 
 > cmpFit <- glm.cmp(fmlaX,
 +                   fmlaG, data = fitData)
+> beta <- unname(cmpFit$beta)
+> gam <- unname(cmpFit$gamma)
+> 
+> write.csv(c(beta, gam),
++           file = paste0(wd, '/cmp_t1.csv'), row.names = F)
+> 
+> 
+> 
+> 
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  15.64    0.03   15.65 

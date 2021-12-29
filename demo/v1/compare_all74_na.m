@@ -77,9 +77,9 @@ end
 
 %% let's plot
 % failIdx = find(isnan(sum(LLHD, 2)));
-% failIdx = find(LLHD(:,4) < LLHD(:,7));
-failIdx = find(LLHD(:,4) < LLHD(:,7) | LLHD(:,1) < LLHD(:,4));
-failIdx = [failIdx; find(isnan(sum(LLHD, 2)))];
+% failIdx = find(LLHD(:,4) < LLHD(:,8));
+% failIdx = find(LLHD(:,4) < LLHD(:,7) | LLHD(:,1) < LLHD(:,4));
+% failIdx = [failIdx; find(isnan(sum(LLHD, 2)))];
 
 bit_mat = cell2mat(BIT_spk');
 bit_train = bit_mat(1:2:end,:);
@@ -112,8 +112,8 @@ plot(medVal,'r', 'LineWidth',2)
 plot(q1, 'r--', 'LineWidth',2)
 plot(q3, 'r--', 'LineWidth',2)
 for t = 1:numel(medVal)
-%   text(t-0.3,medVal(t)+0.3,num2str(round(medVal(t),3)),'Color','red','FontSize',15)
-  text(t-0.25,medVal(t)+0.015,num2str(round(medVal(t),3)),'Color','red','FontSize',15)
+  text(t-0.25,medVal(t)+0.35,num2str(round(medVal(t),3)),'Color','red','FontSize',15)
+%   text(t-0.25,medVal(t)+0.015,num2str(round(medVal(t),3)),'Color','red','FontSize',15)
 end
 hold off
 xlim([0.5 7.5])
@@ -133,7 +133,7 @@ plot(medVal,'r', 'LineWidth',2)
 plot(q1, 'r--', 'LineWidth',2)
 plot(q3, 'r--', 'LineWidth',2)
 for t = 1:numel(medVal)
-  text(t-0.25,medVal(t)+0.015,num2str(round(medVal(t),3)),'Color','red','FontSize',15)
+  text(t-0.25,medVal(t)+0.35,num2str(round(medVal(t),3)),'Color','red','FontSize',15)
 end
 hold off
 xlim([0.5 7.5])
@@ -143,16 +143,16 @@ xticklabels({'dCMP-(5,3)','dCMP-(5,1)','dCMP-(5)-nu','dPoi-(5)',...
 title('bit/spk-test')
 
 
-bit_train2 = zeros(size(bit_train));
-bit_test2 = zeros(size(bit_test));
-% bit/trial
-for k = 1:size(bit_train, 1)
-    spkTmp = sum(trial_y_full(SSIDX{k}, k));
-    spkTmp_ho = sum(trial_y_full(setdiff(1:length(trial_x_full), SSIDX{k}), k));
-    
-    bit_train2(k,:) = spkTmp*bit_train(k,:)/size(data.EVENTS,2);
-    bit_test2(k,:) = spkTmp_ho*bit_test(k,:)/size(data.EVENTS,2);
-end
+% bit_train2 = zeros(size(bit_train));
+% bit_test2 = zeros(size(bit_test));
+% % bit/trial
+% for k = 1:size(bit_train, 1)
+%     spkTmp = sum(trial_y_full(SSIDX{k}, k));
+%     spkTmp_ho = sum(trial_y_full(setdiff(1:length(trial_x_full), SSIDX{k}), k));
+%     
+%     bit_train2(k,:) = spkTmp*bit_train(k,:)/size(data.EVENTS,2);
+%     bit_test2(k,:) = spkTmp_ho*bit_test(k,:)/size(data.EVENTS,2);
+% end
 
 
 
