@@ -13,7 +13,7 @@ bin = 1;
 t = t_raw;
 pos = pos_raw;
 
-neuron=12
+neuron=12;
 place_field_range = [-110 -60];
 
 % neuron=35
@@ -21,7 +21,7 @@ place_field_range = [-110 -60];
 
 spk_raw = spike_counts(idx0:end,neuron);
 
-figure(20)
+figure(21)
 subplot(3,1,1)
 
 % plot(t_raw,pos)

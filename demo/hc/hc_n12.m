@@ -45,6 +45,10 @@ for k = 1:(length(spk) - smoothing + 1)
     posAlign_smoo(k) = mean(posAlign(idx));
 end
 
+
+plot(posAlign_smoo)
+
+
 %%
 
 nknots=10;
@@ -226,4 +230,17 @@ ylabel('log Fano Factor')
 xlabel('Time [min]')
 % set(gca,'CLim',[0 20])
 colorbar
+
+
+figure(22)
+subplot(3,1,1)
+plot(t_raw,posAlign_raw)
+hold on
+scatter(t_raw(find(spk_raw>0)),posAlign_raw(spk_raw>0),spk_raw(spk_raw>0)*10,'filled','k','MarkerFaceAlpha',0.5)
+hold off
+box off; set(gca,'TickDir','out')
+ylim([0 max(posAlign_raw)])
+xlim([0 t_raw(end)])
+
+
 
