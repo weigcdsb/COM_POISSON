@@ -133,34 +133,60 @@ CMP_ff_fit_trans = reshape(CMP_ff_fit, [], kStep);
 
 %% plot
 
-figure(1)
-% subplot(3,1,1)
-% imagesc(1:dt:T, x0,spk)
-% title('obs. spike counts')
-% colorbar()
-subplot(2,1,1)
-imagesc(1:dt:T, x0, CMP_mean)
-title('Mean Firing Rate')
-ylabel('Direction(rad)')
-colorbar()
-subplot(2,1,2)
-imagesc(1:dt:T, x0,CMP_var./CMP_mean)
-title('Fano Factor')
-xlabel('Trial')
-colorbar()
-
+plotFolder = 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\plots\figure1';
+cd(plotFolder)
 
 t1=round(kStep/5);
 t2=round(kStep*4/5);
 
-figure(2)
-plot(x0, CMP_mean(:,t1),'b')
 [maxt1,idt1] = max(CMP_mean(:,t1));
-hold on
-plot(x0, CMP_mean(:,t2),'r')
 [maxt2,idt2] = max(CMP_mean(:,t2));
-plot(x0, CMP_mean_fit_trans(:,t1),'b--')
-plot(x0, CMP_mean_fit_trans(:,t2),'r--')
+
+
+MFR = figure;
+imagesc(1:dt:T, x0, CMP_mean)
+% title('Mean Firing Rate')
+xlabel('Trial')
+ylabel('Direction(rad)')
+yline(x0(idt1), 'b--', 'LineWidth', 2);
+yline(x0(idt2), 'r--', 'LineWidth', 2);
+xline(t1, 'b--', 'LineWidth', 2);
+xline(t2, 'r--', 'LineWidth', 2);
+colormap(flipud(gray(256)));
+colorbar;
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(MFR,'PaperUnits','inches','PaperPosition',[0 0 6 3])
+saveas(MFR, '1_MFR.svg')
+saveas(MFR, '1_MFR.png')
+
+FF = figure;
+imagesc(1:dt:T, x0,CMP_var./CMP_mean)
+% title('Fano Factor')
+xlabel('Trial')
+ylabel('Direction(rad)')
+yline(x0(idt1), 'b--', 'LineWidth', 2);
+yline(x0(idt2), 'r--', 'LineWidth', 2);
+xline(t1, 'b--', 'LineWidth', 2);
+xline(t2, 'r--', 'LineWidth', 2);
+colormap(flipud(gray(256)));
+colorbar;
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(FF,'PaperUnits','inches','PaperPosition',[0 0 6 3])
+saveas(FF, '2_FF.svg')
+saveas(FF, '2_FF.png')
+
+
+
+FR2 = figure;
+plot(x0, CMP_mean(:,t1),'b', 'LineWidth', 2)
+hold on
+plot(x0, CMP_mean(:,t2),'r', 'LineWidth', 2)
+plot(x0, CMP_mean_fit_trans(:,t1),'b--', 'LineWidth', 2)
+plot(x0, CMP_mean_fit_trans(:,t2),'r--', 'LineWidth', 2)
 plot(x0, spk(:,t1),'b.')
 plot(x0, spk(:,t2),'r.')
 plot(x0(idt1), maxt1, 'o', 'Color', 'b',...
@@ -169,20 +195,33 @@ plot(x0(idt2), maxt2, 'o', 'Color', 'r',...
     'LineWidth', 2, 'markerfacecolor', 'r', 'MarkerSize',5)
 hold off
 xlabel('Direction(rad)')
-ylabel('Mean')
-legend({"true: t_1 = "+t1,"true: t_2 = "+t2,"fit: t_1 = "+t1,"fit: t_2 = "+t2})
+ylabel('Mean Firing Rate')
+% legend({"true: t_1 = "+t1,"true: t_2 = "+t2,"fit: t_1 = "+t1,"fit: t_2 = "+t2})
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
 
-figure(3)
-plot(CMP_var(idt1,:)./CMP_mean(idt1,:),'b')
+set(FR2,'PaperUnits','inches','PaperPosition',[0 0 4 3])
+saveas(FR2, '3_FR2.svg')
+saveas(FR2, '3_FR2.png')
+
+FF = figure;
+plot(CMP_var(idt1,:)./CMP_mean(idt1,:),'b', 'LineWidth', 2)
 hold on
-plot(CMP_var(idt2,:)./CMP_mean(idt2,:),'r')
-plot(CMP_ff_fit_trans(idt1,:), 'b--')
-plot(CMP_ff_fit_trans(idt2,:), 'r--')
+plot(CMP_var(idt2,:)./CMP_mean(idt2,:),'r', 'LineWidth', 2)
+plot(CMP_ff_fit_trans(idt1,:), 'b--', 'LineWidth', 2)
+plot(CMP_ff_fit_trans(idt2,:), 'r--', 'LineWidth', 2)
 hold off
-legend({"true: pos_1 = "+round(x0(idt1), 3),"true: pos_2 = "+round(x0(idt2), 3),...
-    "fit: pos_1 = "+round(x0(idt1), 3),"fit: pos_2 = "+round(x0(idt2), 3)})
+% legend({"true: pos_1 = "+round(x0(idt1), 3),"true: pos_2 = "+round(x0(idt2), 3),...
+%     "fit: pos_1 = "+round(x0(idt1), 3),"fit: pos_2 = "+round(x0(idt2), 3)})
 xlabel('trial')
 ylabel('Fano Factor')
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(FF,'PaperUnits','inches','PaperPosition',[0 0 4 3])
+saveas(FF, '4_FF.svg')
+saveas(FF, '4_FF.png')
+
 
 %% fitting plot
 
