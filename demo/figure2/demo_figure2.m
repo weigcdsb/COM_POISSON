@@ -120,8 +120,8 @@ plot(theo_mean, 'b', 'LineWidth', 2)
 plot(CMP_mean_fit, 'r', 'LineWidth', 2)
 % plot(CMP_mean_fit+ 1.96*sqrt(var_rate_app'), 'r--', 'LineWidth', 2)
 % plot(CMP_mean_fit- 1.96*sqrt(var_rate_app'), 'r--', 'LineWidth', 2)
-plot(CMP_mean_fit+ sqrt(var_rate_exact'), 'r--', 'LineWidth', 2)
-plot(CMP_mean_fit- sqrt(var_rate_exact'), 'r--', 'LineWidth', 2)
+plot(CMP_mean_fit+ sqrt(var_rate_exact'), 'r--', 'LineWidth', 1)
+plot(CMP_mean_fit- sqrt(var_rate_exact'), 'r--', 'LineWidth', 1)
 hold off
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
