@@ -101,6 +101,14 @@ plot(CMP_var_fit./CMP_mean_fit, 'LineWidth', 2)
 hold off
 
 
+% variance of mean
+W_fit_all = -inv(hess_tmp);
+W_fit = zeros(2,2,T);
+for k = 1:T
+   W_fit(:,:,k) = W_fit_all((2*(k-1)+1):(2*k), (2*(k-1)+1):(2*k));
+end
+[var_rate_exact, var_rate_app] = varParam(X_lam, G_nu, theta_fit, W_fit);
+
 %% let's plot
 plotFolder = 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\plots\figure2';
 cd(plotFolder)
@@ -108,13 +116,17 @@ cd(plotFolder)
 MFR = figure;
 hold on
 plot(spk_vec, 'Color', [0.4, 0.4, 0.4, 0.2])
-plot(theo_mean, 'LineWidth', 2)
-plot(CMP_mean_fit, 'LineWidth', 2)
+plot(theo_mean, 'b', 'LineWidth', 2)
+plot(CMP_mean_fit, 'r', 'LineWidth', 2)
+% plot(CMP_mean_fit+ 1.96*sqrt(var_rate_app'), 'r--', 'LineWidth', 2)
+% plot(CMP_mean_fit- 1.96*sqrt(var_rate_app'), 'r--', 'LineWidth', 2)
+plot(CMP_mean_fit+ sqrt(var_rate_exact'), 'r--', 'LineWidth', 2)
+plot(CMP_mean_fit- sqrt(var_rate_exact'), 'r--', 'LineWidth', 2)
 hold off
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
-set(MFR,'PaperUnits','inches','PaperPosition',[0 0 6 3])
+set(MFR,'PaperUnits','inches','PaperPosition',[0 0 5 3])
 saveas(MFR, '1_MFR.svg')
 saveas(MFR, '1_MFR.png')
 
@@ -127,7 +139,7 @@ hold off
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
-set(FF,'PaperUnits','inches','PaperPosition',[0 0 6 3])
+set(FF,'PaperUnits','inches','PaperPosition',[0 0 5 3])
 saveas(FF, '2_FF.svg')
 saveas(FF, '2_FF.png')
 
