@@ -148,7 +148,7 @@ MFR = figure;
 imagesc(1:dt:T, angle, CMP_mean)
 % title('Mean Firing Rate')
 xlabel('Trial')
-ylabel('Orientation (degree)')
+ylabel('Orientation(degree)')
 yline(angle(idt1), 'b--', 'LineWidth', 2);
 yline(angle(idt2), 'r--', 'LineWidth', 2);
 xline(t1, 'b--', 'LineWidth', 2);
@@ -158,7 +158,7 @@ colorbar;
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
-set(MFR,'PaperUnits','inches','PaperPosition',[0 0 5 3])
+set(MFR,'PaperUnits','inches','PaperPosition',[0 0 6 3])
 saveas(MFR, '1_MFR.svg')
 saveas(MFR, '1_MFR.png')
 
@@ -166,7 +166,7 @@ FF = figure;
 imagesc(1:dt:T, angle,CMP_var./CMP_mean)
 % title('Fano Factor')
 xlabel('Trial')
-ylabel('Orientation (degree)')
+ylabel('Orientation(degree)')
 yline(angle(idt1), 'b--', 'LineWidth', 2);
 yline(angle(idt2), 'r--', 'LineWidth', 2);
 xline(t1, 'b--', 'LineWidth', 2);
@@ -176,7 +176,7 @@ colorbar;
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
-set(FF,'PaperUnits','inches','PaperPosition',[0 0 5 3])
+set(FF,'PaperUnits','inches','PaperPosition',[0 0 6 3])
 saveas(FF, '2_FF.svg')
 saveas(FF, '2_FF.png')
 
@@ -185,24 +185,23 @@ saveas(FF, '2_FF.png')
 FR2 = figure;
 plot(angle, CMP_mean(:,t1),'b', 'LineWidth', 2)
 hold on
-plot(angle, CMP_mean(:,t2),'r', 'LineWidth', 2)
-plot(angle, CMP_mean_fit_trans(:,t1),'b--', 'LineWidth', 2)
-plot(angle, CMP_mean_fit_trans(:,t2),'r--', 'LineWidth', 2)
-plot(angle, spk(:,t1),'b.')
-plot(angle, spk(:,t2),'r.')
-plot(angle(idt1), maxt1, 'o', 'Color', 'b',...
+plot(x0, CMP_mean(:,t2),'r', 'LineWidth', 2)
+plot(x0, CMP_mean_fit_trans(:,t1),'b--', 'LineWidth', 2)
+plot(x0, CMP_mean_fit_trans(:,t2),'r--', 'LineWidth', 2)
+plot(x0, spk(:,t1),'b.')
+plot(x0, spk(:,t2),'r.')
+plot(x0(idt1), maxt1, 'o', 'Color', 'b',...
     'LineWidth', 2, 'markerfacecolor', 'b', 'MarkerSize',5)
-plot(angle(idt2), maxt2, 'o', 'Color', 'r',...
+plot(x0(idt2), maxt2, 'o', 'Color', 'r',...
     'LineWidth', 2, 'markerfacecolor', 'r', 'MarkerSize',5)
 hold off
-xlabel('Orientation (degree)')
+xlabel('Direction(rad)')
 ylabel('Mean Firing Rate')
-xlim([0 180])
 % legend({"true: t_1 = "+t1,"true: t_2 = "+t2,"fit: t_1 = "+t1,"fit: t_2 = "+t2})
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
-set(FR2,'PaperUnits','inches','PaperPosition',[0 0 5 3])
+set(FR2,'PaperUnits','inches','PaperPosition',[0 0 4 3])
 saveas(FR2, '3_FR2.svg')
 saveas(FR2, '3_FR2.png')
 
@@ -215,12 +214,12 @@ plot(CMP_ff_fit_trans(idt2,:), 'r--', 'LineWidth', 2)
 hold off
 % legend({"true: pos_1 = "+round(x0(idt1), 3),"true: pos_2 = "+round(x0(idt2), 3),...
 %     "fit: pos_1 = "+round(x0(idt1), 3),"fit: pos_2 = "+round(x0(idt2), 3)})
-xlabel('Trial')
+xlabel('trial')
 ylabel('Fano Factor')
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
-set(FF,'PaperUnits','inches','PaperPosition',[0 0 5 3])
+set(FF,'PaperUnits','inches','PaperPosition',[0 0 4 3])
 saveas(FF, '4_FF.svg')
 saveas(FF, '4_FF.png')
 
