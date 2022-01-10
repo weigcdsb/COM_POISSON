@@ -142,6 +142,23 @@ xticklabels({'dCMP-(5,3)','dCMP-(5,1)','dCMP-(5)-nu','dPoi-(5)',...
     'sCMP-(5,3)','sCMP-(5,1)','sPoi-(5)'})
 title('bit/spk-test')
 
+%% boxplot
+subplot(2,1,1)
+boxplot(bit_train)
+xticks(1:7)
+xticklabels({'dCMP-(5,3)','dCMP-(5,1)','dCMP-(5)-nu','dPoi-(5)',...
+    'sCMP-(5,3)','sCMP-(5,1)','sPoi-(5)'})
+subplot(2,1,2)
+boxplot(bit_test)
+xticks(1:7)
+xticklabels({'dCMP-(5,3)','dCMP-(5,1)','dCMP-(5)-nu','dPoi-(5)',...
+    'sCMP-(5,3)','sCMP-(5,1)','sPoi-(5)'})
+
+
+
+
+
+
 
 % bit_train2 = zeros(size(bit_train));
 % bit_test2 = zeros(size(bit_test));

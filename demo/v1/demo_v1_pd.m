@@ -1,5 +1,7 @@
-neuron=13;
+% neuron=13;
 % neuron=11;
+trial_x = trial_x_full;
+trial_y = trial_y_full;
 
 nknots=7;
 X = getCubicBSplineBasis(trial_x,nknots,true);
