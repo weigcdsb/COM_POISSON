@@ -109,6 +109,49 @@ for k = 1:T
 end
 [var_rate_exact, var_rate_app] = varParam(X_lam, G_nu, theta_fit, W_fit);
 
+
+%% what about Poisson?
+b0 = glmfit(X_lam,spk_vec','poisson','constant','off');
+[theta_fit_tmp,W_fit_tmp] =...
+ppasmoo_poissexp_nan(spk_vec,X_lam, b0,eye(length(b0)),eye(length(b0)),1e-4*eye(length(b0)));
+
+theta02 = theta_fit_tmp(:, 1);
+W02 = W_fit_tmp(:, :, 1);
+
+QLB = 1e-8;
+QUB = 1e-3;
+Q0 = 1e-4*ones(1, min(2, size(X_lam, 2)));
+
+f = @(Q) helper_poisson_nan(Q, theta02, spk_vec,...
+    X_lam, W02, eye(length(theta02)));
+Qopt2 = fmincon(f,Q0,[],[],[],[],...
+    QLB*ones(1, min(2, size(X_lam, 2))),QUB*ones(1, min(2, size(X_lam, 2))), [], options);
+
+% Qopt2 = Qoptmatrix(1,1);
+gradHess_tmp = @(vecTheta) gradHessTheta_Poisson_nan(vecTheta, X_lam, theta02, W02,...
+    eye(length(theta02)), Qopt2, spk_vec);
+[theta_newton_vec,~,hess_tmp,~] = newtonGH(gradHess_tmp,theta_fit_tmp(:),1e-10,1000);
+theta_fit2 = reshape(theta_newton_vec, [], T);
+% plot(theta_fit2)
+
+lam_poi = exp(sum(X_lam .* theta_fit2', 2));
+W_fit_poi = diag(-inv(hess_tmp));
+
+figure(1)
+hold on
+plot(spk_vec, 'Color', [0.4, 0.4, 0.4, 0.2])
+plot(theo_mean, 'k', 'LineWidth', 2)
+plot(CMP_mean_fit, 'b', 'LineWidth', 2)
+plot(lam_poi, 'r', 'LineWidth', 2)
+hold off
+
+figure(2)
+hold on
+plot((exp(W_fit_poi) - ones(T,1)).*exp(2*theta_fit2' + W_fit_poi))
+plot(var_rate_exact)
+hold off
+
+
 %% let's plot
 plotFolder = 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\plots\figure2';
 cd(plotFolder)
