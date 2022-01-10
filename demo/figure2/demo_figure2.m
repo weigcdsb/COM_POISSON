@@ -137,8 +137,15 @@ theta_fit2 = reshape(theta_newton_vec, [], T);
 lam_poi = exp(sum(X_lam .* theta_fit2', 2));
 W_fit_poi = diag(-inv(hess_tmp));
 
+figure(1)
+hold on
+plot(spk_vec, 'Color', [0.4, 0.4, 0.4, 0.2])
+plot(theo_mean, 'k', 'LineWidth', 2)
+plot(CMP_mean_fit, 'b', 'LineWidth', 2)
+plot(lam_poi, 'r', 'LineWidth', 2)
+hold off
 
-
+figure(2)
 hold on
 plot((exp(W_fit_poi) - ones(T,1)).*exp(2*theta_fit2' + W_fit_poi))
 plot(var_rate_exact)
