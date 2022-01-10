@@ -127,22 +127,15 @@ f = @(Q) helper_poisson_nan(Q, theta02, spk_vec,...
 Qopt2 = fmincon(f,Q0,[],[],[],[],...
     QLB*ones(1, min(2, size(X_lam, 2))),QUB*ones(1, min(2, size(X_lam, 2))), [], options);
 
-% Qopt2 = Qoptmatrix(1,1);
-gradHess_tmp = @(vecTheta) gradHessTheta_Poisson_nan(vecTheta, X_lam, theta02, W02,...
-    eye(length(theta02)), Qopt2, spk_vec);
+
+gradHess_tmp = @(vecTheta) gradHessTheta_Poisson_nan(vecTheta, Xb, theta04, W04,...
+    eye(length(theta04)), Qoptmatrix4, spk_vec);
 [theta_newton_vec,~,hess_tmp,~] = newtonGH(gradHess_tmp,theta_fit_tmp(:),1e-10,1000);
-theta_fit2 = reshape(theta_newton_vec, [], T);
-% plot(theta_fit2)
-
-lam_poi = exp(sum(X_lam .* theta_fit2', 2));
-W_fit_poi = diag(-inv(hess_tmp));
+theta_fit4 = reshape(theta_newton_vec, [], T);
+lam4 = exp(sum(Xb .* theta_fit4', 2));
 
 
 
-hold on
-plot((exp(W_fit_poi) - ones(T,1)).*exp(2*theta_fit2' + W_fit_poi))
-plot(var_rate_exact)
-hold off
 
 
 %% let's plot
