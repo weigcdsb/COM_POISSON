@@ -212,6 +212,7 @@ FF = figure;
 hold on
 plot(theo_var./theo_mean, 'LineWidth', 2)
 plot(CMP_var_fit./CMP_mean_fit, 'LineWidth', 2)
+yline(1, 'LineWidth', 2);
 hold off
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
