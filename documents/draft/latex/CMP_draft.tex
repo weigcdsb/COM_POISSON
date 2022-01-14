@@ -135,7 +135,7 @@ While the state vector  $\bm{\theta}_t$ evolves linearly with Gaussian noise:
 	\bm{\theta}_1 &\sim N_{p+q}(\bm{\theta}_0, \bm{Q}_0)\\
 	\bm{\theta}_t|\bm{\theta}_{t-1} &\sim N_{p+q}(\bm{F\theta}_{t-1}, \bm{Q}) \nonumber
 \end{align}
-Given the initial state mean $\bm{\theta}_0$ and covariance $\bm{Q}_0$, linear dynamics $\bm{F}$ and process covariance $\bm{Q}$.
+Given the initial state mean $\bm{\theta}_0$, covariance $\bm{Q}_0$, linear dynamics $\bm{F}$ and process covariance $\bm{Q}$.
 
 \subsubsection{Inference by Gaussian approximation}
 To fit the model to data we need to estimate the time-varying state vector $\bm{\Theta} = (\bm{\theta}'_1,\ldots,\bm{\theta}'_T)\in\mathbb{R}^{(p+q)T}$. In this section, we first assume $\bm{F}$ and $\bm{Q}$ are known. Since the observations are CMP distributed, we cannot estimate $\bm{\Theta}$ in closed form. Instead, here we approximate it by a multivariate Gaussian distribution, $P(\bm{\Theta|Y}) \approx N_{(p+q)T}(\bm{\Theta|,\mu,\Sigma})$, with $\bm{Y} = (\bm{y}'_1,\ldots, \bm{y}'_T)'$. The parameters of this Gaussian are found by a global Laplace approximation, i.e. $\bm{\mu} = \argmax_{\bm{\Theta}}P(\bm{\Theta|Y})$ and $\bm{\Sigma} = -(\nabla\nabla_{\bm{\Theta}}\log P(\bm{\Theta|Y})|_{\bm{\Theta - \mu}})^{-1}$. The log-posterior is given by:
@@ -208,7 +208,7 @@ The conditional mean firing rate is $\delta_{it} = E(Y_{it})$, whose variance ca
 We can calculate the moments as in Appendix \ref{appB}, or we can use simpler approximations $E(Y) = \lambda^{1/\nu} - \frac{\nu-1}{2\nu}$ when $\nu\leq 1$ or $\lambda > 10^\nu$. Then $\frac{\partial\delta_{it}}{\partial\lambda_{it}}\approx\frac{1}{\nu_{it}}\lambda_{it}^{1/\nu_{it} - 1}$ and $\frac{\delta_{it}}{\nu_{it}} \approx -\frac{\lambda_{it}^{1/\nu_{it}}\log \lambda_{it}}{\nu_{it}^2} - \frac{1}{2\nu_{it}^2}$.
 
 \section{Moments approximation for Conway-Maxwell Poisson distribution}\label{appB}
-To estimate the state-vector for the dynamic CMP model, we need to first and second moments for $Y$ and $\log Y!$. For $Y\sim CMP(\lambda, \nu)$,
+To estimate the state-vector for the dynamic CMP model, we need to find first and second moments for $Y$ and $\log Y!$. For $Y\sim CMP(\lambda, \nu)$,
 \begin{align}
 	Z(\lambda, \nu) &= \sum_{k=0}^{\infty}\frac{\lambda^k}{(k!)^\nu}\\
 	E(Y) &= \frac{\partial\log Z}{\partial \log\lambda} = \frac{1}{Z}\sum_{k=0}^{\infty}\frac{k\lambda^k}{(k!)^\nu} \nonumber\\
