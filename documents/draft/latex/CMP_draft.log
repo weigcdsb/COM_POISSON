@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.12.6)  13 JAN 2022 18:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.12.6)  14 JAN 2022 13:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -460,7 +460,33 @@ Overfull \hbox (1.56592pt too wide) detected at line 145
  []
 
 [2]
-Overfull \hbox (8.59879pt too wide) in paragraph at lines 191--192
+<figure1.png, id=152, 959.585pt x 602.25pt>
+File: figure1.png Graphic file (type png)
+<use figure1.png>
+Package pdftex.def Info: figure1.png  used on input line 171.
+(pdftex.def)             Requested size: 406.0pt x 254.80875pt.
+
+
+LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
+(Font)              using `T1/ptm/m/sc' instead on input line 172.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<figure2_new.png, id=153, 1431.6687pt x 665.3658pt>
+File: figure2_new.png Graphic file (type png)
+<use figure2_new.png>
+Package pdftex.def Info: figure2_new.png  used on input line 179.
+(pdftex.def)             Requested size: 406.0pt x 188.68703pt.
+
+LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
+(Font)              using `T1/ptm/m/sc' instead on input line 180.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Overfull \hbox (8.59879pt too wide) in paragraph at lines 201--202
 []\T1/ptm/m/n/11 After con-ver-gence, we have an ap-prox-i-ma-tion of the log-p
 osterior $\OML/cmm/m/it/10.95 P\OT1/cmr/m/n/10.95 (\OML/cmm/b/it/10.95 ^^R[]\OM
 S/cmsy/m/n/10.95 j\OML/cmm/b/it/10.95 Y\OT1/cmr/m/n/10.95 ) \OMS/cmsy/m/n/10.95
@@ -469,9 +495,10 @@ y/m/n/10.95 j\OML/cmm/b/it/10.95 ^^V[]\OML/cmm/m/it/10.95 ; \OT1/cmr/bx/n/10.95
  ^^F[]\OT1/cmr/m/n/10.95 )$\T1/ptm/m/n/11 ,
  []
 
-[3] [4] [5] (./CMP_draft.bbl [6]) [7] (./CMP_draft.aux)
+[3] [4 <./figure1.png> <./figure2_new.png>] [5] [6] (./CMP_draft.bbl) [7]
+(./CMP_draft.aux)
 Package rerunfilecheck Info: File `CMP_draft.out' has not changed.
-(rerunfilecheck)             Checksum: 4D5A8F31C31F3510EB4814853512C273;1181.
+(rerunfilecheck)             Checksum: 674180AEB3AAA1F742A9F2339DFFAF53;1169.
 
 
 LaTeX Font Warning: Size substitutions with differences
@@ -479,13 +506,13 @@ LaTeX Font Warning: Size substitutions with differences
 
  ) 
 Here is how much of TeX's memory you used:
- 8288 strings out of 479383
- 117900 string characters out of 5868871
- 445112 words of memory out of 5000000
- 25154 multiletter control sequences out of 15000+600000
- 470248 words of font info for 113 fonts, out of 8000000 for 9000
+ 8307 strings out of 479383
+ 118138 string characters out of 5868871
+ 445257 words of memory out of 5000000
+ 25168 multiletter control sequences out of 15000+600000
+ 471892 words of font info for 114 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,18n,72p,1849b,482s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 66i,18n,72p,1849b,382s stack positions out of 5000i,500n,10000p,200000b,80000s
 {e:/software/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}<e:/software
 /texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb><e:/softwar
 e/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmbsy8.pfb><e:/so
@@ -507,10 +534,10 @@ re/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb><e:/s
 oftware/texlive/2020/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><e:/software/t
 exlive/2020/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><e:/software/texlive/20
 20/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on CMP_draft.pdf (7 pages, 223796 bytes).
+Output written on CMP_draft.pdf (7 pages, 1847373 bytes).
 PDF statistics:
- 269 PDF objects out of 1000 (max. 8388607)
- 237 compressed objects within 3 object streams
- 55 named destinations out of 1000 (max. 500000)
- 153 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 273 PDF objects out of 1000 (max. 8388607)
+ 239 compressed objects within 3 object streams
+ 57 named destinations out of 1000 (max. 500000)
+ 163 words of extra memory for PDF output out of 10000 (max. 10000000)
 
