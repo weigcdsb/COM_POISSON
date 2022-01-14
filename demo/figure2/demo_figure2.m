@@ -16,7 +16,7 @@ G_nu = ones(T, 1);
 theta_true = zeros(T,2);
 
 target_mean = 4;
-theta_true(:,2) = 8*(t-0.2)/.05.*exp(-(t-0.2)/.05).*(t>.2) - 0.4;
+theta_true(:,2) = 10*(t-0.2)/.05.*exp(-(t-0.2)/.05).*(t>.2) - 1; % 8 .4
 % plot(theta_true(:,2))
 nu_true = exp(G_nu.*theta_true(:, 2));
 theta_true(:,1) = nu_true.*log(target_mean + (nu_true - 1)./ (2*nu_true));
@@ -121,7 +121,6 @@ W02 = W_fit_tmp(:, :, 1);
 QLB = 1e-8;
 QUB = 1e-3;
 Q0 = 1e-4*ones(1, min(2, size(X_lam, 2)));
-
 f = @(Q) helper_poisson_nan(Q, theta02, spk_vec,...
     X_lam, W02, eye(length(theta02)));
 Qopt2 = fmincon(f,Q0,[],[],[],[],...
@@ -136,6 +135,8 @@ theta_fit2 = reshape(theta_newton_vec, [], T);
 
 lam_poi = exp(sum(X_lam .* theta_fit2', 2));
 W_fit_poi = diag(-inv(hess_tmp));
+lamVar_poi = (exp(W_fit_poi) - ones(T,1)).*exp(2*theta_fit2' + W_fit_poi);
+
 
 figure(1)
 hold on
@@ -147,32 +148,65 @@ hold off
 
 figure(2)
 hold on
-plot((exp(W_fit_poi) - ones(T,1)).*exp(2*theta_fit2' + W_fit_poi))
+plot(lamVar_poi)
 plot(var_rate_exact)
 hold off
-
+close all;
 
 %% let's plot
-plotFolder = 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\plots\figure2';
+% plotFolder = 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\plots\figure2';
+plotFolder = 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\plots\figure2\Poi_Q_tune';
 cd(plotFolder)
 
-MFR = figure;
+FitY_CMP = figure;
 hold on
 plot(spk_vec, 'Color', [0.4, 0.4, 0.4, 0.2])
-plot(theo_mean, 'b', 'LineWidth', 2)
+plot(theo_mean, 'k', 'LineWidth', 2)
 plot(CMP_mean_fit, 'r', 'LineWidth', 2)
-% plot(CMP_mean_fit+ 1.96*sqrt(var_rate_app'), 'r--', 'LineWidth', 2)
-% plot(CMP_mean_fit- 1.96*sqrt(var_rate_app'), 'r--', 'LineWidth', 2)
-plot(CMP_mean_fit+ sqrt(var_rate_exact'), 'r--', 'LineWidth', 1)
-plot(CMP_mean_fit- sqrt(var_rate_exact'), 'r--', 'LineWidth', 1)
+plot(CMP_mean_fit+ sqrt(CMP_var_fit), 'r--', 'LineWidth', 1)
+plot(CMP_mean_fit- sqrt(CMP_var_fit), 'r--', 'LineWidth', 1)
 hold off
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
-set(MFR,'PaperUnits','inches','PaperPosition',[0 0 5 3])
-saveas(MFR, '1_MFR.svg')
-saveas(MFR, '1_MFR.png')
+set(FitY_CMP,'PaperUnits','inches','PaperPosition',[0 0 5 3])
+saveas(FitY_CMP, '1_FitY_CMP.svg')
+saveas(FitY_CMP, '1_FitY_CMP.png')
 
+
+
+FitY_Poi = figure;
+hold on
+plot(spk_vec, 'Color', [0.4, 0.4, 0.4, 0.2])
+plot(theo_mean, 'k', 'LineWidth', 2)
+plot(lam_poi, 'r', 'LineWidth', 2)
+plot(lam_poi+ sqrt(lam_poi), 'r--', 'LineWidth', 1)
+plot(lam_poi- sqrt(lam_poi), 'r--', 'LineWidth', 1)
+hold off
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(FitY_Poi,'PaperUnits','inches','PaperPosition',[0 0 5 3])
+saveas(FitY_Poi, '2_FitY_Poi.svg')
+saveas(FitY_Poi, '2_FitY_Poi.png')
+
+FitY_all = figure;
+hold on
+plot(spk_vec, 'Color', [0.4, 0.4, 0.4, 0.2])
+plot(theo_mean, 'k', 'LineWidth', 2)
+plot(CMP_mean_fit, 'r', 'LineWidth', 2)
+plot(CMP_mean_fit+ sqrt(CMP_var_fit), 'r--', 'LineWidth', 1)
+plot(CMP_mean_fit- sqrt(CMP_var_fit), 'r--', 'LineWidth', 1)
+plot(lam_poi, 'b', 'LineWidth', 2)
+plot(lam_poi+ sqrt(lam_poi), 'b--', 'LineWidth', 1)
+plot(lam_poi- sqrt(lam_poi), 'b--', 'LineWidth', 1)
+hold off
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(FitY_all,'PaperUnits','inches','PaperPosition',[0 0 5 3])
+saveas(FitY_all, '3_FitY_all.svg')
+saveas(FitY_all, '3_FitY_all.png')
 
 FF = figure;
 hold on
@@ -183,6 +217,38 @@ set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
 set(FF,'PaperUnits','inches','PaperPosition',[0 0 5 3])
-saveas(FF, '2_FF.svg')
-saveas(FF, '2_FF.png')
+saveas(FF, '4_FF.svg')
+saveas(FF, '4_FF.png')
+
+
+meanComp = figure;
+hold on
+plot(theo_mean, 'k', 'LineWidth', 2)
+plot(CMP_mean_fit, 'r', 'LineWidth', 2)
+plot(CMP_mean_fit+ sqrt(var_rate_exact'), 'r--', 'LineWidth', 1)
+plot(CMP_mean_fit- sqrt(var_rate_exact'), 'r--', 'LineWidth', 1)
+plot(lam_poi, 'b', 'LineWidth', 2)
+plot(lam_poi+ sqrt(lamVar_poi), 'b--', 'LineWidth', 1)
+plot(lam_poi- sqrt(lamVar_poi), 'b--', 'LineWidth', 1)
+hold off
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(meanComp,'PaperUnits','inches','PaperPosition',[0 0 5 3])
+saveas(meanComp, '5_mean.svg')
+saveas(meanComp, '5_mean.png')
+
+
+VarComp = figure;
+hold on
+plot(var_rate_exact, 'r', 'LineWidth', 2)
+plot(lamVar_poi, 'b', 'LineWidth', 2)
+hold off
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(VarComp,'PaperUnits','inches','PaperPosition',[0 0 5 3])
+saveas(VarComp, '6_var.svg')
+saveas(VarComp, '6_var.png')
+
 
