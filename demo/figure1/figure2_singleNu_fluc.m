@@ -6,7 +6,7 @@ r_path = 'C:\Users\gaw19004\Documents\R\R-4.0.2\bin';
 r_wd = [usr_dir '\Documents\GitHub\COM_POISSON\core\runRcode'];
 
 %% true underlying mean & FF
-nknots = 10;
+nknots = 5;
 x0 = linspace(0,1,100);
 basX = getCubicBSplineBasis(x0,nknots,false);
 
@@ -36,9 +36,7 @@ beta = zeros(size(basX, 2), kStep);
 % weight = weightBas(:,2:end)./repmat(sum(weightBas(:,2:end), 2), 1, weightKnots);
 
 beta(1,:) = 4;
-beta(5,:) = 5;
-beta(6,:) = 10;
-beta(7,:) = 5;
+beta(4,:) = 10;
 
 % lam = exp(nu.*log(exp(basX*beta + (nu - 1)./(2.*nu))));
 
@@ -114,7 +112,7 @@ Qopt = fmincon(f,Q0,[],[],[],[],...
     QLB*ones(1, length(Q0)),QUB*ones(1, length(Q0)), [], options);
 Qopt = exp(Qopt);
 %
-% Qopt = [10e-6 10e-6 10e-3];
+Qopt = [10e-6 2*10e-4 2*10e-4];
 Q_lam = [Qopt(1) Qopt(2)*ones(1, size(basX_trans, 2)-1)];
 Q_nu = Qopt(3);
 Qoptmatrix = diag([Q_lam Q_nu]);
