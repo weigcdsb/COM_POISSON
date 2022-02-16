@@ -4,10 +4,10 @@ function [theta,W,lam_pred,nu_pred,log_Zvec_pred,...
 
 % to debug
 % theta0 = theta0;
-% N = spk_vec;
-% X_lam = Xb;
-% G_nu = Gb_full;
-% W0 = eye(length(theta0))*1e-1;
+% N = spk_vec';
+% X_lam = basX_trans;
+% G_nu = ones(Tall, 1);
+% W0 = eye(length(theta0));
 % F = eye(length(theta0));
 % Q = Q;
 

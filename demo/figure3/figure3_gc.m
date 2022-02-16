@@ -7,7 +7,7 @@ r_wd = [usr_dir '\Documents\GitHub\COM_POISSON\core\runRcode'];
 
 %%
 rng(12)
-nknots = 5;
+nknots = 3;
 x0 = linspace(0,1,50);
 basX = getCubicBSplineBasis(x0,nknots,false);
 
@@ -18,14 +18,15 @@ kStep = T/dt;
 mupf = interp1(linspace(1,T,10),randn(1,10)/10+0.5,linspace(1,T,T),'spline');
 [tm,xm]=meshgrid(1:T,x0);
 
-lam = exp(-(xm-mupf).^2/2/0.05)*20;
-lam(lam < 10) = 0;% max(lam(lam < 8)-3, 0);
+lam = exp(-(xm-mupf).^2/2/0.05)*10;
+lamThresh = 8;
+lam(lam < lamThresh) = max(lam(lam < lamThresh)-4, 0);
 imagesc(lam)
 colorbar()
 
 spk = poissrnd(lam);
-spk(lam < 10) = spk(lam < 10) + round((rand(size(spk(lam < 10))) -0.5)*5);
-spk(lam >= 10) = spk(lam >= 10) + round((rand(size(spk(lam >= 10))) - 0.5)*10);
+spk(lam < lamThresh) = spk(lam < lamThresh) + round((rand(size(spk(lam < lamThresh))) -0.5)*5);
+spk(lam >= lamThresh) = spk(lam >= lamThresh) + round((rand(size(spk(lam >= lamThresh))) - 0.5)*10);
 spk(spk < 0) =0;
 
 subplot(1,2,1)
@@ -35,22 +36,54 @@ subplot(1,2,2)
 imagesc(spk)
 colorbar
 
+
+%% split train & test
+% rng(7)
+% propTrain = 1/4;
+% splitIdx = spk*0;
+% 
+% for tt = 1:size(spk, 2)
+%     splitIdx(:,tt) = binornd(1,propTrain, 1, size(spk, 1));
+% end
+% 
+% spk_train = spk*nan;
+% spk_test = spk*nan;
+% 
+% spk_train(splitIdx == 1) = spk(splitIdx == 1);
+% spk_test(splitIdx == 0) = spk(splitIdx == 0);
+
+
+
+% hold out within the place field
+rng(8)
+propTrain = 1/10;
+splitIdx = ones(size(spk));
+for tt = 1:size(spk, 2)
+    splitIdx(lam(:,tt) > lamThresh,tt) = binornd(1,propTrain,...
+        1, sum(lam(:,tt) > lamThresh));
+end
+
+spk_train = spk*nan;
+spk_test = spk*nan;
+
+spk_train(splitIdx == 1) = spk(splitIdx == 1);
+spk_test(splitIdx == 0) = spk(splitIdx == 0);
+
+
+
+
 %% model fit
 % still use single observation each step
 % to match model fitting in the application part...
 basX_trans = repmat(basX, kStep, 1);
 % basX_trans = repmat([basX(:,1) basX(:,2:end)*beta(2:end,1)],kStep,1);
-spk_vec = spk(:);
+spk_vec = spk_train(:);
 Tall = length(x0)*kStep;
 
-% b0 = glmfit(basX_trans(1:length(x0),:),spk_vec(1:length(x0)),'poisson','constant','off');
-% [theta_POI,W_POI, ~, lam_POI] =...
-% ppasmoo_poissexp(spk(:),basX_trans, b0,eye(length(b0)),eye(length(b0)),1e-4*eye(length(b0)));
-% lam_POI_all = exp(basX*theta_POI);
-
-writematrix(spk_vec(1:length(x0)), [r_wd '\y.csv'])
-writematrix(basX_trans(1:length(x0),:),[r_wd '\X.csv'])
-writematrix(ones(length(x0), 1),[r_wd '\G.csv'])
+nonNAidx = find(~isnan(spk_vec));
+writematrix(spk_vec(nonNAidx(nonNAidx < length(x0))), [r_wd '\y.csv'])
+writematrix(basX_trans(nonNAidx(nonNAidx < length(x0)),:),[r_wd '\X.csv'])
+writematrix(ones(length(nonNAidx(nonNAidx < length(x0))), 1),[r_wd '\G.csv'])
 
 RunRcode([r_wd '\cmpRegression.r'],r_path);
 theta0 = readmatrix([r_wd '\cmp_t1.csv']);
@@ -112,7 +145,8 @@ meanRange = [min([lam(:); CMP_mean_fit_trans(:)])...
     max([lam(:); CMP_mean_fit_trans(:)])];
 
 %% let's do Poisson
-b0 = glmfit(basX_trans,spk_vec','poisson','constant','off');
+b0 = glmfit(basX_trans(nonNAidx(nonNAidx < length(x0)),:),...
+    spk_vec(nonNAidx(nonNAidx < length(x0)))','poisson','constant','off');
 [theta_fit_tmp,W_fit_tmp] =...
 ppasmoo_poissexp_nan(spk_vec,basX_trans, b0,...
 eye(length(b0)),eye(length(b0)),1e-4*eye(length(b0)));
@@ -145,16 +179,15 @@ POI_mean_fit_trans = reshape(lam_poi, [], kStep);
 subplot(3,1,1)
 imagesc(lam)
 colorbar
-title('true')
 set(gca,'CLim',meanRange)
+title('true')
 subplot(3,1,2)
 imagesc(CMP_mean_fit_trans)
 colorbar
 set(gca,'CLim',meanRange)
-title('cmp')
+title('CMP')
 subplot(3,1,3)
 imagesc(POI_mean_fit_trans)
 colorbar
 set(gca,'CLim',meanRange)
 title('Poisson')
-

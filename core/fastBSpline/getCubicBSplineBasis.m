@@ -14,6 +14,7 @@ if ~isCirc & nknots>1
     knots = linspace(-2/nknots,1+2/nknots,nknots+5);
     s = fastBSpline(knots,weights);
     b = s.getBasis(x);
+    nknots = nknots + 1;
 else
     knots = linspace(-2*2*pi/nknots,2*pi+2*2*pi/nknots,nknots+5);
     weights = ones(nknots+1,1);

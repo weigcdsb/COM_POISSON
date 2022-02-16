@@ -6,11 +6,11 @@ r_path = 'C:\Users\gaw19004\Documents\R\R-4.0.2\bin';
 r_wd = [usr_dir '\Documents\GitHub\COM_POISSON\core\runRcode'];
 
 %% true underlying mean & FF
-nknots = 5;
+nknots = 2;
 x0 = linspace(0,1,50);
 basX = getCubicBSplineBasis(x0,nknots,false);
 
-T = 500;
+T = 100;
 dt = 1;
 kStep = T/dt;
 
@@ -21,6 +21,7 @@ mupf = interp1(linspace(1,T,10),randn(1,10)/10+0.5,linspace(1,T,T),'spline');
 
 lam = exp(-(xm-mupf).^2/2/0.05);
 imagesc(lam)
+colorbar
 
 % lam = repmat(lam(:,1),1,kStep);
 
@@ -53,27 +54,56 @@ imagesc(spk)
 colorbar
 
 
+%% split train & test
+% rng(7)
+% propTrain = 1/4;
+% splitIdx = spk*0;
+% 
+% for tt = 1:size(spk, 2)
+%     splitIdx(:,tt) = binornd(1,propTrain, 1, size(spk, 1));
+% end
+% 
+% spk_train = spk*nan;
+% spk_test = spk*nan;
+% 
+% spk_train(splitIdx == 1) = spk(splitIdx == 1);
+% spk_test(splitIdx == 0) = spk(splitIdx == 0);
+
+
+
+% hold out within the place field
+rng(8)
+propTrain = 1/10;
+splitIdx = ones(size(spk));
+for tt = 1:size(spk, 2)
+    splitIdx(CMP_mean(:,tt) > 1,tt) = binornd(1,propTrain,...
+        1, sum(CMP_mean(:,tt) > 1));
+end
+
+spk_train = spk*nan;
+spk_test = spk*nan;
+
+spk_train(splitIdx == 1) = spk(splitIdx == 1);
+spk_test(splitIdx == 0) = spk(splitIdx == 0);
+
+
 %% model fit
 % still use single observation each step
 % to match model fitting in the application part...
 basX_trans = repmat(basX, kStep, 1);
 % basX_trans = repmat([basX(:,1) basX(:,2:end)*beta(2:end,1)],kStep,1);
-spk_vec = spk(:);
+spk_vec = spk_train(:);
 Tall = length(x0)*kStep;
 
-% b0 = glmfit(basX_trans(1:length(x0),:),spk_vec(1:length(x0)),'poisson','constant','off');
-% [theta_POI,W_POI, ~, lam_POI] =...
-% ppasmoo_poissexp(spk(:),basX_trans, b0,eye(length(b0)),eye(length(b0)),1e-4*eye(length(b0)));
-% lam_POI_all = exp(basX*theta_POI);
-
-writematrix(spk_vec(1:length(x0)), [r_wd '\y.csv'])
-writematrix(basX_trans(1:length(x0),:),[r_wd '\X.csv'])
-writematrix(ones(length(x0), 1),[r_wd '\G.csv'])
+nonNAidx = find(~isnan(spk_vec));
+writematrix(spk_vec(nonNAidx(nonNAidx < length(x0))), [r_wd '\y.csv'])
+writematrix(basX_trans(nonNAidx(nonNAidx < length(x0)),:),[r_wd '\X.csv'])
+writematrix(ones(length(nonNAidx(nonNAidx < length(x0))), 1),[r_wd '\G.csv'])
 
 RunRcode([r_wd '\cmpRegression.r'],r_path);
 theta0 = readmatrix([r_wd '\cmp_t1.csv']);
 
-Q = 1e-3*eye(length(theta0));
+Q = diag([ones(length(theta0) - 1,1)*1e-4;1e-8]);
 [theta_fit_tmp,W_fit_tmp] =...
     ppasmoo_compoisson_fisher_na(theta0, spk_vec', basX_trans, ones(Tall, 1),...
     eye(length(theta0)),eye(length(theta0)),Q);
@@ -130,7 +160,8 @@ meanRange = [min([CMP_mean(:); CMP_mean_fit_trans(:)])...
     max([CMP_mean(:); CMP_mean_fit_trans(:)])];
 
 %% let's do Poisson
-b0 = glmfit(basX_trans,spk_vec','poisson','constant','off');
+b0 = glmfit(basX_trans(nonNAidx(nonNAidx < length(x0)),:),...
+    spk_vec(nonNAidx(nonNAidx < length(x0)))','poisson','constant','off');
 [theta_fit_tmp,W_fit_tmp] =...
 ppasmoo_poissexp_nan(spk_vec,basX_trans, b0,...
 eye(length(b0)),eye(length(b0)),1e-4*eye(length(b0)));
@@ -177,19 +208,19 @@ set(gca,'CLim',meanRange)
 title('Poisson')
 
 % max position
-posLen = length(x0);
-maxSpk = zeros(kStep,1);
-maxPos = zeros(kStep,1);
-
-for t = 1:kStep
-    idxTmp = ((t-1)*posLen + 1): (t*posLen);
-    [maxSpk(t), ~] = max(CMP_mean(:, t));
-    maxPos(t) = find(CMP_mean == maxSpk(t));
-end
-
-hold on
-plot(CMP_mean(maxPos))
-plot(CMP_mean_fit_trans(maxPos))
-plot(POI_mean_fit_trans(maxPos))
-hold off
-legend('true', 'cmp', 'poi')
+% posLen = length(x0);
+% maxSpk = zeros(kStep,1);
+% maxPos = zeros(kStep,1);
+% 
+% for t = 1:kStep
+%     idxTmp = ((t-1)*posLen + 1): (t*posLen);
+%     [maxSpk(t), ~] = max(CMP_mean(:, t));
+%     maxPos(t) = find(CMP_mean == maxSpk(t));
+% end
+% 
+% hold on
+% plot(CMP_mean(maxPos))
+% plot(CMP_mean_fit_trans(maxPos))
+% plot(POI_mean_fit_trans(maxPos))
+% hold off
+% legend('true', 'cmp', 'poi')
