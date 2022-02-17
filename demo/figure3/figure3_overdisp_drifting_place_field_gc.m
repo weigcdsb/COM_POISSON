@@ -6,6 +6,7 @@ r_path = 'C:\Users\gaw19004\Documents\R\R-4.0.2\bin';
 r_wd = [usr_dir '\Documents\GitHub\COM_POISSON\core\runRcode'];
 
 %% true underlying mean & FF
+rng(1)
 nknots = 2;
 x0 = linspace(0,1,50);
 basX = getCubicBSplineBasis(x0,nknots,false);
@@ -46,12 +47,12 @@ for m = 1:size(lam, 1)
     end
 end
 
-subplot(1,2,1)
-imagesc(CMP_mean)
-colorbar
-subplot(1,2,2)
-imagesc(spk)
-colorbar
+% subplot(1,2,1)
+% imagesc(CMP_mean)
+% colorbar
+% subplot(1,2,2)
+% imagesc(spk)
+% colorbar
 
 
 %% split train & test
@@ -159,6 +160,19 @@ CMP_ff_fit_trans = reshape(CMP_ff_fit, [], kStep);
 meanRange = [min([CMP_mean(:); CMP_mean_fit_trans(:)])...
     max([CMP_mean(:); CMP_mean_fit_trans(:)])];
 
+
+% W_fit_all = -inv(hess_tmp);
+% W_fit = zeros(2,2,T);
+% for k = 1:T
+%    W_fit(:,:,k) = W_fit_all((2*(k-1)+1):(2*k), (2*(k-1)+1):(2*k));
+% end
+[~,W_fit] =...
+    ppasmoo_compoisson_fisher_na(theta01, spk_vec', basX_trans, ones(Tall, 1),...
+    W01,eye(length(theta01)),Qoptmatrix);
+[var_rate_exact, var_rate_app] = varParam(basX_trans, ones(Tall, 1), theta_fit, W_fit);
+
+CMP_var_fit_trans = reshape(var_rate_exact, [], kStep);
+
 %% let's do Poisson
 b0 = glmfit(basX_trans(nonNAidx(nonNAidx < length(x0)),:),...
     spk_vec(nonNAidx(nonNAidx < length(x0)))','poisson','constant','off');
@@ -187,10 +201,21 @@ gradHess_tmp = @(vecTheta) gradHessTheta_Poisson_nan(vecTheta,...
 theta_fit2 = reshape(theta_newton_vec, [], Tall);
 
 lam_poi = exp(sum(basX_trans .* theta_fit2', 2));
-POI_mean_fit_trans = reshape(lam_poi, [], kStep);
+[~,W_fit_poi] =...
+    ppasmoo_poissexp_nan(spk_vec,basX_trans, theta02,...
+    W02,eye(length(theta02)),Qoptmatrix2);
+lamVar_poi = zeros(Tall, 1);
+for kk = 1:Tall
+    VarTmp = basX_trans(kk,:)*W_fit_poi(:,:,kk)*basX_trans(kk,:)';
+    ETmp = basX_trans(kk,:)*theta_fit2(:,kk);
+    lamVar_poi(kk) = (exp(VarTmp)-1)*exp(2*ETmp+VarTmp);
+end
 
+POI_mean_fit_trans = reshape(lam_poi, [], kStep);
+POI_var_fit_trans = reshape(lamVar_poi,[],kStep);
 
 % plot
+figure(1)
 subplot(3,1,1)
 imagesc(CMP_mean)
 colorbar
@@ -208,19 +233,29 @@ set(gca,'CLim',meanRange)
 title('Poisson')
 
 % max position
-% posLen = length(x0);
-% maxSpk = zeros(kStep,1);
-% maxPos = zeros(kStep,1);
-% 
-% for t = 1:kStep
-%     idxTmp = ((t-1)*posLen + 1): (t*posLen);
-%     [maxSpk(t), ~] = max(CMP_mean(:, t));
-%     maxPos(t) = find(CMP_mean == maxSpk(t));
-% end
-% 
-% hold on
-% plot(CMP_mean(maxPos))
-% plot(CMP_mean_fit_trans(maxPos))
-% plot(POI_mean_fit_trans(maxPos))
-% hold off
-% legend('true', 'cmp', 'poi')
+posLen = length(x0);
+maxSpk = zeros(kStep,1);
+maxPos = zeros(kStep,1);
+
+for t = 1:kStep
+    idxTmp = ((t-1)*posLen + 1): (t*posLen);
+    [maxSpk(t), ~] = max(CMP_mean(:, t));
+    maxPos(t) = find(CMP_mean == maxSpk(t));
+end
+
+figure(2)
+hold on
+l1 = plot(CMP_mean(maxPos));
+l2 = plot(CMP_mean_fit_trans(maxPos), 'r');
+plot(CMP_mean_fit_trans(maxPos)+ sqrt(CMP_var_fit_trans(maxPos)), 'r--', 'LineWidth', 1)
+plot(CMP_mean_fit_trans(maxPos)- sqrt(CMP_var_fit_trans(maxPos)), 'r--', 'LineWidth', 1)
+
+l3 = plot(POI_mean_fit_trans(maxPos), 'b');
+plot(POI_mean_fit_trans(maxPos)+ sqrt(POI_var_fit_trans(maxPos)), 'b--', 'LineWidth', 1)
+plot(POI_mean_fit_trans(maxPos)- sqrt(POI_var_fit_trans(maxPos)), 'b--', 'LineWidth', 1)
+
+hold off
+legend([l1 l2 l3],{'true', 'cmp', 'poi'})
+
+
+
