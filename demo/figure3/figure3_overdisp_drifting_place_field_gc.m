@@ -56,29 +56,12 @@ end
 
 
 %% split train & test
-% rng(7)
-% propTrain = 1/4;
-% splitIdx = spk*0;
-% 
-% for tt = 1:size(spk, 2)
-%     splitIdx(:,tt) = binornd(1,propTrain, 1, size(spk, 1));
-% end
-% 
-% spk_train = spk*nan;
-% spk_test = spk*nan;
-% 
-% spk_train(splitIdx == 1) = spk(splitIdx == 1);
-% spk_test(splitIdx == 0) = spk(splitIdx == 0);
+rng(111)
+propTrain = 1/5;
+splitIdx = spk*0;
 
-
-
-% hold out within the place field
-rng(8)
-propTrain = 1/10;
-splitIdx = ones(size(spk));
 for tt = 1:size(spk, 2)
-    splitIdx(CMP_mean(:,tt) > 1,tt) = binornd(1,propTrain,...
-        1, sum(CMP_mean(:,tt) > 1));
+    splitIdx(:,tt) = binornd(1,propTrain, 1, size(spk, 1));
 end
 
 spk_train = spk*nan;
@@ -86,6 +69,23 @@ spk_test = spk*nan;
 
 spk_train(splitIdx == 1) = spk(splitIdx == 1);
 spk_test(splitIdx == 0) = spk(splitIdx == 0);
+
+% imagesc(spk_train)
+
+% hold out within the place field
+% rng(8)
+% propTrain = 1/10;
+% splitIdx = ones(size(spk));
+% for tt = 1:size(spk, 2)
+%     splitIdx(CMP_mean(:,tt) > 1,tt) = binornd(1,propTrain,...
+%         1, sum(CMP_mean(:,tt) > 1));
+% end
+% 
+% spk_train = spk*nan;
+% spk_test = spk*nan;
+% 
+% spk_train(splitIdx == 1) = spk(splitIdx == 1);
+% spk_test(splitIdx == 0) = spk(splitIdx == 0);
 
 
 %% model fit
@@ -214,36 +214,114 @@ end
 POI_mean_fit_trans = reshape(lam_poi, [], kStep);
 POI_var_fit_trans = reshape(lamVar_poi,[],kStep);
 
-% plot
-figure(1)
-subplot(3,1,1)
+%% MSE
+true_mean = CMP_mean;
+
+% mean of (\hat{mu} - mu)^2
+mean((CMP_mean_fit_trans - true_mean).^2, 'all')
+mean((POI_mean_fit_trans - true_mean).^2, 'all')
+
+% figure(1)
+% subplot(1,3,1)
+% imagesc(CMP_mean_fit_trans - true_mean)
+% cLim = caxis;
+% colorbar()
+% title('CMP - true')
+% subplot(1,3,2)
+% imagesc(CMP_mean_fit_trans + sqrt(CMP_var_fit_trans) - true_mean)
+% colorbar()
+% title('(CMP + 1sd) - true')
+% set(gca,'CLim',cLim)
+% subplot(1,3,3)
+% imagesc(CMP_mean_fit_trans - sqrt(CMP_var_fit_trans) - true_mean)
+% colorbar()
+% title('(CMP - 1sd) - true')
+% set(gca,'CLim',cLim)
+% 
+% 
+% figure(2)
+% subplot(1,3,1)
+% imagesc(POI_mean_fit_trans - true_mean)
+% set(gca,'CLim',cLim)
+% colorbar()
+% title('Pisson - true')
+% subplot(1,3,2)
+% imagesc(POI_mean_fit_trans + sqrt(POI_var_fit_trans) - true_mean)
+% colorbar()
+% title('(Pisson + 1sd) - true')
+% set(gca,'CLim',cLim)
+% subplot(1,3,3)
+% imagesc(POI_mean_fit_trans - sqrt(POI_var_fit_trans) - true_mean)
+% colorbar()
+% title('(Pisson - 1sd) - true')
+% set(gca,'CLim',cLim)
+
+
+% see spk
+% training
+nanmean((CMP_mean_fit_trans - spk_train).^2, 'all')
+nanmean((POI_mean_fit_trans - spk_train).^2, 'all')
+
+% test
+nanmean((CMP_mean_fit_trans - spk_test).^2, 'all')
+nanmean((POI_mean_fit_trans - spk_test).^2, 'all')
+
+%% plot
+plotFolder = 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\plots\figure3';
+cd(plotFolder)
+
+% FR
+FR_true = figure;
 imagesc(CMP_mean)
 colorbar
+xlabel('Trial')
+ylabel('Orientation (degree)')
 set(gca,'CLim',meanRange)
-title('true')
-subplot(3,1,2)
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(FR_true,'PaperUnits','inches','PaperPosition',[0 0 3 3])
+saveas(FR_true, '1_FR_true.svg')
+saveas(FR_true, '1_FR_true.png')
+
+
+FR_cmp = figure;
 imagesc(CMP_mean_fit_trans)
 colorbar
+xlabel('Trial')
+ylabel('Orientation (degree)')
 set(gca,'CLim',meanRange)
-title('CMP')
-subplot(3,1,3)
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(FR_cmp,'PaperUnits','inches','PaperPosition',[0 0 3 3])
+saveas(FR_cmp, '2_FR_cmp.svg')
+saveas(FR_cmp, '2_FR_cmp.png')
+
+FR_poi = figure;
 imagesc(POI_mean_fit_trans)
 colorbar
+xlabel('Trial')
+ylabel('Orientation (degree)')
 set(gca,'CLim',meanRange)
-title('Poisson')
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(FR_poi,'PaperUnits','inches','PaperPosition',[0 0 3 3])
+saveas(FR_poi, '3_FR_poi.svg')
+saveas(FR_poi, '3_FR_poi.png')
 
 % max position
 posLen = length(x0);
 maxSpk = zeros(kStep,1);
 maxPos = zeros(kStep,1);
-
 for t = 1:kStep
     idxTmp = ((t-1)*posLen + 1): (t*posLen);
     [maxSpk(t), ~] = max(CMP_mean(:, t));
     maxPos(t) = find(CMP_mean == maxSpk(t));
 end
 
-figure(2)
+maxFR = figure;
 hold on
 l1 = plot(CMP_mean(maxPos));
 l2 = plot(CMP_mean_fit_trans(maxPos), 'r');
@@ -253,9 +331,18 @@ plot(CMP_mean_fit_trans(maxPos)- sqrt(CMP_var_fit_trans(maxPos)), 'r--', 'LineWi
 l3 = plot(POI_mean_fit_trans(maxPos), 'b');
 plot(POI_mean_fit_trans(maxPos)+ sqrt(POI_var_fit_trans(maxPos)), 'b--', 'LineWidth', 1)
 plot(POI_mean_fit_trans(maxPos)- sqrt(POI_var_fit_trans(maxPos)), 'b--', 'LineWidth', 1)
-
 hold off
-legend([l1 l2 l3],{'true', 'cmp', 'poi'})
+xlabel('Trial')
+ylabel('Firing Rate')
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(maxFR,'PaperUnits','inches','PaperPosition',[0 0 4 3])
+saveas(maxFR, '4_maxFR.svg')
+saveas(maxFR, '4_maxFR.png')
+
+
+
 
 
 
