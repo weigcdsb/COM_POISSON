@@ -183,10 +183,12 @@ CMP_ff_fit_trans = reshape(CMP_ff_fit, [], kStep);
 plotFolder = 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\plots\figure2';
 cd(plotFolder)
 
-meanRange = [min([CMP_mean(:); CMP_mean_fit_trans(:)])...
-    max([CMP_mean(:); CMP_mean_fit_trans(:)])];
+meanRange = [min([CMP_mean(:); CMP_mean_fit_trans(:); spk(:)])...
+    max([CMP_mean(:); CMP_mean_fit_trans(:); spk(:)])];
 ffRange = [min([CMP_var(:)./CMP_mean(:); CMP_ff_fit_trans(:)])...
 max([CMP_var(:)./CMP_mean(:); CMP_ff_fit_trans(:)])];
+angle = 180*(x0-min(x0))/range(x0);
+
 
 % subplot(2,2,1)
 FR_true = figure;
@@ -194,60 +196,102 @@ imagesc(1:dt:T, angle, CMP_mean)
 % title('Mean Firing Rate')
 xlabel('Trial')
 ylabel('Orientation (degree)')
+colormap(turbo)
 % colormap(flipud(gray(256)));
 colorbar;
+% colormap(hot)
 set(gca,'CLim',meanRange)
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
-set(FR_true,'PaperUnits','inches','PaperPosition',[0 0 4 3])
+set(FR_true,'PaperUnits','inches','PaperPosition',[0 0 3 3])
 saveas(FR_true, '1_FR_true.svg')
 saveas(FR_true, '1_FR_true.png')
 
-% subplot(2,2,2)
+spk_true = figure;
+imagesc(1:dt:T, angle, spk)
+xlabel('Trial')
+ylabel('Orientation (degree)')
+colorbar;
+colormap(turbo)
+% colormap(cool)
+set(gca,'CLim',meanRange)
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(spk_true,'PaperUnits','inches','PaperPosition',[0 0 3 3])
+saveas(spk_true, '2_spk.svg')
+saveas(spk_true, '2_spk.png')
+
+
 FF_true = figure;
 imagesc(1:dt:T, angle, CMP_var./CMP_mean)
 xlabel('Trial')
 ylabel('Orientation (degree)')
-% colormap(flipud(gray(256)));
 colorbar;
+% colormap(hot)
+colormap(turbo)
 set(gca,'CLim',ffRange)
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
-set(FF_true,'PaperUnits','inches','PaperPosition',[0 0 4 3])
-saveas(FF_true, '2_FF_true.svg')
-saveas(FF_true, '2_FF_true.png')
+set(FF_true,'PaperUnits','inches','PaperPosition',[0 0 3 3])
+saveas(FF_true, '3_FF_true.svg')
+saveas(FF_true, '3_FF_true.png')
 
-% subplot(2,2,3)
 FR_fit = figure;
 imagesc(1:dt:T, angle, CMP_mean_fit_trans)
 xlabel('Trial')
 ylabel('Orientation (degree)')
 % colormap(flipud(gray(256)));
+colormap(turbo)
 colorbar;
 set(gca,'CLim',meanRange)
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
-set(FR_fit,'PaperUnits','inches','PaperPosition',[0 0 4 3])
-saveas(FR_fit, '3_FR_fit.svg')
-saveas(FR_fit, '3_FR_fit.png')
+set(FR_fit,'PaperUnits','inches','PaperPosition',[0 0 3 3])
+saveas(FR_fit, '4_FR_fit.svg')
+saveas(FR_fit, '4_FR_fit.png')
 
-% subplot(2,2,4)
 FF_fit = figure;
 imagesc(1:dt:T, angle, CMP_ff_fit_trans)
 xlabel('Trial')
 ylabel('Orientation (degree)')
-% colormap(flipud(gray(256)));
+colormap(turbo)
 colorbar;
 set(gca,'CLim',ffRange)
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
-set(FF_fit,'PaperUnits','inches','PaperPosition',[0 0 4 3])
-saveas(FF_fit, '4_FF_fit.svg')
-saveas(FF_fit, '4_FF_fit.png')
+set(FF_fit,'PaperUnits','inches','PaperPosition',[0 0 3 3])
+saveas(FF_fit, '5_FF_fit.svg')
+saveas(FF_fit, '5_FF_fit.png')
+
+% max Position
+maxSpk = zeros(kStep,1);
+maxFF = zeros(kStep,1);
+maxFF_fit = zeros(kStep,1);
+CMP_FF = CMP_var./CMP_mean;
+for t = 1:kStep
+    [maxSpk(t), idxTmp] = max(CMP_mean(:, t));
+    maxFF(t) = CMP_FF(idxTmp,t);
+    maxFF_fit(t) = CMP_ff_fit_trans(idxTmp,t);
+end
+
+FFmax = figure;
+hold on
+plot(maxFF)
+plot(maxFF_fit)
+hold off
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+ylabel("Fano Factor")
+xlabel("Trial")
+box off
+
+set(FFmax,'PaperUnits','inches','PaperPosition',[0 0 4 3])
+saveas(FFmax, '6_FF_max.svg')
+saveas(FFmax, '6_FF_max.png')
 
 
 

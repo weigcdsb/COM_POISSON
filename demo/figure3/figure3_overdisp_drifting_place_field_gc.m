@@ -273,6 +273,7 @@ cd(plotFolder)
 % FR
 FR_true = figure;
 imagesc(CMP_mean)
+colormap(turbo)
 colorbar
 xlabel('Trial')
 ylabel('Orientation (degree)')
@@ -287,6 +288,7 @@ saveas(FR_true, '1_FR_true.png')
 
 FR_cmp = figure;
 imagesc(CMP_mean_fit_trans)
+colormap(turbo)
 colorbar
 xlabel('Trial')
 ylabel('Orientation (degree)')
@@ -300,6 +302,7 @@ saveas(FR_cmp, '2_FR_cmp.png')
 
 FR_poi = figure;
 imagesc(POI_mean_fit_trans)
+colormap(turbo)
 colorbar
 xlabel('Trial')
 ylabel('Orientation (degree)')
