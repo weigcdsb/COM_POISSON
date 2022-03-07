@@ -54,17 +54,7 @@ package 'Rcpp' was built under R version 4.0.5
 > 
 > cmpFit <- glm.cmp(fmlaX,
 +                   fmlaG, data = fitData)
-> beta <- unname(cmpFit$beta)
-> gam <- unname(cmpFit$gamma)
-> 
-> write.csv(c(beta, gam),
-+           file = paste0(wd, '/cmp_t1.csv'), row.names = F)
-> 
-> 
-> 
-> 
-> 
-> 
-> proc.time()
-   user  system elapsed 
-   0.35    0.06    1.93 
+Error in optim(par.init, loglik, method = optim.method, control = optim.control,  : 
+  non-finite value supplied by optim
+Calls: glm.cmp -> fit.cmp.reg -> optim
+Execution halted
