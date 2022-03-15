@@ -1,5 +1,11 @@
 function [x,fx,dfdx,xx] = newtonGH(fdf,x0,TolX,MaxIter)
 
+% to debug
+% fdf = gradHess_tmp;
+% x0 = theta_fit_tmp(:);
+% TolX = 1e-10;
+% MaxIter = 1000;
+
 TolFun=eps;
 xx(:,1) = x0;
 dh = feval(fdf, x0);

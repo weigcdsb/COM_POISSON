@@ -46,12 +46,11 @@ for k = 1:(length(spk) - smoothing + 1)
 end
 
 
-plot(posAlign_smoo)
 
 
 %%
 
-nknots=10;
+nknots=12;
 Gnknots=1;
 X = getCubicBSplineBasis((pos + 250)/500,nknots,false);
 G = getCubicBSplineBasis((pos + 250)/500,Gnknots,false);
@@ -79,7 +78,7 @@ hold off
 axis tight
 
 %%
-nCMP = find(run_number>5,1); % fit with some min # of runs down the track
+nCMP = find(run_number>2,1); % fit with some min # of runs down the track
 writematrix(spk(1:nCMP), [r_wd '\y.csv'])
 writematrix(X(1:nCMP, :),[r_wd '\X.csv'])
 writematrix(G(1:nCMP, :),[r_wd '\G.csv'])
@@ -128,53 +127,7 @@ gradHess_tmp = @(vecTheta) gradHessTheta_na(vecTheta, X,G, theta02, W02,...
 [theta_newton_vec,~,hess_tmp,~] = newtonGH(gradHess_tmp,theta_fit_tmp(:),1e-10,1000);
 theta_fit = reshape(theta_newton_vec, [], T);
 
-%%
-% TODO: find a direct & fast way to calculate W_fit
-% [~,W_fit] =...
-%     ppasmoo_compoisson_fisher_na(theta02, spk', X, G,...
-%     W02,eye(length(theta0)),Qoptmatrix);
-% [var_rate_exact, var_rate_app] = varParam(X, G, theta_fit, W_fit);
-
-subplot(1,2,1)
-plot(theta_fit(1:(nknots+1), :)')
-title('beta')
-subplot(1,2,2)
-plot(theta_fit((nknots+2):end, :)')
-title('gamma')
-
-
-lam = exp(sum(X .* theta_fit(1:(nknots+1), :)',2));
-nu = exp(sum(G .* theta_fit((nknots+2):end, :)',2));
-
-
-CMP_mean = zeros(size(lam, 1), 1);
-CMP_var = zeros(size(lam, 1), 1);
-logZ = zeros(size(lam, 1), 1);
-for k = 1:length(lam)
-    [CMP_mean(k), CMP_var(k), ~, ~, ~, logZ(k)] = ...
-            CMPmoment(lam(k), nu(k), 1000);
-end
-
-
-subplot(1, 2, 1)
-hold on
-plot(spk, 'b', 'LineWidth', 1)
-plot(CMP_mean, 'r', 'LineWidth', 1)
-title('obs-mean')
-hold off
-
-subplot(1, 2, 2)
-hold on
-plot(var_smoo./mean_smoo, 'b', 'LineWidth', 1)
-plot(CMP_var./CMP_mean, 'r', 'LineWidth', 1)
-title('fano factor')
-hold off
-
-llhd = sum(spk.*log((lam+(lam==0))) -...
-        nu.*gammaln(spk + 1) - logZ);
-llhd/sum(spk)
-
-%%
+%% Let's plot
 [posMin, posMax] = bounds((pos + 250)/500);
 heatmap_pos = linspace(posMin,posMax,256);
 heatmap_X = getCubicBSplineBasis(heatmap_pos,nknots,false);
@@ -183,7 +136,7 @@ heatmap_G = getCubicBSplineBasis(heatmap_pos,Gnknots,false);
 heatmap_lam = exp(heatmap_X * theta_fit(1:(nknots+1), :));
 heatmap_nu = exp(heatmap_G * theta_fit((nknots+2):end, :));
 
-skip = 50; % resolution
+skip = 100; % resolution
 heatmap_lam = heatmap_lam(:,1:skip:end);
 heatmap_nu = heatmap_nu(:,1:skip:end);
 heatmap_t = t_raw(1:skip:end);
@@ -198,42 +151,28 @@ for t = 1:size(heatmap_lam,2)
     end
 end
 
-%%
 colIdx = find(max(heatmap_mean, [], 1) < max(spk_raw(:))*2);
 heatmap_mean = heatmap_mean(:, colIdx);
 heatmap_var = heatmap_var(:, colIdx);
 heatmap_t = heatmap_t(colIdx);
 
-figure(20)
-subplot(3,1,1)
-plot(t_raw,pos)
-hold on
-scatter(t_raw(find(spk_raw>0)),pos(spk_raw>0),spk_raw(spk_raw>0)*10,'filled','k','MarkerFaceAlpha',0.5)
-hold off
-box off; set(gca,'TickDir','out')
-ylim([-250 250])
-xlim([0 t_raw(end)])
+heatmap_mean_align = reshape(heatmap_mean, size(heatmap_mean,1)/2, []);
+for kk = 1:size(heatmap_mean_align,2)
+    if mod(kk,2) == 0
+        heatmap_mean_align(:,kk) = flip(heatmap_mean_align(:,kk));
+    end
+end
 
-subplot(3,1,2)
-imagesc(heatmap_t,heatmap_pos*500-250,heatmap_mean)
-box off; set(gca,'TickDir','out')
-set(gca,'YDir','normal')
-ylabel('Mean')
-% set(gca,'CLim',[0 max(spk_raw(:))*2])
-colorbar
+mean_pos = mean(heatmap_mean_align,2);
+m1 = max(mean_pos(1:size(heatmap_mean_align,1)/2));
+m2 = max(mean_pos((size(heatmap_mean_align,1)/2+1):end));
 
-subplot(3,1,3)
-imagesc(heatmap_t,heatmap_pos*500-250,log10(heatmap_var./heatmap_mean))
-box off; set(gca,'TickDir','out')
-set(gca,'YDir','normal')
-ylabel('log Fano Factor')
-xlabel('Time [min]')
-% set(gca,'CLim',[0 20])
-colorbar
+p1 = find(mean_pos == m1);
+p2 = find(mean_pos == m2);
 
+cd('C:\Users\gaw19004\Documents\GitHub\COM_POISSON\plots\figure5')
 
-figure(22)
-subplot(3,1,1)
+spk_obs = figure;
 plot(t_raw,posAlign_raw)
 hold on
 scatter(t_raw(find(spk_raw>0)),posAlign_raw(spk_raw>0),spk_raw(spk_raw>0)*10,'filled','k','MarkerFaceAlpha',0.5)
@@ -241,6 +180,170 @@ hold off
 box off; set(gca,'TickDir','out')
 ylim([0 max(posAlign_raw)])
 xlim([0 t_raw(end)])
+xlabel('Time [min]')
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(spk_obs,'PaperUnits','inches','PaperPosition',[0 0 6 3])
+saveas(spk_obs, '1_spk_obs.svg')
+saveas(spk_obs, '1_spk_obs.png')
 
 
+FR = figure;
+imagesc(heatmap_t,heatmap_pos*250, heatmap_mean_align)
+set(gca,'YDir','normal')
+colormap(hot)
+% colormap(turbo)
+yline(heatmap_pos(2*p1)*250, 'r', 'LineWidth', 2)
+yline(heatmap_pos(2*p2)*250, 'w', 'LineWidth', 2)
+colorbar
+% ylim([0 max(posAlign_raw)])
+xlim([0 t_raw(end)])
+xlabel('Time [min]')
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
 
+set(FR,'PaperUnits','inches','PaperPosition',[0 0 6 3])
+saveas(FR, '2_FR_colBar.svg')
+saveas(FR, '2_FR_colBar.png')
+
+
+FR2 = figure;
+imagesc(heatmap_t,heatmap_pos*250, heatmap_mean_align)
+set(gca,'YDir','normal')
+colormap(hot)
+% colormap(turbo)
+yline(heatmap_pos(2*p1)*250, 'r', 'LineWidth', 2)
+yline(heatmap_pos(2*p2)*250, 'w', 'LineWidth', 2)
+% ylim([0 max(posAlign_raw)])
+xlim([0 t_raw(end)])
+xlabel('Time [min]')
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(FR2,'PaperUnits','inches','PaperPosition',[0 0 6 3])
+saveas(FR2, '3_FR_noCB.svg')
+saveas(FR2, '3_FR_noCB.png')
+
+heatmap_ff_align = reshape(heatmap_var./heatmap_mean, size(heatmap_mean,1)/2, []);
+for kk = 1:size(heatmap_ff_align,2)
+    if mod(kk,2) == 0
+        heatmap_ff_align(:,kk) = flip(heatmap_ff_align(:,kk));
+    end
+end
+heatmap_ff_align_log10 = log10(heatmap_ff_align);
+
+FF = figure;
+hold on
+plot(heatmap_t,heatmap_ff_align_log10(p1,1:2:end), 'r', 'LineWidth', 2)
+plot(heatmap_t,heatmap_ff_align_log10(p1,2:2:end), 'r--', 'LineWidth', 2)
+plot(heatmap_t,heatmap_ff_align_log10(p2,1:2:end), 'k', 'LineWidth', 2)
+plot(heatmap_t,heatmap_ff_align_log10(p2,2:2:end), 'k--', 'LineWidth', 2)
+hold off
+ylim([-0.1 max(heatmap_ff_align_log10(:))])
+ylabel('log_{10}(Fano Factor)')
+xlabel('Time [min]')
+set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
+box off
+
+set(FF,'PaperUnits','inches','PaperPosition',[0 0 4 5])
+saveas(FF, '4_FF.svg')
+saveas(FF, '4_FF.png')
+
+
+% imagesc(heatmap_t,heatmap_pos*500-250,log10(heatmap_var./heatmap_mean))
+% box off; set(gca,'TickDir','out')
+% set(gca,'YDir','normal')
+% ylabel('log Fano Factor')
+% xlabel('Time [min]')
+% set(gca,'CLim',[0 20])
+% colorbar
+
+
+%%
+% subplot(1,2,1)
+% plot(theta_fit(1:(nknots+1), :)')
+% title('beta')
+% subplot(1,2,2)
+% plot(theta_fit((nknots+2):end, :)')
+% title('gamma')
+% 
+% 
+% lam = exp(sum(X .* theta_fit(1:(nknots+1), :)',2));
+% nu = exp(sum(G .* theta_fit((nknots+2):end, :)',2));
+% 
+% 
+% CMP_mean = zeros(size(lam, 1), 1);
+% CMP_var = zeros(size(lam, 1), 1);
+% logZ = zeros(size(lam, 1), 1);
+% for k = 1:length(lam)
+%     [CMP_mean(k), CMP_var(k), ~, ~, ~, logZ(k)] = ...
+%             CMPmoment(lam(k), nu(k), 1000);
+% end
+% 
+% 
+% subplot(1, 2, 1)
+% hold on
+% plot(spk, 'b', 'LineWidth', 1)
+% plot(CMP_mean, 'r', 'LineWidth', 1)
+% title('obs-mean')
+% hold off
+% 
+% subplot(1, 2, 2)
+% hold on
+% plot(var_smoo./mean_smoo, 'b', 'LineWidth', 1)
+% plot(CMP_var./CMP_mean, 'r', 'LineWidth', 1)
+% title('fano factor')
+% hold off
+% 
+% llhd = sum(spk.*log((lam+(lam==0))) -...
+%         nu.*gammaln(spk + 1) - logZ);
+% llhd/sum(spk)
+
+
+%%
+% colIdx = find(max(heatmap_mean, [], 1) < max(spk_raw(:))*2);
+% heatmap_mean = heatmap_mean(:, colIdx);
+% heatmap_var = heatmap_var(:, colIdx);
+% heatmap_t = heatmap_t(colIdx);
+% 
+% figure(20)
+% subplot(3,1,1)
+% plot(t_raw,pos)
+% hold on
+% scatter(t_raw(find(spk_raw>0)),pos(spk_raw>0),spk_raw(spk_raw>0)*10,'filled','k','MarkerFaceAlpha',0.5)
+% hold off
+% box off; set(gca,'TickDir','out')
+% ylim([-250 250])
+% xlim([0 t_raw(end)])
+% 
+% subplot(3,1,2)
+% imagesc(heatmap_t,heatmap_pos*500-250,heatmap_mean)
+% box off; set(gca,'TickDir','out')
+% set(gca,'YDir','normal')
+% ylabel('Mean')
+% % set(gca,'CLim',[0 max(spk_raw(:))*2])
+% colorbar
+% 
+% subplot(3,1,3)
+% imagesc(heatmap_t,heatmap_pos*500-250,log10(heatmap_var./heatmap_mean))
+% box off; set(gca,'TickDir','out')
+% set(gca,'YDir','normal')
+% ylabel('log Fano Factor')
+% xlabel('Time [min]')
+% set(gca,'CLim',[0 20])
+% colorbar
+% 
+% 
+% figure(22)
+% subplot(3,1,1)
+% plot(t_raw,posAlign_raw)
+% hold on
+% scatter(t_raw(find(spk_raw>0)),posAlign_raw(spk_raw>0),spk_raw(spk_raw>0)*10,'filled','k','MarkerFaceAlpha',0.5)
+% hold off
+% box off; set(gca,'TickDir','out')
+% ylim([0 max(posAlign_raw)])
+% xlim([0 t_raw(end)])
+% 
+% 
+% 

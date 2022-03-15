@@ -185,23 +185,9 @@ CMP_ff2_mat = reshape(CMP_ff2,[],size(data.EVENTS,2));
 x0 = linspace(0,2*pi,256)';
 bas = getCubicBSplineBasis(x0,Xnknots,true);
 
-tblock = linspace(0,size(data.EVENTS, 2),5);
-avgy=[]; b=[]; yhat=[]; dylo=[]; dyhi=[];
-nPos = length(theta);
-for j=1:(length(tblock)-1)
-    
-    tid = [1:size(trial_y_full,1)]>(tblock(j)*nPos) & [1:size(trial_y_full,1)]<(tblock(j+1)*nPos);
-    for i=1:length(theta)
-        avgy(i,j) = mean(trial_y_full(tid' & trial_x_full==theta(i),neuron));
-    end
-    
-    [b(:,j),dev,stats] = glmfit(Xb(tid,:),trial_y_full(tid,neuron),'poisson','constant','off');
-    [yhat(:,j),dylo(:,j),dyhi(:,j)]=glmval(b(:,j),bas,'log',stats,'constant','off');
-end
-i = find(yhat(:,1) == max(yhat(1:(256/2),1)));
-j = find(yhat(:,1) == max(yhat((256/2 + 1):end,1)));
-[~,theta_po1] = min(abs(x0(i)-theta));
-[~,theta_po2] = min(abs(x0(j)-theta));
+cmp_mean_mean = mean(cmp_mean1_mat(sid,:), 2);
+po1 = find(cmp_mean_mean == max(cmp_mean_mean(1:size(cmp_mean_mean,1)/2)));
+po2 = find(cmp_mean_mean == max(cmp_mean_mean((size(cmp_mean_mean,1)/2+1):end)));
 
 
 plotFolder = 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\plots\figure4';
@@ -210,12 +196,12 @@ cd(plotFolder)
 spk_plot = figure;
 imagesc(1:size(data.EVENTS, 2),theta_sort,spk_mat(sid,:))
 colormap(flipud(hot));
-% colormap(hot)
-% colormap(turbo)
 colorbar()
 hold on
-yline(theta(theta_po1), 'b--', 'LineWidth', 4);
-yline(theta(theta_po2), 'c--', 'LineWidth', 4);
+% yline(theta(theta_po1), 'b--', 'LineWidth', 4);
+% yline(theta(theta_po2), 'c--', 'LineWidth', 4);
+yline(theta_sort(po1), 'b--', 'LineWidth', 4);
+yline(theta_sort(po2), 'c--', 'LineWidth', 4);
 hold off
 xlabel('Trial')
 ylabel('Orientation (degree)')
@@ -233,8 +219,8 @@ cLim = caxis;
 colormap(flipud(hot));
 % colormap(hot)
 hold on
-yline(theta(theta_po1), 'b--', 'LineWidth', 4);
-yline(theta(theta_po2), 'c--', 'LineWidth', 4);
+yline(theta_sort(po1), 'b--', 'LineWidth', 4);
+yline(theta_sort(po2), 'c--', 'LineWidth', 4);
 hold off
 colorbar()
 xlabel('Trial')
@@ -251,8 +237,8 @@ imagesc(1:size(data.EVENTS, 2),theta_sort,cmp_mean2_mat(sid,:))
 set(gca,'CLim',cLim)
 colormap(flipud(hot));
 hold on
-yline(theta(theta_po1), 'b--', 'LineWidth', 4);
-yline(theta(theta_po2), 'c--', 'LineWidth', 4);
+yline(theta_sort(po1), 'b--', 'LineWidth', 4);
+yline(theta_sort(po2), 'c--', 'LineWidth', 4);
 hold off
 colorbar()
 xlabel('Trial')
@@ -270,7 +256,7 @@ mff=[]; mmm=[]; mffse=[]; mmmse=[];
 for i=1:(120-smoothing)
     ff=[];
     c=1;
-    for stim=[theta(theta_po1) theta(theta_po2)]
+    for stim=[theta_sort(po1) theta_sort(po2)]
         tv=[];
         tv = find(abs(theta-stim)<20*pi/180);
         tid=[];
