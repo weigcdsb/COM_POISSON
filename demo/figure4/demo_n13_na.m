@@ -185,6 +185,11 @@ CMP_ff2_mat = reshape(CMP_ff2,[],size(data.EVENTS,2));
 x0 = linspace(0,2*pi,256)';
 bas = getCubicBSplineBasis(x0,Xnknots,true);
 
+% spk_mean = mean(spk_mat(sid,:), 2);
+% po1 = find(spk_mean == max(spk_mean(1:size(spk_mat,1)/2)));
+% po2 = find(spk_mean == max(spk_mean((size(spk_mat,1)/2+1):end)));
+% plot(spk_mean)
+
 cmp_mean_mean = mean(cmp_mean1_mat(sid,:), 2);
 po1 = find(cmp_mean_mean == max(cmp_mean_mean(1:size(cmp_mean_mean,1)/2)));
 po2 = find(cmp_mean_mean == max(cmp_mean_mean((size(cmp_mean_mean,1)/2+1):end)));
