@@ -246,7 +246,7 @@ xlabel('Time [min]')
 set(gca,'FontSize',10, 'LineWidth', 1.5,'TickDir','out')
 box off
 
-set(FF,'PaperUnits','inches','PaperPosition',[0 0 4 5])
+set(FF,'PaperUnits','inches','PaperPosition',[0 0 4 3])
 saveas(FF, '4_FF.svg')
 saveas(FF, '4_FF.png')
 
