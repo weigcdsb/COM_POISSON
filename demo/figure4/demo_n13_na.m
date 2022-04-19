@@ -199,14 +199,15 @@ plotFolder = 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\plots\figure4';
 cd(plotFolder)
 
 spk_plot = figure;
-imagesc(1:size(data.EVENTS, 2),theta_sort,spk_mat(sid,:))
+% theta_sort: rad
+imagesc(1:size(data.EVENTS, 2),57.2958*theta_sort,spk_mat(sid,:))
 colormap(flipud(hot));
 colorbar()
 hold on
 % yline(theta(theta_po1), 'b--', 'LineWidth', 4);
 % yline(theta(theta_po2), 'c--', 'LineWidth', 4);
-yline(theta_sort(po1), 'b--', 'LineWidth', 4);
-yline(theta_sort(po2), 'c--', 'LineWidth', 4);
+yline(57.2958*theta_sort(po1), 'b--', 'LineWidth', 4);
+yline(57.2958*theta_sort(po2), 'c--', 'LineWidth', 4);
 hold off
 xlabel('Trial')
 ylabel('Orientation (degree)')
@@ -219,13 +220,13 @@ saveas(spk_plot, '1_spk.png')
 
 
 FR_full = figure;
-imagesc(1:size(data.EVENTS, 2),theta_sort,cmp_mean1_mat(sid,:))
+imagesc(1:size(data.EVENTS, 2),57.2958*theta_sort,cmp_mean1_mat(sid,:))
 cLim = caxis;
 colormap(flipud(hot));
 % colormap(hot)
 hold on
-yline(theta_sort(po1), 'b--', 'LineWidth', 4);
-yline(theta_sort(po2), 'c--', 'LineWidth', 4);
+yline(57.2958*theta_sort(po1), 'b--', 'LineWidth', 4);
+yline(57.2958*theta_sort(po2), 'c--', 'LineWidth', 4);
 hold off
 colorbar()
 xlabel('Trial')
@@ -238,12 +239,12 @@ saveas(FR_full, '2_FR_full.svg')
 saveas(FR_full, '2_FR_full.png')
 
 FR_half = figure;
-imagesc(1:size(data.EVENTS, 2),theta_sort,cmp_mean2_mat(sid,:))
+imagesc(1:size(data.EVENTS, 2),57.2958*theta_sort,cmp_mean2_mat(sid,:))
 set(gca,'CLim',cLim)
 colormap(flipud(hot));
 hold on
-yline(theta_sort(po1), 'b--', 'LineWidth', 4);
-yline(theta_sort(po2), 'c--', 'LineWidth', 4);
+yline(57.2958*theta_sort(po1), 'b--', 'LineWidth', 4);
+yline(57.2958*theta_sort(po2), 'c--', 'LineWidth', 4);
 hold off
 colorbar()
 xlabel('Trial')
