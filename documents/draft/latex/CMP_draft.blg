@@ -12,47 +12,68 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: MyCollection.bib
+Repeated entry---line 394 of file MyCollection.bib
+ : @article{Brown2001
+ :                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 556 of file MyCollection.bib
+ : @misc{Kohn2016
+ :               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 580 of file MyCollection.bib
+ : @article{Kelly2010
+ :                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 595 of file MyCollection.bib
+ : @article{Smith2008
+ :                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 687 of file MyCollection.bib
+ : @article{Stevenson2011a
+ :                        ,
+I'm skipping whatever remains of this entry
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
-You've used 10 entries,
+You've used 46 entries,
             5204 wiz_defined-function locations,
-            953 strings with 8609 characters,
-and the built_in function-call counts, 61817 in all, are:
-= -- 9898
-> -- 192
-< -- 17
-+ -- 3190
-- -- 65
-* -- 3839
-:= -- 9542
-add.period$ -- 38
-call.type$ -- 10
-change.case$ -- 57
-chr.to.int$ -- 10
-cite$ -- 10
-duplicate$ -- 404
-empty$ -- 3037
-format.name$ -- 276
-if$ -- 14754
+            1259 strings with 19131 characters,
+and the built_in function-call counts, 337460 in all, are:
+= -- 52536
+> -- 1048
+< -- 72
++ -- 14720
+- -- 344
+* -- 22823
+:= -- 51158
+add.period$ -- 167
+call.type$ -- 46
+change.case$ -- 256
+chr.to.int$ -- 46
+cite$ -- 46
+duplicate$ -- 2150
+empty$ -- 18261
+format.name$ -- 1540
+if$ -- 79279
 int.to.chr$ -- 1
 int.to.str$ -- 1
 missing$ -- 0
-newline$ -- 124
-num.names$ -- 43
-pop$ -- 256
+newline$ -- 539
+num.names$ -- 200
+pop$ -- 1392
 preamble$ -- 1
-purify$ -- 37
+purify$ -- 164
 quote$ -- 0
-skip$ -- 5765
+skip$ -- 30479
 stack$ -- 0
-substring$ -- 9360
-swap$ -- 162
-text.length$ -- 90
+substring$ -- 55951
+swap$ -- 920
+text.length$ -- 414
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 260
+type$ -- 1196
 warning$ -- 0
-while$ -- 135
+while$ -- 620
 width$ -- 0
-write$ -- 243
+write$ -- 1090
+(There were 5 error messages)

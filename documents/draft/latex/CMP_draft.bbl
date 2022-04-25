@@ -1,7 +1,57 @@
-\begin{thebibliography}{10}
+\begin{thebibliography}{46}
 % BibTex style file: imsart-nameyear.bst, 2017-11-03
 % Default style options (sort=1,type=nameyear).
 % Used options (sort=1,type=nameyear).
+
+\bibitem[\protect\citeauthoryear{Amarasingham et~al.}{2006}]{Amarasingham2006}
+\begin{barticle}[author]
+\bauthor{\bsnm{Amarasingham},~\bfnm{Asohan}\binits{A.}},
+  \bauthor{\bsnm{Chen},~\bfnm{Ting~Li}\binits{T.~L.}},
+  \bauthor{\bsnm{Geman},~\bfnm{Stuart}\binits{S.}},
+  \bauthor{\bsnm{Harrison},~\bfnm{Matthew~T.}\binits{M.~T.}} \AND
+  \bauthor{\bsnm{Sheinberg},~\bfnm{David~L.}\binits{D.~L.}}
+(\byear{2006}).
+\btitle{{Spike Count Reliability and the Poisson Hypothesis}}.
+\bjournal{Journal of Neuroscience}
+\bvolume{26}
+\bpages{801--809}.
+\bdoi{10.1523/JNEUROSCI.2948-05.2006}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Barbieri et~al.}{2001}]{Barbieri2001}
+\begin{barticle}[author]
+\bauthor{\bsnm{Barbieri},~\bfnm{Riccardo}\binits{R.}},
+  \bauthor{\bsnm{Quirk},~\bfnm{Michael~C}\binits{M.~C.}},
+  \bauthor{\bsnm{Frank},~\bfnm{Loren~M}\binits{L.~M.}},
+  \bauthor{\bsnm{Wilson},~\bfnm{Matthew~A}\binits{M.~A.}} \AND
+  \bauthor{\bsnm{Brown},~\bfnm{Emery~N}\binits{E.~N.}}
+(\byear{2001}).
+\btitle{{Construction and analysis of non-Poisson stimulus-response models of
+  neural spiking activity}}.
+\bjournal{Journal of Neuroscience Methods}
+\bvolume{105}
+\bpages{25--37}.
+\bdoi{10.1016/S0165-0270(00)00344-7}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Brown et~al.}{2001}]{Brown2001}
+\begin{barticle}[author]
+\bauthor{\bsnm{Brown},~\bfnm{Emery~N.}\binits{E.~N.}},
+  \bauthor{\bsnm{Nguyen},~\bfnm{David~P.}\binits{D.~P.}},
+  \bauthor{\bsnm{Frank},~\bfnm{Loren~M.}\binits{L.~M.}},
+  \bauthor{\bsnm{Wilson},~\bfnm{Matthew~A.}\binits{M.~A.}} \AND
+  \bauthor{\bsnm{Solo},~\bfnm{Victor}\binits{V.}}
+(\byear{2001}).
+\btitle{{An analysis of neural receptive field plasticity by point process
+  adaptive filtering}}.
+\bjournal{Proceedings of the National Academy of Sciences}
+\bvolume{98}
+\bpages{12261--12266}.
+\bdoi{10.1073/PNAS.201409398}
+\end{barticle}
+\endbibitem
 
 \bibitem[\protect\citeauthoryear{Chatla and Shmueli}{2018}]{Chatla2018}
 \begin{barticle}[author]
@@ -10,10 +60,207 @@
 (\byear{2018}).
 \btitle{{Efficient estimation of COM–Poisson regression and a generalized
   additive model}}.
-\bjournal{Computational Statistics \& Data Analysis}
+\bjournal{Computational Statistics and Data Analysis}
 \bvolume{121}
 \bpages{71--88}.
 \bdoi{10.1016/J.CSDA.2017.11.011}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Chestek et~al.}{2007}]{Chestek2007}
+\begin{barticle}[author]
+\bauthor{\bsnm{Chestek},~\bfnm{Cynthia~A}\binits{C.~A.}},
+  \bauthor{\bsnm{Batista},~\bfnm{Aaron~P}\binits{A.~P.}},
+  \bauthor{\bsnm{Santhanam},~\bfnm{Gopal}\binits{G.}},
+  \bauthor{\bsnm{Yu},~\bfnm{Byron~M}\binits{B.~M.}},
+  \bauthor{\bsnm{Afshar},~\bfnm{Afsheen}\binits{A.}},
+  \bauthor{\bsnm{Cunningham},~\bfnm{John~P}\binits{J.~P.}},
+  \bauthor{\bsnm{Gilja},~\bfnm{Vikash}\binits{V.}},
+  \bauthor{\bsnm{Ryu},~\bfnm{Stephen~I}\binits{S.~I.}},
+  \bauthor{\bsnm{Churchland},~\bfnm{Mark~M}\binits{M.~M.}} \AND
+  \bauthor{\bsnm{Shenoy},~\bfnm{Krishna~V}\binits{K.~V.}}
+(\byear{2007}).
+\btitle{{Single-neuron stability during repeated reaching in macaque premotor
+  cortex}}.
+\bjournal{Journal of Neuroscience}
+\bvolume{27}
+\bpages{10742--10750}.
+\bdoi{10.1523/JNEUROSCI.0959-07.2007}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Churchland et~al.}{2006}]{Churchland2006}
+\begin{barticle}[author]
+\bauthor{\bsnm{Churchland},~\bfnm{M~M}\binits{M.~M.}},
+  \bauthor{\bsnm{Yu},~\bfnm{B~M}\binits{B.~M.}},
+  \bauthor{\bsnm{Ryu},~\bfnm{S~I}\binits{S.~I.}},
+  \bauthor{\bsnm{Santhanam},~\bfnm{G}\binits{G.}} \AND
+  \bauthor{\bsnm{Shenoy},~\bfnm{K~V}\binits{K.~V.}}
+(\byear{2006}).
+\btitle{{Neural Variability in Premotor Cortex Provides a Signature of Motor
+  Preparation}}.
+\bjournal{Journal of Neuroscience}
+\bvolume{26}
+\bpages{3697}.
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Churchland et~al.}{2010}]{Churchland2010}
+\begin{barticle}[author]
+\bauthor{\bsnm{Churchland},~\bfnm{Mark~M}\binits{M.~M.}},
+  \bauthor{\bsnm{Yu},~\bfnm{Byron~M}\binits{B.~M.}},
+  \bauthor{\bsnm{Cunningham},~\bfnm{John~P}\binits{J.~P.}},
+  \bauthor{\bsnm{Sugrue},~\bfnm{Leo~P}\binits{L.~P.}},
+  \bauthor{\bsnm{Cohen},~\bfnm{Marlene~R}\binits{M.~R.}},
+  \bauthor{\bsnm{Corrado},~\bfnm{Greg~S}\binits{G.~S.}},
+  \bauthor{\bsnm{Newsome},~\bfnm{William~T}\binits{W.~T.}},
+  \bauthor{\bsnm{Clark},~\bfnm{Andrew~M}\binits{A.~M.}},
+  \bauthor{\bsnm{Hosseini},~\bfnm{Paymon}\binits{P.}},
+  \bauthor{\bsnm{Scott},~\bfnm{Benjamin~B}\binits{B.~B.}},
+  \bauthor{\bsnm{Bradley},~\bfnm{David~C}\binits{D.~C.}},
+  \bauthor{\bsnm{Smith},~\bfnm{Matthew~a}\binits{M.~a.}},
+  \bauthor{\bsnm{Kohn},~\bfnm{Adam}\binits{A.}},
+  \bauthor{\bsnm{Movshon},~\bfnm{J~Anthony}\binits{J.~A.}},
+  \bauthor{\bsnm{Armstrong},~\bfnm{Katherine~M}\binits{K.~M.}},
+  \bauthor{\bsnm{Moore},~\bfnm{Tirin}\binits{T.}},
+  \bauthor{\bsnm{Chang},~\bfnm{Steve~W}\binits{S.~W.}},
+  \bauthor{\bsnm{Snyder},~\bfnm{Lawrence~H}\binits{L.~H.}},
+  \bauthor{\bsnm{Lisberger},~\bfnm{Stephen~G}\binits{S.~G.}},
+  \bauthor{\bsnm{Priebe},~\bfnm{Nicholas~J}\binits{N.~J.}},
+  \bauthor{\bsnm{Finn},~\bfnm{Ian~M}\binits{I.~M.}},
+  \bauthor{\bsnm{Ferster},~\bfnm{David}\binits{D.}},
+  \bauthor{\bsnm{Ryu},~\bfnm{Stephen~I}\binits{S.~I.}},
+  \bauthor{\bsnm{Santhanam},~\bfnm{Gopal}\binits{G.}},
+  \bauthor{\bsnm{Sahani},~\bfnm{Maneesh}\binits{M.}} \AND
+  \bauthor{\bsnm{Shenoy},~\bfnm{Krishna~V}\binits{K.~V.}}
+(\byear{2010}).
+\btitle{{Stimulus onset quenches neural variability: A widespread cortical
+  phenomenon}}.
+\bjournal{Nature Neuroscience}
+\bvolume{13}
+\bpages{369--378}.
+\bdoi{10.1038/nn.2501}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Churchland et~al.}{2011}]{Churchland2011}
+\begin{barticle}[author]
+\bauthor{\bsnm{Churchland},~\bfnm{Anne~K}\binits{A.~K.}},
+  \bauthor{\bsnm{Kiani},~\bfnm{R.}\binits{R.}},
+  \bauthor{\bsnm{Chaudhuri},~\bfnm{R.}\binits{R.}},
+  \bauthor{\bsnm{Wang},~\bfnm{Xiao~Jing}\binits{X.~J.}},
+  \bauthor{\bsnm{Pouget},~\bfnm{Alexandre}\binits{A.}} \AND
+  \bauthor{\bsnm{Shadlen},~\bfnm{M.~N.}\binits{M.~N.}}
+(\byear{2011}).
+\btitle{{Variance as a Signature of Neural Computations during Decision
+  Making}}.
+\bjournal{Neuron}
+\bvolume{69}
+\bpages{818--831}.
+\bdoi{10.1016/j.neuron.2010.12.037}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Czanner et~al.}{2008}]{Czanner2008}
+\begin{barticle}[author]
+\bauthor{\bsnm{Czanner},~\bfnm{Gabriela}\binits{G.}},
+  \bauthor{\bsnm{Eden},~\bfnm{Uri~T}\binits{U.~T.}},
+  \bauthor{\bsnm{Wirth},~\bfnm{Sylvia}\binits{S.}},
+  \bauthor{\bsnm{Yanike},~\bfnm{Marianna}\binits{M.}},
+  \bauthor{\bsnm{Suzuki},~\bfnm{Wendy~A}\binits{W.~A.}} \AND
+  \bauthor{\bsnm{Brown},~\bfnm{Emery~N}\binits{E.~N.}}
+(\byear{2008}).
+\btitle{{Analysis of between-trial and within-trial neural spiking dynamics}}.
+\bjournal{Journal of Neurophysiology}
+\bvolume{99}
+\bpages{2672--2693}.
+\bdoi{10.1152/jn.00343.2007}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{del Castillo and
+  P{\'{e}}rez-Casany}{2005}]{DelCastillo2005}
+\begin{barticle}[author]
+\bauthor{\bparticle{del} \bsnm{Castillo},~\bfnm{Joan}\binits{J.}} \AND
+  \bauthor{\bsnm{P{\'{e}}rez-Casany},~\bfnm{Marta}\binits{M.}}
+(\byear{2005}).
+\btitle{{Overdispersed and underdispersed Poisson generalizations}}.
+\bjournal{Journal of Statistical Planning and Inference}
+\bvolume{134}
+\bpages{486--500}.
+\bdoi{10.1016/J.JSPI.2004.04.019}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{DeWeese, Wehr and Zador}{2003}]{DeWeese2003}
+\begin{barticle}[author]
+\bauthor{\bsnm{DeWeese},~\bfnm{Michael~R}\binits{M.~R.}},
+  \bauthor{\bsnm{Wehr},~\bfnm{Michael}\binits{M.}} \AND
+  \bauthor{\bsnm{Zador},~\bfnm{Anthony~M}\binits{A.~M.}}
+(\byear{2003}).
+\btitle{{Binary spiking in auditory cortex.}}
+\bjournal{The Journal of neuroscience : the official journal of the Society for
+  Neuroscience}
+\bvolume{23}
+\bpages{7940--7949}.
+\bdoi{23/21/7940 [pii]}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{DeWeese and Zador}{1998}]{DeWeese1998}
+\begin{barticle}[author]
+\bauthor{\bsnm{DeWeese},~\bfnm{Michael}\binits{M.}} \AND
+  \bauthor{\bsnm{Zador},~\bfnm{Anthony}\binits{A.}}
+(\byear{1998}).
+\btitle{{Asymmetric Dynamics in Optimal Variance Adaptation}}.
+\bjournal{Neural Computation}
+\bvolume{10}
+\bpages{1179--1202}.
+\bdoi{10.1162/089976698300017403}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Deweese and Zador}{2004}]{Deweese2004}
+\begin{barticle}[author]
+\bauthor{\bsnm{Deweese},~\bfnm{Michael~R}\binits{M.~R.}} \AND
+  \bauthor{\bsnm{Zador},~\bfnm{Anthony~M}\binits{A.~M.}}
+(\byear{2004}).
+\btitle{{Shared and private variability in the auditory cortex.}}
+\bjournal{Journal of neurophysiology}
+\bvolume{92}
+\bpages{1840--1855}.
+\bdoi{10.1152/jn.00197.2004}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Dickey et~al.}{2009}]{Dickey2009}
+\begin{barticle}[author]
+\bauthor{\bsnm{Dickey},~\bfnm{Adam~S}\binits{A.~S.}},
+  \bauthor{\bsnm{Suminski},~\bfnm{Aaron}\binits{A.}},
+  \bauthor{\bsnm{Amit},~\bfnm{Yali}\binits{Y.}} \AND
+  \bauthor{\bsnm{Hatsopoulos},~\bfnm{Nicholas~G}\binits{N.~G.}}
+(\byear{2009}).
+\btitle{{Single-unit stability using chronically implanted multielectrode
+  arrays}}.
+\bjournal{Journal of Neurophysiology}
+\bvolume{102}
+\bpages{1331--1339}.
+\bdoi{10.1152/jn.90920.2008}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Dragoi, Sharma and Sur}{2000}]{Dragoi2000}
+\begin{barticle}[author]
+\bauthor{\bsnm{Dragoi},~\bfnm{Valentin}\binits{V.}},
+  \bauthor{\bsnm{Sharma},~\bfnm{Jitendra}\binits{J.}} \AND
+  \bauthor{\bsnm{Sur},~\bfnm{Mriganka}\binits{M.}}
+(\byear{2000}).
+\btitle{{Adaptation-Induced Plasticity of Orientation Tuning in Adult Visual
+  Cortex}}.
+\bjournal{Neuron}
+\bvolume{28}
+\bpages{287--298}.
+\bdoi{10.1016/S0896-6273(00)00103-3}
 \end{barticle}
 \endbibitem
 
@@ -32,6 +279,34 @@
 \bpages{971--998}.
 \bdoi{10.1162/089976604773135069}
 \end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Fenton and Muller}{1998}]{Fenton1998}
+\begin{barticle}[author]
+\bauthor{\bsnm{Fenton},~\bfnm{Andr{\'{e}}~A.}\binits{A.~A.}} \AND
+  \bauthor{\bsnm{Muller},~\bfnm{Robert~U.}\binits{R.~U.}}
+(\byear{1998}).
+\btitle{{Place cell discharge is extremely variable during individual passes of
+  the rat through the firing field}}.
+\bjournal{Proceedings of the National Academy of Sciences of the United States
+  of America}
+\bvolume{95}
+\bpages{3182--3187}.
+\bdoi{10.1073/pnas.95.6.3182}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Gao et~al.}{2015}]{Gao2015}
+\begin{btechreport}[author]
+\bauthor{\bsnm{Gao},~\bfnm{Yuanjun}\binits{Y.}},
+  \bauthor{\bsnm{Buesing},~\bfnm{Lars}\binits{L.}},
+  \bauthor{\bsnm{Shenoy},~\bfnm{Krishna~V}\binits{K.~V.}} \AND
+  \bauthor{\bsnm{Cunningham},~\bfnm{John~P}\binits{J.~P.}}
+(\byear{2015}).
+\btitle{{High-dimensional neural spike train analysis with generalized count
+  linear dynamical systems}}
+\btype{Technical Report}.
+\end{btechreport}
 \endbibitem
 
 \bibitem[\protect\citeauthoryear{Gaunt et~al.}{2019}]{Gaunt2019}
@@ -65,6 +340,66 @@
 \end{barticle}
 \endbibitem
 
+\bibitem[\protect\citeauthoryear{Kara, Reinagel and Reid}{2000}]{Kara2000}
+\begin{barticle}[author]
+\bauthor{\bsnm{Kara},~\bfnm{P}\binits{P.}},
+  \bauthor{\bsnm{Reinagel},~\bfnm{P}\binits{P.}} \AND
+  \bauthor{\bsnm{Reid},~\bfnm{R~C}\binits{R.~C.}}
+(\byear{2000}).
+\btitle{{Low response variability in simultaneously recorded retinal, thalamic,
+  and cortical neurons.}}
+\bjournal{Neuron}
+\bvolume{27}
+\bpages{635--646}.
+\bdoi{10.1016/S0896-6273(00)00072-6}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Kelly et~al.}{2010}]{Kelly2010}
+\begin{barticle}[author]
+\bauthor{\bsnm{Kelly},~\bfnm{Ryan~C.}\binits{R.~C.}},
+  \bauthor{\bsnm{Smith},~\bfnm{Matthew~A.}\binits{M.~A.}},
+  \bauthor{\bsnm{Kass},~\bfnm{Robert~E.}\binits{R.~E.}} \AND
+  \bauthor{\bsnm{Lee},~\bfnm{Tai~Sing}\binits{T.~S.}}
+(\byear{2010}).
+\btitle{{Local field potentials indicate network state and account for neuronal
+  response variability}}.
+\bjournal{Journal of Computational Neuroscience}
+\bvolume{29}
+\bpages{567--579}.
+\bdoi{10.1007/s10827-009-0208-9}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Kohn and Smith}{2016}]{Kohn2016}
+\begin{bmisc}[author]
+\bauthor{\bsnm{Kohn},~\bfnm{A.}\binits{A.}} \AND
+  \bauthor{\bsnm{Smith},~\bfnm{M.~A.}\binits{M.~A.}}
+(\byear{2016}).
+\btitle{{Utah array extracellular recordings of spontaneous and visually evoked
+  activity from anesthetized macaque primary visual cortex (V1)}}.
+\end{bmisc}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Lesica et~al.}{2007}]{Lesica2007}
+\begin{barticle}[author]
+\bauthor{\bsnm{Lesica},~\bfnm{Nicholas~A.}\binits{N.~A.}},
+  \bauthor{\bsnm{Jin},~\bfnm{Jianzhong}\binits{J.}},
+  \bauthor{\bsnm{Weng},~\bfnm{Chong}\binits{C.}},
+  \bauthor{\bsnm{Yeh},~\bfnm{Chun~I.}\binits{C.~I.}},
+  \bauthor{\bsnm{Butts},~\bfnm{Daniel~A.}\binits{D.~A.}},
+  \bauthor{\bsnm{Stanley},~\bfnm{Garrett~B.}\binits{G.~B.}} \AND
+  \bauthor{\bsnm{Alonso},~\bfnm{Jose~Manuel}\binits{J.~M.}}
+(\byear{2007}).
+\btitle{{Adaptation to Stimulus Contrast and Correlations during Natural Visual
+  Stimulation}}.
+\bjournal{Neuron}
+\bvolume{55}
+\bpages{479--491}.
+\bdoi{10.1016/j.neuron.2007.07.013}
+\end{barticle}
+\endbibitem
+
 \bibitem[\protect\citeauthoryear{Macke et~al.}{2011}]{Macke2011}
 \begin{barticle}[author]
 \bauthor{\bsnm{Macke},~\bfnm{Jakob~H.}\binits{J.~H.}},
@@ -77,6 +412,53 @@
 \btitle{{Empirical models of spiking in neural populations}}.
 \bjournal{Advances in Neural Information Processing Systems}
 \bvolume{24}.
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Maimon and Assad}{2009}]{Maimon2009}
+\begin{barticle}[author]
+\bauthor{\bsnm{Maimon},~\bfnm{Gaby}\binits{G.}} \AND
+  \bauthor{\bsnm{Assad},~\bfnm{John~a.}\binits{J.~a.}}
+(\byear{2009}).
+\btitle{{Beyond Poisson: Increased Spike-Time Regularity across Primate
+  Parietal Cortex}}.
+\bjournal{Neuron}
+\bvolume{62}
+\bpages{426--440}.
+\bdoi{10.1016/j.neuron.2009.03.021}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Mizuseki et~al.}{2013}]{Mizuseki2013}
+\begin{barticle}[author]
+\bauthor{\bsnm{Mizuseki},~\bfnm{K.}\binits{K.}},
+  \bauthor{\bsnm{Sirota},~\bfnm{A.}\binits{A.}},
+  \bauthor{\bsnm{Pastalkova},~\bfnm{E.}\binits{E.}},
+  \bauthor{\bsnm{Diba},~\bfnm{K.}\binits{K.}} \AND
+  \bauthor{\bsnm{Buzs{\'{a}}ki},~\bfnm{G.}\binits{G.}}
+(\byear{2013}).
+\btitle{{Multiple single unit recordings from different rat hippocampal and
+  entorhinal regions while the animals were performing multiple behavioral
+  tasks}}.
+\bjournal{CRCNS.org}.
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Mizuseki et~al.}{2014}]{Mizuseki2014}
+\begin{barticle}[author]
+\bauthor{\bsnm{Mizuseki},~\bfnm{Kenji}\binits{K.}},
+  \bauthor{\bsnm{Diba},~\bfnm{Kamran}\binits{K.}},
+  \bauthor{\bsnm{Pastalkova},~\bfnm{Eva}\binits{E.}},
+  \bauthor{\bsnm{Teeters},~\bfnm{Jeff}\binits{J.}},
+  \bauthor{\bsnm{Sirota},~\bfnm{Anton}\binits{A.}} \AND
+  \bauthor{\bsnm{Buzs{\'{a}}ki},~\bfnm{Gy{\"{o}}rgy}\binits{G.}}
+(\byear{2014}).
+\btitle{{Neurosharing: large-scale data sets (spike, LFP) recorded from the
+  hippocampal-entorhinal system in behaving rats}}.
+\bjournal{F1000Research 2014 3:98}
+\bvolume{3}
+\bpages{98}.
+\bdoi{10.12688/f1000research.3895.2}
 \end{barticle}
 \endbibitem
 
@@ -99,6 +481,17 @@
 \end{barticle}
 \endbibitem
 
+\bibitem[\protect\citeauthoryear{Pillow and Scott}{2012}]{Pillow2012}
+\begin{btechreport}[author]
+\bauthor{\bsnm{Pillow},~\bfnm{Jonathan~W.}\binits{J.~W.}} \AND
+  \bauthor{\bsnm{Scott},~\bfnm{James~G}\binits{J.~G.}}
+(\byear{2012}).
+\btitle{{Fully Bayesian inference for neural models with negative-binomial
+  spiking}}
+\btype{Technical Report}.
+\end{btechreport}
+\endbibitem
+
 \bibitem[\protect\citeauthoryear{Rauch, Tung and Striebel}{1965}]{RAUCH1965}
 \begin{barticle}[author]
 \bauthor{\bsnm{Rauch},~\bfnm{H~E}\binits{H.~E.}},
@@ -110,6 +503,46 @@
 \bvolume{3}
 \bpages{1445--1450}.
 \bdoi{10.2514/3.3166}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Rokni et~al.}{2007}]{Rokni2007}
+\begin{barticle}[author]
+\bauthor{\bsnm{Rokni},~\bfnm{U}\binits{U.}},
+  \bauthor{\bsnm{Richardson},~\bfnm{A~G}\binits{A.~G.}},
+  \bauthor{\bsnm{Bizzi},~\bfnm{E}\binits{E.}} \AND
+  \bauthor{\bsnm{Seung},~\bfnm{H~S}\binits{H.~S.}}
+(\byear{2007}).
+\btitle{{Motor learning with unstable neural representations}}.
+\bjournal{Neuron}
+\bvolume{54}
+\bpages{653--666}.
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Rossant et~al.}{2016}]{Rossant2016}
+\begin{barticle}[author]
+\bauthor{\bsnm{Rossant},~\bfnm{Cyrille}\binits{C.}},
+  \bauthor{\bsnm{Kadir},~\bfnm{Shabnam~N.}\binits{S.~N.}},
+  \bauthor{\bsnm{Goodman},~\bfnm{Dan F.~M.}\binits{D.~F.~M.}},
+  \bauthor{\bsnm{Schulman},~\bfnm{John}\binits{J.}},
+  \bauthor{\bsnm{Hunter},~\bfnm{Maximilian L.~D.}\binits{M.~L.~D.}},
+  \bauthor{\bsnm{Saleem},~\bfnm{Aman~B.}\binits{A.~B.}},
+  \bauthor{\bsnm{Grosmark},~\bfnm{Andres}\binits{A.}},
+  \bauthor{\bsnm{Belluscio},~\bfnm{Mariano}\binits{M.}},
+  \bauthor{\bsnm{Denfield},~\bfnm{George~H.}\binits{G.~H.}},
+  \bauthor{\bsnm{Ecker},~\bfnm{Alexander~S.}\binits{A.~S.}},
+  \bauthor{\bsnm{Tolias},~\bfnm{Andreas~S.}\binits{A.~S.}},
+  \bauthor{\bsnm{Solomon},~\bfnm{Samuel}\binits{S.}},
+  \bauthor{\bsnm{Buzski},~\bfnm{Gy{\"{o}}rgy}\binits{G.}},
+  \bauthor{\bsnm{Carandini},~\bfnm{Matteo}\binits{M.}} \AND
+  \bauthor{\bsnm{Harris},~\bfnm{Kenneth~D.}\binits{K.~D.}}
+(\byear{2016}).
+\btitle{{Spike sorting for large, dense electrode arrays}}.
+\bjournal{Nature Neuroscience 2016 19:4}
+\bvolume{19}
+\bpages{634--641}.
+\bdoi{10.1038/nn.4268}
 \end{barticle}
 \endbibitem
 
@@ -144,6 +577,177 @@
 \end{barticle}
 \endbibitem
 
+\bibitem[\protect\citeauthoryear{Shoham, Fellows and
+  Normann}{2003}]{Shoham2003}
+\begin{barticle}[author]
+\bauthor{\bsnm{Shoham},~\bfnm{Shy}\binits{S.}},
+  \bauthor{\bsnm{Fellows},~\bfnm{Matthew~R.}\binits{M.~R.}} \AND
+  \bauthor{\bsnm{Normann},~\bfnm{Richard~A.}\binits{R.~A.}}
+(\byear{2003}).
+\btitle{{Robust, automatic spike sorting using mixtures of multivariate
+  t-distributions}}.
+\bjournal{Journal of neuroscience methods}
+\bvolume{127}
+\bpages{111--122}.
+\bdoi{10.1016/S0165-0270(03)00120-1}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Smith and Brown}{2003}]{Smith2003}
+\begin{barticle}[author]
+\bauthor{\bsnm{Smith},~\bfnm{Anne~C.}\binits{A.~C.}} \AND
+  \bauthor{\bsnm{Brown},~\bfnm{Emery~N.}\binits{E.~N.}}
+(\byear{2003}).
+\btitle{{Estimating a state-space model from point process observations}}.
+\bjournal{Neural Computation}
+\bvolume{15}
+\bpages{965--991}.
+\bdoi{10.1162/089976603765202622}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Smith and Kohn}{2008}]{Smith2008}
+\begin{barticle}[author]
+\bauthor{\bsnm{Smith},~\bfnm{Matthew~A.}\binits{M.~A.}} \AND
+  \bauthor{\bsnm{Kohn},~\bfnm{Adam}\binits{A.}}
+(\byear{2008}).
+\btitle{{Spatial and temporal scales of neuronal correlation in primary visual
+  cortex}}.
+\bjournal{Journal of Neuroscience}
+\bvolume{28}
+\bpages{12591--12603}.
+\bdoi{10.1523/JNEUROSCI.2929-08.2008}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Steinmetz et~al.}{2021}]{Steinmetz2021}
+\begin{barticle}[author]
+\bauthor{\bsnm{Steinmetz},~\bfnm{Nicholas~A.}\binits{N.~A.}},
+  \bauthor{\bsnm{Aydin},~\bfnm{Cagatay}\binits{C.}},
+  \bauthor{\bsnm{Lebedeva},~\bfnm{Anna}\binits{A.}},
+  \bauthor{\bsnm{Okun},~\bfnm{Michael}\binits{M.}},
+  \bauthor{\bsnm{Pachitariu},~\bfnm{Marius}\binits{M.}},
+  \bauthor{\bsnm{Bauza},~\bfnm{Marius}\binits{M.}},
+  \bauthor{\bsnm{Beau},~\bfnm{Maxime}\binits{M.}},
+  \bauthor{\bsnm{Bhagat},~\bfnm{Jai}\binits{J.}},
+  \bauthor{\bsnm{B{\"{o}}hm},~\bfnm{Claudia}\binits{C.}},
+  \bauthor{\bsnm{Broux},~\bfnm{Martijn}\binits{M.}},
+  \bauthor{\bsnm{Chen},~\bfnm{Susu}\binits{S.}},
+  \bauthor{\bsnm{Colonell},~\bfnm{Jennifer}\binits{J.}},
+  \bauthor{\bsnm{Gardner},~\bfnm{Richard~J.}\binits{R.~J.}},
+  \bauthor{\bsnm{Karsh},~\bfnm{Bill}\binits{B.}},
+  \bauthor{\bsnm{Kloosterman},~\bfnm{Fabian}\binits{F.}},
+  \bauthor{\bsnm{Kostadinov},~\bfnm{Dimitar}\binits{D.}},
+  \bauthor{\bsnm{Mora-Lopez},~\bfnm{Carolina}\binits{C.}},
+  \bauthor{\bsnm{O'Callaghan},~\bfnm{John}\binits{J.}},
+  \bauthor{\bsnm{Park},~\bfnm{Junchol}\binits{J.}},
+  \bauthor{\bsnm{Putzeys},~\bfnm{Jan}\binits{J.}},
+  \bauthor{\bsnm{Sauerbrei},~\bfnm{Britton}\binits{B.}},
+  \bauthor{\bparticle{van} \bsnm{Daal},~\bfnm{Rik J.~J.}\binits{R.~J.~J.}},
+  \bauthor{\bsnm{Vollan},~\bfnm{Abraham~Z.}\binits{A.~Z.}},
+  \bauthor{\bsnm{Wang},~\bfnm{Shiwei}\binits{S.}},
+  \bauthor{\bsnm{Welkenhuysen},~\bfnm{Marleen}\binits{M.}},
+  \bauthor{\bsnm{Ye},~\bfnm{Zhiwen}\binits{Z.}},
+  \bauthor{\bsnm{Dudman},~\bfnm{Joshua~T.}\binits{J.~T.}},
+  \bauthor{\bsnm{Dutta},~\bfnm{Barundeb}\binits{B.}},
+  \bauthor{\bsnm{Hantman},~\bfnm{Adam~W.}\binits{A.~W.}},
+  \bauthor{\bsnm{Harris},~\bfnm{Kenneth~D.}\binits{K.~D.}},
+  \bauthor{\bsnm{Lee},~\bfnm{Albert~K.}\binits{A.~K.}},
+  \bauthor{\bsnm{Moser},~\bfnm{Edvard~I.}\binits{E.~I.}},
+  \bauthor{\bsnm{O'Keefe},~\bfnm{John}\binits{J.}},
+  \bauthor{\bsnm{Renart},~\bfnm{Alfonso}\binits{A.}},
+  \bauthor{\bsnm{Svoboda},~\bfnm{Karel}\binits{K.}},
+  \bauthor{\bsnm{H{\"{a}}usser},~\bfnm{Michael}\binits{M.}},
+  \bauthor{\bsnm{Haesler},~\bfnm{Sebastian}\binits{S.}},
+  \bauthor{\bsnm{Carandini},~\bfnm{Matteo}\binits{M.}} \AND
+  \bauthor{\bsnm{Harris},~\bfnm{Timothy~D.}\binits{T.~D.}}
+(\byear{2021}).
+\btitle{{Neuropixels 2.0: A miniaturized high-density probe for stable,
+  long-term brain recordings}}.
+\bjournal{Science}
+\bvolume{372}.
+\bdoi{10.1126/science.abf4588}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Stevenson}{2016}]{Stevenson2016}
+\begin{barticle}[author]
+\bauthor{\bsnm{Stevenson},~\bfnm{Ian~H.}\binits{I.~H.}}
+(\byear{2016}).
+\btitle{{Flexible models for spike count data with both over- and under-
+  dispersion}}.
+\bjournal{Journal of Computational Neuroscience}
+\bvolume{41}
+\bpages{29--43}.
+\bdoi{10.1007/s10827-016-0603-y}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Stevenson}{2018}]{Stevenson2018}
+\begin{barticle}[author]
+\bauthor{\bsnm{Stevenson},~\bfnm{Ian~H.}\binits{I.~H.}}
+(\byear{2018}).
+\btitle{{Omitted Variable Bias in GLMs of Neural Spiking Activity}}.
+\bjournal{Neural Computation}
+\bvolume{30}
+\bpages{3227--3258}.
+\bdoi{10.1162/neco_a_01138}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Stevenson et~al.}{2011}]{Stevenson2011a}
+\begin{barticle}[author]
+\bauthor{\bsnm{Stevenson},~\bfnm{Ian~H.}\binits{I.~H.}},
+  \bauthor{\bsnm{Cherian},~\bfnm{Anil}\binits{A.}},
+  \bauthor{\bsnm{London},~\bfnm{Brian~M.}\binits{B.~M.}},
+  \bauthor{\bsnm{Sachs},~\bfnm{Nicholas~A.}\binits{N.~A.}},
+  \bauthor{\bsnm{Lindberg},~\bfnm{Eric}\binits{E.}},
+  \bauthor{\bsnm{Reimer},~\bfnm{Jacob}\binits{J.}},
+  \bauthor{\bsnm{Slutzky},~\bfnm{Marc~W.}\binits{M.~W.}},
+  \bauthor{\bsnm{Hatsopoulos},~\bfnm{Nicholas~G.}\binits{N.~G.}},
+  \bauthor{\bsnm{Miller},~\bfnm{Lee~E.}\binits{L.~E.}} \AND
+  \bauthor{\bsnm{Kording},~\bfnm{Konrad~P.}\binits{K.~P.}}
+(\byear{2011}).
+\btitle{{Statistical assessment of the stability of neural movement
+  representations}}.
+\bjournal{Journal of Neurophysiology}
+\bvolume{106}
+\bpages{764--774}.
+\bdoi{10.1152/jn.00626.2010}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Taouali et~al.}{2016}]{Taouali2016}
+\begin{barticle}[author]
+\bauthor{\bsnm{Taouali},~\bfnm{Wahiba}\binits{W.}},
+  \bauthor{\bsnm{Benvenuti},~\bfnm{Giacomo}\binits{G.}},
+  \bauthor{\bsnm{Wallisch},~\bfnm{Pascal}\binits{P.}},
+  \bauthor{\bsnm{Chavane},~\bfnm{Fr{\'{e}}d{\'{e}}ric}\binits{F.}} \AND
+  \bauthor{\bsnm{Perrinet},~\bfnm{Laurent~U}\binits{L.~U.}}
+(\byear{2016}).
+\btitle{{Testing the odds of inherent vs. observed overdispersion in neural
+  spike counts.}}
+\bjournal{Journal of neurophysiology}
+\bvolume{115}
+\bpages{434--44}.
+\bdoi{10.1152/jn.00194.2015}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Tomko and Crapper}{1974}]{Tomko1974}
+\begin{barticle}[author]
+\bauthor{\bsnm{Tomko},~\bfnm{George~J}\binits{G.~J.}} \AND
+  \bauthor{\bsnm{Crapper},~\bfnm{Donald~R}\binits{D.~R.}}
+(\byear{1974}).
+\btitle{{Neuronal variability: non-stationary responses to identical visual
+  stimuli}}.
+\bjournal{Brain Research}
+\bvolume{79}
+\bpages{405--418}.
+\bdoi{10.1016/0006-8993(74)90438-7}
+\end{barticle}
+\endbibitem
+
 \bibitem[\protect\citeauthoryear{Wei and Stevenson}{2021}]{Wei2021}
 \begin{barticle}[author]
 \bauthor{\bsnm{Wei},~\bfnm{Ganchao}\binits{G.}} \AND
@@ -155,6 +759,18 @@
 \bvolume{33}
 \bpages{2682--2709}.
 \bdoi{10.1162/NECO_A_01426}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Wu and Hatsopoulos}{2008}]{Wu2008}
+\begin{barticle}[author]
+\bauthor{\bsnm{Wu},~\bfnm{W}\binits{W.}} \AND
+  \bauthor{\bsnm{Hatsopoulos},~\bfnm{N~G}\binits{N.~G.}}
+(\byear{2008}).
+\btitle{{Real-time decoding of nonstationary neural activity in motor cortex}}.
+\bjournal{Neural Systems and Rehabilitation Engineering, IEEE Transactions on}
+\bvolume{16}
+\bpages{213--222}.
 \end{barticle}
 \endbibitem
 

@@ -33,7 +33,7 @@ for neuron = 1:nNeuron
         try
             [~,TESTID{neuron}, QOPT(neuron,:), LLHD_train(neuron,:),...
                 LLHD_test(neuron,:), llhd_spk, bit_spk] =...
-            evalc('model_run(neuron,runInit,run_number,pos,spike_counts,1/20,12,usr_dir,r_path,r_wd)');
+            evac('model_run(neuron,runInit,run_number,pos,spike_counts,1/20,12,usr_dir,r_path,r_wd)');
             LLHD_spk_train(neuron,:) = llhd_spk(1,:);
             LLHD_spk_test(neuron,:) = llhd_spk(2,:);
             BIT_spk_train(neuron,:) = bit_spk(1,:);
