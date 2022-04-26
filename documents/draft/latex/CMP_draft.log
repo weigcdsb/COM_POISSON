@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.12.6)  25 APR 2022 19:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.12.6)  26 APR 2022 07:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -582,7 +582,7 @@ LaTeX Font Warning: Size substitutions with differences
 Here is how much of TeX's memory you used:
  8559 strings out of 479383
  122235 string characters out of 5868871
- 451089 words of memory out of 5000000
+ 451215 words of memory out of 5000000
  25358 multiletter control sequences out of 15000+600000
  475614 words of font info for 119 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -613,7 +613,7 @@ re/texlive/2020/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><e:/software/texliv
 e/2020/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><e:/software/texlive/2020/t
 exmf-dist/fonts/type1/urw/times/utmr8a.pfb><e:/software/texlive/2020/texmf-dist
 /fonts/type1/urw/times/utmri8a.pfb>
-Output written on CMP_draft.pdf (15 pages, 1088141 bytes).
+Output written on CMP_draft.pdf (15 pages, 1088206 bytes).
 PDF statistics:
  507 PDF objects out of 1000 (max. 8388607)
  454 compressed objects within 5 object streams
