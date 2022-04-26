@@ -1,4 +1,4 @@
-\begin{thebibliography}{46}
+\begin{thebibliography}{51}
 % BibTex style file: imsart-nameyear.bst, 2017-11-03
 % Default style options (sort=1,type=nameyear).
 % Used options (sort=1,type=nameyear).
@@ -326,6 +326,36 @@
 \end{barticle}
 \endbibitem
 
+\bibitem[\protect\citeauthoryear{Ghanbari et~al.}{2019}]{Ghanbari2019}
+\begin{barticle}[author]
+\bauthor{\bsnm{Ghanbari},~\bfnm{Abed}\binits{A.}},
+  \bauthor{\bsnm{Lee},~\bfnm{Christopher~M.}\binits{C.~M.}},
+  \bauthor{\bsnm{Read},~\bfnm{Heather~L.}\binits{H.~L.}} \AND
+  \bauthor{\bsnm{Stevenson},~\bfnm{Ian~H.}\binits{I.~H.}}
+(\byear{2019}).
+\btitle{{Modeling stimulus-dependent variability improves decoding of
+  population neural responses}}.
+\bjournal{Journal of Neural Engineering}
+\bvolume{16}.
+\bdoi{10.1088/1741-2552/ab3a68}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Goris, Movshon and
+  Simoncelli}{2014}]{Goris2014}
+\begin{barticle}[author]
+\bauthor{\bsnm{Goris},~\bfnm{Robbe L.~T.}\binits{R.~L.~T.}},
+  \bauthor{\bsnm{Movshon},~\bfnm{J.~Anthony}\binits{J.~A.}} \AND
+  \bauthor{\bsnm{Simoncelli},~\bfnm{Eero~P.}\binits{E.~P.}}
+(\byear{2014}).
+\btitle{{Partitioning neuronal variability}}.
+\bjournal{Nature Neuroscience 2014 17:6}
+\bvolume{17}
+\bpages{858--865}.
+\bdoi{10.1038/nn.3711}
+\end{barticle}
+\endbibitem
+
 \bibitem[\protect\citeauthoryear{Gupta, Sim and Ong}{2014}]{Gupta2014}
 \begin{barticle}[author]
 \bauthor{\bsnm{Gupta},~\bfnm{Ramesh~C.}\binits{R.~C.}},
@@ -462,6 +492,71 @@
 \end{barticle}
 \endbibitem
 
+\bibitem[\protect\citeauthoryear{Mochizuki et~al.}{2016}]{Mochizuki2016}
+\begin{barticle}[author]
+\bauthor{\bsnm{Mochizuki},~\bfnm{Yasuhiro}\binits{Y.}},
+  \bauthor{\bsnm{Onaga},~\bfnm{Tomokatsu}\binits{T.}},
+  \bauthor{\bsnm{Shimazaki},~\bfnm{Hideaki}\binits{H.}},
+  \bauthor{\bsnm{Shimokawa},~\bfnm{Takeaki}\binits{T.}},
+  \bauthor{\bsnm{Tsubo},~\bfnm{Yasuhiro}\binits{Y.}},
+  \bauthor{\bsnm{Kimura},~\bfnm{Rie}\binits{R.}},
+  \bauthor{\bsnm{Saiki},~\bfnm{Akiko}\binits{A.}},
+  \bauthor{\bsnm{Sakai},~\bfnm{Yutaka}\binits{Y.}},
+  \bauthor{\bsnm{Isomura},~\bfnm{Yoshikazu}\binits{Y.}},
+  \bauthor{\bsnm{Fujisawa},~\bfnm{Shigeyoshi}\binits{S.}},
+  \bauthor{\bsnm{Shibata},~\bfnm{Ken~Ichi}\binits{K.~I.}},
+  \bauthor{\bsnm{Hirai},~\bfnm{Daichi}\binits{D.}},
+  \bauthor{\bsnm{Furuta},~\bfnm{Takahiro}\binits{T.}},
+  \bauthor{\bsnm{Kaneko},~\bfnm{Takeshi}\binits{T.}},
+  \bauthor{\bsnm{Takahashi},~\bfnm{Susumu}\binits{S.}},
+  \bauthor{\bsnm{Nakazono},~\bfnm{Tomoaki}\binits{T.}},
+  \bauthor{\bsnm{Ishino},~\bfnm{Seiya}\binits{S.}},
+  \bauthor{\bsnm{Sakurai},~\bfnm{Yoshio}\binits{Y.}},
+  \bauthor{\bsnm{Kitsukawa},~\bfnm{Takashi}\binits{T.}},
+  \bauthor{\bsnm{Lee},~\bfnm{Jong~Won}\binits{J.~W.}},
+  \bauthor{\bsnm{Lee},~\bfnm{Hyunjung}\binits{H.}},
+  \bauthor{\bsnm{Jung},~\bfnm{Min~Whan}\binits{M.~W.}},
+  \bauthor{\bsnm{Babul},~\bfnm{Cecilia}\binits{C.}},
+  \bauthor{\bsnm{Maldonado},~\bfnm{Pedro~E.}\binits{P.~E.}},
+  \bauthor{\bsnm{Takahashi},~\bfnm{Kazutaka}\binits{K.}},
+  \bauthor{\bsnm{Arce-McShane},~\bfnm{Fritzie~I.}\binits{F.~I.}},
+  \bauthor{\bsnm{Ross},~\bfnm{Callum~F.}\binits{C.~F.}},
+  \bauthor{\bsnm{Sessle},~\bfnm{Barry~J.}\binits{B.~J.}},
+  \bauthor{\bsnm{Hatsopoulos},~\bfnm{Nicholas~G.}\binits{N.~G.}},
+  \bauthor{\bsnm{Brochier},~\bfnm{Thomas}\binits{T.}},
+  \bauthor{\bsnm{Riehle},~\bfnm{Alexa}\binits{A.}},
+  \bauthor{\bsnm{Chorley},~\bfnm{Paul}\binits{P.}},
+  \bauthor{\bsnm{Gr{\"{u}}n},~\bfnm{Sonja}\binits{S.}},
+  \bauthor{\bsnm{Nishijo},~\bfnm{Hisao}\binits{H.}},
+  \bauthor{\bsnm{Ichihara-Takeda},~\bfnm{Satoe}\binits{S.}},
+  \bauthor{\bsnm{Funahashi},~\bfnm{Shintaro}\binits{S.}},
+  \bauthor{\bsnm{Shima},~\bfnm{Keisetsu}\binits{K.}},
+  \bauthor{\bsnm{Mushiake},~\bfnm{Hajime}\binits{H.}},
+  \bauthor{\bsnm{Yamane},~\bfnm{Yukako}\binits{Y.}},
+  \bauthor{\bsnm{Tamura},~\bfnm{Hiroshi}\binits{H.}},
+  \bauthor{\bsnm{Fujita},~\bfnm{Ichiro}\binits{I.}},
+  \bauthor{\bsnm{Inaba},~\bfnm{Naoko}\binits{N.}},
+  \bauthor{\bsnm{Kawano},~\bfnm{Kenji}\binits{K.}},
+  \bauthor{\bsnm{Kurkin},~\bfnm{Sergei}\binits{S.}},
+  \bauthor{\bsnm{Fukushima},~\bfnm{Kikuro}\binits{K.}},
+  \bauthor{\bsnm{Kurata},~\bfnm{Kiyoshi}\binits{K.}},
+  \bauthor{\bsnm{Taira},~\bfnm{Masato}\binits{M.}},
+  \bauthor{\bsnm{Tsutsui},~\bfnm{Ken~Ichiro}\binits{K.~I.}},
+  \bauthor{\bsnm{Ogawa},~\bfnm{Tadashi}\binits{T.}},
+  \bauthor{\bsnm{Komatsu},~\bfnm{Hidehiko}\binits{H.}},
+  \bauthor{\bsnm{Koida},~\bfnm{Kowa}\binits{K.}},
+  \bauthor{\bsnm{Toyama},~\bfnm{Keisuke}\binits{K.}},
+  \bauthor{\bsnm{Richmond},~\bfnm{Barry~J.}\binits{B.~J.}} \AND
+  \bauthor{\bsnm{Shinomoto},~\bfnm{Shigeru}\binits{S.}}
+(\byear{2016}).
+\btitle{{Similarity in Neuronal Firing Regimes across Mammalian Species}}.
+\bjournal{Journal of Neuroscience}
+\bvolume{36}
+\bpages{5736--5747}.
+\bdoi{10.1523/JNEUROSCI.0230-16.2016}
+\end{barticle}
+\endbibitem
+
 \bibitem[\protect\citeauthoryear{Paninski et~al.}{2010}]{Paninski2010}
 \begin{barticle}[author]
 \bauthor{\bsnm{Paninski},~\bfnm{Liam}\binits{L.}},
@@ -543,6 +638,20 @@
 \bvolume{19}
 \bpages{634--641}.
 \bdoi{10.1038/nn.4268}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Rule, O'Leary and Harvey}{2019}]{Rule2019}
+\begin{barticle}[author]
+\bauthor{\bsnm{Rule},~\bfnm{Michael~E.}\binits{M.~E.}},
+  \bauthor{\bsnm{O'Leary},~\bfnm{Timothy}\binits{T.}} \AND
+  \bauthor{\bsnm{Harvey},~\bfnm{Christopher~D.}\binits{C.~D.}}
+(\byear{2019}).
+\btitle{{Causes and consequences of representational drift}}.
+\bjournal{Current Opinion in Neurobiology}
+\bvolume{58}
+\bpages{141--147}.
+\bdoi{10.1016/J.CONB.2019.08.005}
 \end{barticle}
 \endbibitem
 
@@ -745,6 +854,19 @@
 \bvolume{79}
 \bpages{405--418}.
 \bdoi{10.1016/0006-8993(74)90438-7}
+\end{barticle}
+\endbibitem
+
+\bibitem[\protect\citeauthoryear{Uzzell and Chichilnisky}{2004}]{Uzzell2004}
+\begin{barticle}[author]
+\bauthor{\bsnm{Uzzell},~\bfnm{V.~J.}\binits{V.~J.}} \AND
+  \bauthor{\bsnm{Chichilnisky},~\bfnm{E.~J.}\binits{E.~J.}}
+(\byear{2004}).
+\btitle{{Precision of spike trains in primate retinal ganglion cells}}.
+\bjournal{Journal of Neurophysiology}
+\bvolume{92}
+\bpages{780--789}.
+\bdoi{10.1152/JN.01171.2003/ASSET/IMAGES/LARGE/Z9K0070439270008.JPEG}
 \end{barticle}
 \endbibitem
 

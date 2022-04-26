@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.12.6)  25 APR 2022 08:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.12.6)  25 APR 2022 19:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -455,13 +455,13 @@ LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
 [1{e:/software/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ]
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 10
-9.
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 11
+1.
 
 (e:/software/texlive/2020/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 ) [2]
-Overfull \hbox (1.56592pt too wide) detected at line 138
+Overfull \hbox (1.56592pt too wide) detected at line 140
 []
  []
 
@@ -469,16 +469,16 @@ Overfull \hbox (1.56592pt too wide) detected at line 138
 <figure1.png, id=218, 959.585pt x 602.25pt>
 File: figure1.png Graphic file (type png)
 <use figure1.png>
-Package pdftex.def Info: figure1.png  used on input line 163.
+Package pdftex.def Info: figure1.png  used on input line 165.
 (pdftex.def)             Requested size: 406.0pt x 254.80875pt.
 
 
 LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
-(Font)              using `T1/ptm/m/sc' instead on input line 164.
+(Font)              using `T1/ptm/m/sc' instead on input line 166.
 
 
 LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
-(Font)              using `T1/ptm/m/sc' instead on input line 164.
+(Font)              using `T1/ptm/m/sc' instead on input line 166.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -487,16 +487,16 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 <figure2.png, id=231, 980.66376pt x 332.24126pt>
 File: figure2.png Graphic file (type png)
 <use figure2.png>
-Package pdftex.def Info: figure2.png  used on input line 172.
+Package pdftex.def Info: figure2.png  used on input line 174.
 (pdftex.def)             Requested size: 406.0pt x 137.54802pt.
 
 
 LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
-(Font)              using `T1/ptm/m/sc' instead on input line 173.
+(Font)              using `T1/ptm/m/sc' instead on input line 175.
 
 
 LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
-(Font)              using `T1/ptm/m/sc' instead on input line 173.
+(Font)              using `T1/ptm/m/sc' instead on input line 175.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -504,62 +504,56 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 <figure3.png, id=234, 1164.35pt x 370.38374pt>
 File: figure3.png Graphic file (type png)
 <use figure3.png>
-Package pdftex.def Info: figure3.png  used on input line 181.
+Package pdftex.def Info: figure3.png  used on input line 183.
 (pdftex.def)             Requested size: 406.0pt x 129.1502pt.
 
 LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
-(Font)              using `T1/ptm/m/sc' instead on input line 182.
+(Font)              using `T1/ptm/m/sc' instead on input line 184.
 
 
 LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
-(Font)              using `T1/ptm/m/sc' instead on input line 182.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+(Font)              using `T1/ptm/m/sc' instead on input line 184.
 
 [5 <./figure1.png>] [6 <./figure2.png> <./figure3.png>]
-<figure4.png, id=269, 759.83875pt x 665.48625pt>
+<figure4.png, id=268, 759.83875pt x 665.48625pt>
 File: figure4.png Graphic file (type png)
 <use figure4.png>
-Package pdftex.def Info: figure4.png  used on input line 200.
+Package pdftex.def Info: figure4.png  used on input line 202.
 (pdftex.def)             Requested size: 406.0pt x 355.5899pt.
 
 
 LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
-(Font)              using `T1/ptm/m/sc' instead on input line 201.
+(Font)              using `T1/ptm/m/sc' instead on input line 203.
 
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 2
-01.
+03.
 (e:/software/texlive/2020/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 
 LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
-(Font)              using `T1/ptm/m/sc' instead on input line 201.
+(Font)              using `T1/ptm/m/sc' instead on input line 203.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [7]
-<figure5.png, id=292, 910.40125pt x 553.06625pt>
+<figure5.png, id=291, 910.40125pt x 553.06625pt>
 File: figure5.png Graphic file (type png)
 <use figure5.png>
-Package pdftex.def Info: figure5.png  used on input line 214.
+Package pdftex.def Info: figure5.png  used on input line 216.
 (pdftex.def)             Requested size: 406.0pt x 246.64958pt.
 
 
 LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
-(Font)              using `T1/ptm/m/sc' instead on input line 215.
+(Font)              using `T1/ptm/m/sc' instead on input line 217.
 
 
 LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
-(Font)              using `T1/ptm/m/sc' instead on input line 215.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+(Font)              using `T1/ptm/m/sc' instead on input line 217.
 
 [8 <./figure4.png>] [9 <./figure5.png>]
-Overfull \hbox (8.59879pt too wide) in paragraph at lines 236--237
+Overfull \hbox (8.59879pt too wide) in paragraph at lines 237--238
 []\T1/ptm/m/n/11 After con-ver-gence, we have an ap-prox-i-ma-tion of the log-p
 osterior $\OML/cmm/m/it/10.95 P\OT1/cmr/m/n/10.95 (\OML/cmm/b/it/10.95 ^^R[]\OM
 S/cmsy/m/n/10.95 j\OML/cmm/b/it/10.95 Y\OT1/cmr/m/n/10.95 ) \OMS/cmsy/m/n/10.95
@@ -568,17 +562,17 @@ y/m/n/10.95 j\OML/cmm/b/it/10.95 ^^V[]\OML/cmm/m/it/10.95 ; \OT1/cmr/bx/n/10.95
  ^^F[]\OT1/cmr/m/n/10.95 )$\T1/ptm/m/n/11 ,
  []
 
-[10] [11] [12] (./CMP_draft.bbl [13]
-Underfull \hbox (badness 1708) in paragraph at lines 700--719
+[10] [11] [12] (./CMP_draft.bbl [13] [14]
+Underfull \hbox (badness 1708) in paragraph at lines 809--828
 []\T1/ptm/m/sc/9 Stevenson, I. H.\T1/ptm/m/n/9 , \T1/ptm/m/sc/9 Cherian, A.\T1/
 ptm/m/n/9 , \T1/ptm/m/sc/9 Lon-don, B. M.\T1/ptm/m/n/9 , \T1/ptm/m/sc/9 Sachs, 
 N. A.\T1/ptm/m/n/9 , \T1/ptm/m/sc/9 Lind-berg, E.\T1/ptm/m/n/9 , \T1/ptm/m/sc/9
  Reimer, J.\T1/ptm/m/n/9 ,
  []
 
-[14]) [15] (./CMP_draft.aux)
+) [15] (./CMP_draft.aux)
 Package rerunfilecheck Info: File `CMP_draft.out' has not changed.
-(rerunfilecheck)             Checksum: A419BB527B423171388DA7189ECDDD76;1125.
+(rerunfilecheck)             Checksum: A5D5072B446CBA8E849563C9BC16C47D;1097.
 
 
 LaTeX Font Warning: Size substitutions with differences
@@ -586,13 +580,13 @@ LaTeX Font Warning: Size substitutions with differences
 
  ) 
 Here is how much of TeX's memory you used:
- 8539 strings out of 479383
- 121882 string characters out of 5868871
- 448882 words of memory out of 5000000
- 25343 multiletter control sequences out of 15000+600000
+ 8559 strings out of 479383
+ 122235 string characters out of 5868871
+ 451089 words of memory out of 5000000
+ 25358 multiletter control sequences out of 15000+600000
  475614 words of font info for 119 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,18n,72p,1849b,550s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 66i,18n,72p,1849b,542s stack positions out of 5000i,500n,10000p,200000b,80000s
 {e:/software/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}<e:/software
 /texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb><e:/softwar
 e/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmbsy8.pfb><e:/so
@@ -619,10 +613,10 @@ re/texlive/2020/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><e:/software/texliv
 e/2020/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><e:/software/texlive/2020/t
 exmf-dist/fonts/type1/urw/times/utmr8a.pfb><e:/software/texlive/2020/texmf-dist
 /fonts/type1/urw/times/utmri8a.pfb>
-Output written on CMP_draft.pdf (15 pages, 1083961 bytes).
+Output written on CMP_draft.pdf (15 pages, 1088141 bytes).
 PDF statistics:
- 493 PDF objects out of 1000 (max. 8388607)
- 440 compressed objects within 5 object streams
- 100 named destinations out of 1000 (max. 500000)
+ 507 PDF objects out of 1000 (max. 8388607)
+ 454 compressed objects within 5 object streams
+ 105 named destinations out of 1000 (max. 500000)
  154 words of extra memory for PDF output out of 10000 (max. 10000000)
 
