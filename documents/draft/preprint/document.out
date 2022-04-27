@@ -1,0 +1,15 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Methods}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Dynamic Conway-Maxwell Poisson Model}{section.2}% 3
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Inference by Gaussian approximation}{subsection.2.1}% 4
+\BOOKMARK [3][-]{subsubsection.2.1.2}{Estimating process noise}{subsection.2.1}% 5
+\BOOKMARK [1][-]{section.3}{Results}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{Tracking the mean and dispersion of spike counts over time}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{Application to Experimental Data}{section.3}% 8
+\BOOKMARK [3][-]{subsubsection.3.2.1}{V1 Data}{subsection.3.2}% 9
+\BOOKMARK [3][-]{subsubsection.3.2.2}{HC Data}{subsection.3.2}% 10
+\BOOKMARK [1][-]{section.4}{Discussion}{}% 11
+\BOOKMARK [1][-]{section*.3}{Appendices}{}% 12
+\BOOKMARK [1][-]{appendix.1.A}{Quantifying Uncertainties}{}% 13
+\BOOKMARK [1][-]{appendix.1.B}{Moments approximation for Conway-Maxwell Poisson distribution}{}% 14
+\BOOKMARK [1][-]{appendix.1.C}{Gradient and Hessian of the log-posterior}{}% 15

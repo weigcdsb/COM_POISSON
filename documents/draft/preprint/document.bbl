@@ -1,0 +1,343 @@
+\begin{thebibliography}{10}
+
+\bibitem{Brown2001}
+Emery~N. Brown, David~P. Nguyen, Loren~M. Frank, Matthew~A. Wilson, and Victor
+  Solo.
+\newblock {An analysis of neural receptive field plasticity by point process
+  adaptive filtering}.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  98(21):12261--12266, oct 2001.
+
+\bibitem{Lesica2007}
+Nicholas~A. Lesica, Jianzhong Jin, Chong Weng, Chun~I. Yeh, Daniel~A. Butts,
+  Garrett~B. Stanley, and Jose~Manuel Alonso.
+\newblock {Adaptation to Stimulus Contrast and Correlations during Natural
+  Visual Stimulation}.
+\newblock {\em Neuron}, 55(3):479--491, 2007.
+
+\bibitem{Rokni2007}
+U~Rokni, A~G Richardson, E~Bizzi, and H~S Seung.
+\newblock {Motor learning with unstable neural representations}.
+\newblock {\em Neuron}, 54(4):653--666, 2007.
+
+\bibitem{Tomko1974}
+George~J Tomko and Donald~R Crapper.
+\newblock {Neuronal variability: non-stationary responses to identical visual
+  stimuli}.
+\newblock {\em Brain Research}, 79(3):405--418, 1974.
+
+\bibitem{Maimon2009}
+Gaby Maimon and John~a. Assad.
+\newblock {Beyond Poisson: Increased Spike-Time Regularity across Primate
+  Parietal Cortex}.
+\newblock {\em Neuron}, 62(3):426--440, 2009.
+
+\bibitem{Amarasingham2006}
+Asohan Amarasingham, Ting~Li Chen, Stuart Geman, Matthew~T. Harrison, and
+  David~L. Sheinberg.
+\newblock {Spike Count Reliability and the Poisson Hypothesis}.
+\newblock {\em Journal of Neuroscience}, 26(3):801--809, jan 2006.
+
+\bibitem{DeWeese2003}
+Michael~R DeWeese, Michael Wehr, and Anthony~M Zador.
+\newblock {Binary spiking in auditory cortex.}
+\newblock {\em The Journal of neuroscience : the official journal of the
+  Society for Neuroscience}, 23(21):7940--7949, 2003.
+
+\bibitem{Kara2000}
+P~Kara, P~Reinagel, and R~C Reid.
+\newblock {Low response variability in simultaneously recorded retinal,
+  thalamic, and cortical neurons.}
+\newblock {\em Neuron}, 27(3):635--646, 2000.
+
+\bibitem{Churchland2010}
+Mark~M Churchland, Byron~M Yu, John~P Cunningham, Leo~P Sugrue, Marlene~R
+  Cohen, Greg~S Corrado, William~T Newsome, Andrew~M Clark, Paymon Hosseini,
+  Benjamin~B Scott, David~C Bradley, Matthew~a Smith, Adam Kohn, J~Anthony
+  Movshon, Katherine~M Armstrong, Tirin Moore, Steve~W Chang, Lawrence~H
+  Snyder, Stephen~G Lisberger, Nicholas~J Priebe, Ian~M Finn, David Ferster,
+  Stephen~I Ryu, Gopal Santhanam, Maneesh Sahani, and Krishna~V Shenoy.
+\newblock {Stimulus onset quenches neural variability: A widespread cortical
+  phenomenon}.
+\newblock {\em Nature Neuroscience}, 13(3):369--378, 2010.
+
+\bibitem{Churchland2011}
+Anne~K Churchland, R.~Kiani, R.~Chaudhuri, Xiao~Jing Wang, Alexandre Pouget,
+  and M.~N. Shadlen.
+\newblock {Variance as a Signature of Neural Computations during Decision
+  Making}.
+\newblock {\em Neuron}, 69(4):818--831, 2011.
+
+\bibitem{Churchland2006}
+M~M Churchland, B~M Yu, S~I Ryu, G~Santhanam, and K~V Shenoy.
+\newblock {Neural Variability in Premotor Cortex Provides a Signature of Motor
+  Preparation}.
+\newblock {\em Journal of Neuroscience}, 26(14):3697, 2006.
+
+\bibitem{DeWeese1998}
+Michael DeWeese and Anthony Zador.
+\newblock {Asymmetric Dynamics in Optimal Variance Adaptation}.
+\newblock {\em Neural Computation}, 10(5):1179--1202, 1998.
+
+\bibitem{Eden2004}
+Uri~T Eden, Loren~M. Frank, Riccardo Barbieri, Victor Solo, and Emery~N. Brown.
+\newblock {Dynamic Analysis of Neural Encoding by Point Process Adaptive
+  Filtering}.
+\newblock {\em Neural Computation}, 16(5):971--998, may 2004.
+
+\bibitem{Czanner2008}
+Gabriela Czanner, Uri~T Eden, Sylvia Wirth, Marianna Yanike, Wendy~A Suzuki,
+  and Emery~N Brown.
+\newblock {Analysis of between-trial and within-trial neural spiking dynamics}.
+\newblock {\em Journal of Neurophysiology}, 99(5):2672--2693, 2008.
+
+\bibitem{Smith2003}
+Anne~C. Smith and Emery~N. Brown.
+\newblock {Estimating a state-space model from point process observations}.
+\newblock {\em Neural Computation}, 15(5):965--991, may 2003.
+
+\bibitem{Gao2015}
+Yuanjun Gao, Lars Buesing, Krishna~V Shenoy, and John~P Cunningham.
+\newblock {High-dimensional neural spike train analysis with generalized count
+  linear dynamical systems}.
+\newblock Technical report, 2015.
+
+\bibitem{Pillow2012}
+Jonathan~W. Pillow and James~G Scott.
+\newblock {Fully Bayesian inference for neural models with negative-binomial
+  spiking}.
+\newblock Technical report, 2012.
+
+\bibitem{Stevenson2016}
+Ian~H. Stevenson.
+\newblock {Flexible models for spike count data with both over- and under-
+  dispersion}.
+\newblock {\em Journal of Computational Neuroscience}, 41(1):29--43, aug 2016.
+
+\bibitem{Chatla2018}
+Suneel~Babu Chatla and Galit Shmueli.
+\newblock {Efficient estimation of COM–Poisson regression and a generalized
+  additive model}.
+\newblock {\em Computational Statistics and Data Analysis}, 121:71--88, may
+  2018.
+
+\bibitem{Sellers2010}
+Kimberly~F. Sellers and Galit Shmueli.
+\newblock {A flexible regression model for count data}.
+\newblock {\em The Annals of Applied Statistics}, 4(2):943 -- 961, 2010.
+
+\bibitem{Gupta2014}
+Ramesh~C. Gupta, S.~Z. Sim, and S.~H. Ong.
+\newblock {Analysis of discrete data by Conway–Maxwell Poisson distribution}.
+\newblock {\em AStA Advances in Statistical Analysis}, 98(4):327--343, oct
+  2014.
+
+\bibitem{Paninski2010}
+Liam Paninski, Yashar Ahmadian, Daniel~Gil Ferreira, Shinsuke Koyama, Kamiar
+  Rahnama~Rad, Michael Vidne, Joshua Vogelstein, and Wei Wu.
+\newblock A new look at state-space models for neural data.
+\newblock {\em J. Comput. Neurosci.}, 29(1–2):107–126, aug 2010.
+
+\bibitem{Shmueli2005}
+Galit Shmueli, Thomas~P. Minka, Joseph~B. Kadane, Sharad Borle, and Peter
+  Boatwright.
+\newblock {A useful distribution for fitting discrete data: revival of the
+  Conway–Maxwell–Poisson distribution}.
+\newblock {\em Journal of the Royal Statistical Society: Series C (Applied
+  Statistics)}, 54(1):127--142, jan 2005.
+
+\bibitem{Gaunt2019}
+Robert~E Gaunt, Satish Iyengar, Adri~B {Olde Daalhuis}, Burcin Simsek, and B~E
+  {Robert Gaunt}.
+\newblock {An asymptotic expansion for the normalizing constant of the
+  Conway-Maxwell-Poisson distribution}.
+\newblock {\em Ann Inst Stat Math}, 71:163--180, 2019.
+
+\bibitem{RAUCH1965}
+H~E Rauch, F~Tung, and C~T Striebel.
+\newblock {Maximum likelihood estimates of linear dynamic systems}.
+\newblock {\em AIAA Journal}, 3(8):1445--1450, aug 1965.
+
+\bibitem{Macke2011}
+Jakob~H. Macke, Lars Buesing, John~P. Cunningham, Byron~M. Yu, Krishna~V.
+  Shenoy, and Maneesh Sahani.
+\newblock {Empirical models of spiking in neural populations}.
+\newblock {\em Advances in Neural Information Processing Systems}, 24, 2011.
+
+\bibitem{Wei2021}
+Ganchao Wei and Ian~H. Stevenson.
+\newblock {Tracking Fast and Slow Changes in Synaptic Weights From
+  Simultaneously Observed Pre- and Postsynaptic Spiking}.
+\newblock {\em Neural computation}, 33(10):2682--2709, sep 2021.
+
+\bibitem{Dragoi2000}
+Valentin Dragoi, Jitendra Sharma, and Mriganka Sur.
+\newblock {Adaptation-Induced Plasticity of Orientation Tuning in Adult Visual
+  Cortex}.
+\newblock {\em Neuron}, 28(1):287--298, oct 2000.
+
+\bibitem{Kohn2016}
+A.~Kohn and M.A. Smith.
+\newblock {Utah array extracellular recordings of spontaneous and visually
+  evoked activity from anesthetized macaque primary visual cortex (V1)}, 2016.
+
+\bibitem{Shoham2003}
+Shy Shoham, Matthew~R. Fellows, and Richard~A. Normann.
+\newblock {Robust, automatic spike sorting using mixtures of multivariate
+  t-distributions}.
+\newblock {\em Journal of neuroscience methods}, 127(2):111--122, aug 2003.
+
+\bibitem{Kelly2010}
+Ryan~C. Kelly, Matthew~A. Smith, Robert~E. Kass, and Tai~Sing Lee.
+\newblock {Local field potentials indicate network state and account for
+  neuronal response variability}.
+\newblock {\em Journal of Computational Neuroscience}, 29(3):567--579, dec
+  2010.
+
+\bibitem{Smith2008}
+Matthew~A. Smith and Adam Kohn.
+\newblock {Spatial and temporal scales of neuronal correlation in primary
+  visual cortex}.
+\newblock {\em Journal of Neuroscience}, 28(48):12591--12603, nov 2008.
+
+\bibitem{Mizuseki2013}
+K.~Mizuseki, A.~Sirota, E.~Pastalkova, K.~Diba, and G.~Buzs{\'{a}}ki.
+\newblock {Multiple single unit recordings from different rat hippocampal and
+  entorhinal regions while the animals were performing multiple behavioral
+  tasks}.
+\newblock {\em CRCNS.org}, 2013.
+
+\bibitem{Rossant2016}
+Cyrille Rossant, Shabnam~N. Kadir, Dan~F.M. Goodman, John Schulman,
+  Maximilian~L.D. Hunter, Aman~B. Saleem, Andres Grosmark, Mariano Belluscio,
+  George~H. Denfield, Alexander~S. Ecker, Andreas~S. Tolias, Samuel Solomon,
+  Gy{\"{o}}rgy Buzski, Matteo Carandini, and Kenneth~D. Harris.
+\newblock {Spike sorting for large, dense electrode arrays}.
+\newblock {\em Nature Neuroscience 2016 19:4}, 19(4):634--641, mar 2016.
+
+\bibitem{Mizuseki2014}
+Kenji Mizuseki, Kamran Diba, Eva Pastalkova, Jeff Teeters, Anton Sirota, and
+  Gy{\"{o}}rgy Buzs{\'{a}}ki.
+\newblock {Neurosharing: large-scale data sets (spike, LFP) recorded from the
+  hippocampal-entorhinal system in behaving rats}.
+\newblock {\em F1000Research 2014 3:98}, 3:98, jul 2014.
+
+\bibitem{Deweese2004}
+Michael~R Deweese and Anthony~M Zador.
+\newblock {Shared and private variability in the auditory cortex.}
+\newblock {\em Journal of neurophysiology}, 92(3):1840--1855, 2004.
+
+\bibitem{Taouali2016}
+Wahiba Taouali, Giacomo Benvenuti, Pascal Wallisch, Fr{\'{e}}d{\'{e}}ric
+  Chavane, and Laurent~U Perrinet.
+\newblock {Testing the odds of inherent vs. observed overdispersion in neural
+  spike counts.}
+\newblock {\em Journal of neurophysiology}, 115(1):434--44, jan 2016.
+
+\bibitem{Wu2008}
+W~Wu and N~G Hatsopoulos.
+\newblock {Real-time decoding of nonstationary neural activity in motor
+  cortex}.
+\newblock {\em Neural Systems and Rehabilitation Engineering, IEEE Transactions
+  on}, 16(3):213--222, 2008.
+
+\bibitem{Chestek2007}
+Cynthia~A Chestek, Aaron~P Batista, Gopal Santhanam, Byron~M Yu, Afsheen
+  Afshar, John~P Cunningham, Vikash Gilja, Stephen~I Ryu, Mark~M Churchland,
+  and Krishna~V Shenoy.
+\newblock {Single-neuron stability during repeated reaching in macaque premotor
+  cortex}.
+\newblock {\em Journal of Neuroscience}, 27(40):10742--10750, 2007.
+
+\bibitem{Stevenson2011a}
+Ian~H. Stevenson, Anil Cherian, Brian~M. London, Nicholas~A. Sachs, Eric
+  Lindberg, Jacob Reimer, Marc~W. Slutzky, Nicholas~G. Hatsopoulos, Lee~E.
+  Miller, and Konrad~P. Kording.
+\newblock {Statistical assessment of the stability of neural movement
+  representations}.
+\newblock {\em Journal of Neurophysiology}, 106(2):764--774, aug 2011.
+
+\bibitem{Dickey2009}
+Adam~S Dickey, Aaron Suminski, Yali Amit, and Nicholas~G Hatsopoulos.
+\newblock {Single-unit stability using chronically implanted multielectrode
+  arrays}.
+\newblock {\em Journal of Neurophysiology}, 102(2):1331--1339, 2009.
+
+\bibitem{Mochizuki2016}
+Yasuhiro Mochizuki, Tomokatsu Onaga, Hideaki Shimazaki, Takeaki Shimokawa,
+  Yasuhiro Tsubo, Rie Kimura, Akiko Saiki, Yutaka Sakai, Yoshikazu Isomura,
+  Shigeyoshi Fujisawa, Ken~Ichi Shibata, Daichi Hirai, Takahiro Furuta, Takeshi
+  Kaneko, Susumu Takahashi, Tomoaki Nakazono, Seiya Ishino, Yoshio Sakurai,
+  Takashi Kitsukawa, Jong~Won Lee, Hyunjung Lee, Min~Whan Jung, Cecilia Babul,
+  Pedro~E. Maldonado, Kazutaka Takahashi, Fritzie~I. Arce-McShane, Callum~F.
+  Ross, Barry~J. Sessle, Nicholas~G. Hatsopoulos, Thomas Brochier, Alexa
+  Riehle, Paul Chorley, Sonja Gr{\"{u}}n, Hisao Nishijo, Satoe Ichihara-Takeda,
+  Shintaro Funahashi, Keisetsu Shima, Hajime Mushiake, Yukako Yamane, Hiroshi
+  Tamura, Ichiro Fujita, Naoko Inaba, Kenji Kawano, Sergei Kurkin, Kikuro
+  Fukushima, Kiyoshi Kurata, Masato Taira, Ken~Ichiro Tsutsui, Tadashi Ogawa,
+  Hidehiko Komatsu, Kowa Koida, Keisuke Toyama, Barry~J. Richmond, and Shigeru
+  Shinomoto.
+\newblock {Similarity in Neuronal Firing Regimes across Mammalian Species}.
+\newblock {\em Journal of Neuroscience}, 36(21):5736--5747, may 2016.
+
+\bibitem{Steinmetz2021}
+Nicholas~A. Steinmetz, Cagatay Aydin, Anna Lebedeva, Michael Okun, Marius
+  Pachitariu, Marius Bauza, Maxime Beau, Jai Bhagat, Claudia B{\"{o}}hm,
+  Martijn Broux, Susu Chen, Jennifer Colonell, Richard~J. Gardner, Bill Karsh,
+  Fabian Kloosterman, Dimitar Kostadinov, Carolina Mora-Lopez, John
+  O'Callaghan, Junchol Park, Jan Putzeys, Britton Sauerbrei, Rik~J.J. van Daal,
+  Abraham~Z. Vollan, Shiwei Wang, Marleen Welkenhuysen, Zhiwen Ye, Joshua~T.
+  Dudman, Barundeb Dutta, Adam~W. Hantman, Kenneth~D. Harris, Albert~K. Lee,
+  Edvard~I. Moser, John O'Keefe, Alfonso Renart, Karel Svoboda, Michael
+  H{\"{a}}usser, Sebastian Haesler, Matteo Carandini, and Timothy~D. Harris.
+\newblock {Neuropixels 2.0: A miniaturized high-density probe for stable,
+  long-term brain recordings}.
+\newblock {\em Science}, 372(6539), apr 2021.
+
+\bibitem{Rule2019}
+Michael~E. Rule, Timothy O'Leary, and Christopher~D. Harvey.
+\newblock {Causes and consequences of representational drift}.
+\newblock {\em Current Opinion in Neurobiology}, 58:141--147, oct 2019.
+
+\bibitem{DelCastillo2005}
+Joan del Castillo and Marta P{\'{e}}rez-Casany.
+\newblock {Overdispersed and underdispersed Poisson generalizations}.
+\newblock {\em Journal of Statistical Planning and Inference}, 134(2):486--500,
+  oct 2005.
+
+\bibitem{Stevenson2018}
+Ian~H. Stevenson.
+\newblock {Omitted Variable Bias in GLMs of Neural Spiking Activity}.
+\newblock {\em Neural Computation}, 30(12):3227--3258, oct 2018.
+
+\bibitem{Goris2014}
+Robbe~L.T. Goris, J.~Anthony Movshon, and Eero~P. Simoncelli.
+\newblock {Partitioning neuronal variability}.
+\newblock {\em Nature Neuroscience 2014 17:6}, 17(6):858--865, apr 2014.
+
+\bibitem{Uzzell2004}
+V.~J. Uzzell and E.~J. Chichilnisky.
+\newblock {Precision of spike trains in primate retinal ganglion cells}.
+\newblock {\em Journal of Neurophysiology}, 92(2):780--789, aug 2004.
+
+\bibitem{Fenton1998}
+Andr{\'{e}}~A. Fenton and Robert~U. Muller.
+\newblock {Place cell discharge is extremely variable during individual passes
+  of the rat through the firing field}.
+\newblock {\em Proceedings of the National Academy of Sciences of the United
+  States of America}, 95(6):3182--3187, 1998.
+
+\bibitem{Barbieri2001}
+Riccardo Barbieri, Michael~C Quirk, Loren~M Frank, Matthew~A Wilson, and
+  Emery~N Brown.
+\newblock {Construction and analysis of non-Poisson stimulus-response models of
+  neural spiking activity}.
+\newblock {\em Journal of Neuroscience Methods}, 105(1):25--37, jan 2001.
+
+\bibitem{Ghanbari2019}
+Abed Ghanbari, Christopher~M. Lee, Heather~L. Read, and Ian~H. Stevenson.
+\newblock {Modeling stimulus-dependent variability improves decoding of
+  population neural responses}.
+\newblock {\em Journal of Neural Engineering}, 16(6), 2019.
+
+\end{thebibliography}
