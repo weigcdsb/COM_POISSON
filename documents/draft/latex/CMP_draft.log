@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.12.6)  26 APR 2022 07:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.12.6)  26 APR 2022 20:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -537,8 +537,8 @@ LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[7]
-<figure5.png, id=291, 910.40125pt x 553.06625pt>
+[7] [8 <./figure4.png>]
+<figure5.png, id=295, 910.40125pt x 553.06625pt>
 File: figure5.png Graphic file (type png)
 <use figure5.png>
 Package pdftex.def Info: figure5.png  used on input line 216.
@@ -552,7 +552,7 @@ LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
 LaTeX Font Warning: Font shape `T1/ptm/m/scit' undefined
 (Font)              using `T1/ptm/m/sc' instead on input line 217.
 
-[8 <./figure4.png>] [9 <./figure5.png>]
+[9 <./figure5.png>]
 Overfull \hbox (8.59879pt too wide) in paragraph at lines 237--238
 []\T1/ptm/m/n/11 After con-ver-gence, we have an ap-prox-i-ma-tion of the log-p
 osterior $\OML/cmm/m/it/10.95 P\OT1/cmr/m/n/10.95 (\OML/cmm/b/it/10.95 ^^R[]\OM
@@ -582,11 +582,11 @@ LaTeX Font Warning: Size substitutions with differences
 Here is how much of TeX's memory you used:
  8559 strings out of 479383
  122235 string characters out of 5868871
- 451215 words of memory out of 5000000
+ 450215 words of memory out of 5000000
  25358 multiletter control sequences out of 15000+600000
  475614 words of font info for 119 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,18n,72p,1849b,542s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 66i,18n,72p,1849b,538s stack positions out of 5000i,500n,10000p,200000b,80000s
 {e:/software/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}<e:/software
 /texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb><e:/softwar
 e/texlive/2020/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmbsy8.pfb><e:/so
@@ -613,7 +613,7 @@ re/texlive/2020/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><e:/software/texliv
 e/2020/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><e:/software/texlive/2020/t
 exmf-dist/fonts/type1/urw/times/utmr8a.pfb><e:/software/texlive/2020/texmf-dist
 /fonts/type1/urw/times/utmri8a.pfb>
-Output written on CMP_draft.pdf (15 pages, 1088206 bytes).
+Output written on CMP_draft.pdf (15 pages, 1088186 bytes).
 PDF statistics:
  507 PDF objects out of 1000 (max. 8388607)
  454 compressed objects within 5 object streams
