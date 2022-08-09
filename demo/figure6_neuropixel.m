@@ -86,7 +86,7 @@ y = full(S(neuron,:))';
 
 hyp = @(x,p) abs(x)./(1+p*abs(x));
 b = glmfit([hyp(vvecd',0.01)],y,'poisson');
-yhat = glmval(b,[hyp(x1ax',0.01)],'log');
+yhat = glmval(b,[hyp(x1ax',0.01)],'log'); % 0.1 vs. 0.01
 
 hold on
 plot(x1ax,yhat)
@@ -125,16 +125,19 @@ X = [ones(length(vvecd),1) hyp(vvecd',0.1)];
 yna = y(all(isfinite(X),2));
 Xna = X(all(isfinite(X),2),:);
 
-G = [ones(length(vvecd),1)];
-% G = [ones(length(vvecd),1) abs(vvecd')];
-G = [ones(length(vvecd),1) exp(-abs(vvecd').^2/50.^2)];
+% G = [ones(length(vvecd),1)];
+G = [ones(length(vvecd),1) abs(vvecd')];
+% G = [ones(length(vvecd),1) exp(-abs(vvecd').^2/50.^2)];
 Gna = G(all(isfinite(X),2),:);
 Gna(:,2)=zscore(Gna(:,2));
+% Gna = ones(length(vvecd),1);
+
+
 
 n = size(Xna,1);
 
 % Initial fit using R
-init_n = 5000; 
+init_n = 1000; 
 writematrix(yna(1:init_n), [r_wd '\y.csv'])
 writematrix(Xna(1:init_n,:),[r_wd '\X.csv'])
 writematrix(Gna(1:init_n,:),[r_wd '\G.csv'])
@@ -154,13 +157,13 @@ Q = 1e-5*eye(length(theta0));
 theta01 = theta_fit_tmp(:, 1);
 W01 = W_fit_tmp(:, :, 1);
 
-QLB = 1e-8;
+QLB = 1e-7;
 QUB = 1e-3;
-Q0 = 1e-6*ones(1, min(2, size(Xna, 2))+ min(2, size(Gna, 2)));
+Q0 = 1e-5*ones(1, min(2, size(Xna, 2))+ min(2, size(Gna, 2)));
 DiffMinChange = QLB;
 DiffMaxChange = QUB*0.1;
-MaxFunEvals = 50;
-MaxIter = 50;
+MaxFunEvals = 200;
+MaxIter = 200;
 
 f = @(Q) helper_na(Q, theta01, yna',Xna,Gna,...
     W01,eye(length(theta0)));
@@ -170,8 +173,7 @@ Qopt = fmincon(f,Q0,[],[],[],[],...
     QLB*ones(1, length(Q0)),QUB*ones(1, length(Q0)), [], options);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Qopt is not OK...
-Qopt = 1e-5*ones(size(Qopt));
+% Qopt = 1e-5*ones(size(Qopt));
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -214,30 +216,33 @@ end
 CMP_ff_fit = CMP_var_fit./CMP_mean_fit;
 
 %% plot
+plotFolder = 'C:\Users\gaw19004\Documents\GitHub\COM_POISSON\plots\figure6';
+cd(plotFolder)
 
-figure(5)
+
+fit_trace = figure;
 clf
 subplot(4,segments,1:segments)
 % bar(tvec/60,y,1)
-stairs(tvec/60,y)
+stairs(tvec/60,y, 'LineWidth', 1)
 box off; set(gca,'TickDir','out')
 axis tight
 xl=xlim();
 for i=1:length(tsplit)
-    line([1 1]*tsplit(i)/60,ylim())
+    line([1 1]*tsplit(i)/60,ylim(),'Color','black','LineStyle',':', 'LineWidth', 1.5)
 end
 
 subplot(4,segments,(segments+1):2*segments)
-plot(tvec/60,abs(vvecd))
+plot(tvec/60,abs(vvecd), 'LineWidth', 1)
 axis tight; xlim(xl);
 box off; set(gca,'TickDir','out')
 for i=1:length(tsplit)
-    line([1 1]*tsplit(i)/60,ylim())
+    line([1 1]*tsplit(i)/60,ylim(),'Color','black','LineStyle',':', 'LineWidth', 1.5)
 end
 
 clear cc_pdf cc_pdf_all
 cc_pdf_all = zeros(length(x2ax),length(x1ax));
-for i=1:segments
+for i=1:(segments-1) % 1:segments
     tid = tvec>tsplit(i) & tvec<tsplit(i+1);
 %     [~,~,ns,~] = bindata2(vvec(tid)*0,vvecd(tid),full(S(neuron,tid)),x1rg,x2rg);
     [~,~,ns,~] = bindata2(vvec(tid)*0,abs(vvecd(tid)),full(S(neuron,tid)),x1rg,x2rg);
@@ -305,12 +310,45 @@ for i=1:segments
 %   
 end
 
+set(fit_trace,'PaperUnits','inches','PaperPosition',[0 0 10 5])
+print('-painters','-dsvg','1_fit_trace.svg') 
+% saveas(fit_trace, '1_fit_trace.svg')
+saveas(fit_trace, '1_fit_trace.png')
+
+subplot(4,segments,3*segments)
+colorbar()
+set(gca,'CLim',[-2 0])
+set(gca,'visible','off') %hide the current axes
+set(get(gca,'children'),'visible','off') %hide the current axes contents
+set(fit_trace,'PaperUnits','inches','PaperPosition',[0 0 10 5])
+print('-painters','-dsvg','1_fit_trace_cb.svg') 
+% saveas(fit_trace, '1_fit_trace_cb.svg')
+saveas(fit_trace, '1_fit_trace_cb.png')
+
+
 %%
 x1rgp = linspace(0,max(vvecd),16);
 x1axp = x1rgp(1:end-1)+mean(diff(x1rgp))/2;
 
-cmap = hot(segments-1);
-figure(6)
+% Bayesian bootstrap...
+[~,bins]=histc(vvecd',x1rgp);
+mm=zeros(1000,max(bins)-1);
+ff=zeros(1000,max(bins)-1);
+for i=1:(max(bins)-1)
+    t = full(S(neuron,bins==i))';
+    theta = rdirichlet(1000,repmat(1,1,length(t)));
+    wm = t'*theta;
+    wv = sum(theta.*(bsxfun(@minus,t,wm).^2));
+    ff(:,i) = wv./wm;
+    mm(:,i) = wm;
+end
+mmq = prctile(mm,[5 50 95]);
+ffq = prctile(ff,[5 50 95]);
+
+
+cmap = parula(segments-1); % hot(segments-1)
+
+fit_chunk = figure;
 clf
 id = all(isfinite(X),2);
 Xid = X(id,:);
@@ -337,33 +375,20 @@ for i=3:3:(segments-1)
 %     totvar = v1est+m2est;
 
     subplot(2,2,1)
-    scatter(x1axp,mest,10,cmap(i,:),'filled')
+    scatter(x1axp,mest,15,cmap(i,:),'filled')
     hold on
-    plot(x1ax,m1(i,:),'Color',cmap(i,:));
+    plot(x1ax,m1(i,:),'Color',cmap(i,:), 'LineWidth', 1.5);
 
     subplot(2,2,3)
-    scatter(x1axp,vest./mest,10,cmap(i,:),'filled')
+    scatter(x1axp,vest./mest,15,cmap(i,:),'filled')
     hold on
-    plot(x1ax,(m2(i,:)-m1(i,:).^2)./m1(i,:),'Color',cmap(i,:));
+    plot(x1ax,(m2(i,:)-m1(i,:).^2)./m1(i,:),'Color',cmap(i,:), 'LineWidth', 1.5);
 end
 
-% Bayesian bootstrap...
-[~,bins]=histc(vvecd',x1rgp);
-mm=zeros(1000,max(bins)-1);
-ff=zeros(1000,max(bins)-1);
-for i=1:(max(bins)-1)
-    t = full(S(neuron,bins==i))';
-    theta = rdirichlet(1000,repmat(1,1,length(t)));
-    wm = t'*theta;
-    wv = sum(theta.*(bsxfun(@minus,t,wm).^2));
-    ff(:,i) = wv./wm;
-    mm(:,i) = wm;
-end
-mmq = prctile(mm,[5 50 95]);
-ffq = prctile(ff,[5 50 95]);
+
 
 subplot(2,2,1)
-title(num2str(neuron))
+% title(num2str(neuron))
 hold off
 box off; set(gca,'TickDir','out'); ylabel('Mean')
 axis tight
@@ -375,40 +400,42 @@ axis tight
 
 
 subplot(2,2,2)
-errorbar(x1axp,mmq(2,:),mmq(2,:)-mmq(1,:),mmq(3,:)-mmq(2,:),'.','CapSize',0)
+errorbar(x1axp,mmq(2,:),mmq(2,:)-mmq(1,:),mmq(3,:)-mmq(2,:),...
+    '.','CapSize',0,'MarkerSize',10, 'LineWidth', 1)
 hold on
-plot(x1ax,x2ax*(cc_pdf_all./sum(cc_pdf_all)))
+plot(x1ax,x2ax*(cc_pdf_all./sum(cc_pdf_all)), 'LineWidth', 1.5)
 hold off
 axis tight
 set(gca,'TickDir','out'); box off
 
 
 subplot(2,2,4)
-errorbar(x1axp,ffq(2,:),ffq(2,:)-ffq(1,:),ffq(3,:)-ffq(2,:),'.','CapSize',0)
+errorbar(x1axp,ffq(2,:),ffq(2,:)-ffq(1,:),ffq(3,:)-ffq(2,:),'.',...
+    'CapSize',0,'MarkerSize',10, 'LineWidth', 1)
 hold on
 xlabel('Velocity')
 cn = cc_pdf_all./sum(cc_pdf_all);
-plot(x1ax,(x2ax.^2*cn-(x2ax*cn).^2)./(x2ax*cn))
+plot(x1ax,(x2ax.^2*cn-(x2ax*cn).^2)./(x2ax*cn), 'LineWidth', 1.5)
 hold off
 axis tight
 set(gca,'TickDir','out'); box off
 
 subplot(2,2,1)
-ylim([0 15])
-% ylim([5 20])
+% ylim([0 15])
+ylim([5 20])
 subplot(2,2,2)
-ylim([0 15])
-% ylim([5 20])
+% ylim([0 15])
+ylim([5 20])
 subplot(2,2,3)
-ylim([0 3])
-% ylim([0 0.7])
+% ylim([0 3])
+ylim([0 0.7])
 subplot(2,2,4)
-ylim([0 3])
-% ylim([0 0.7])
-
-% waitforbuttonpress()
-% end
+% ylim([0 3])
+ylim([0 0.7])
 
 
+set(fit_chunk,'PaperUnits','inches','PaperPosition',[0 0 5 4])
+saveas(fit_chunk, '2_fit_chunk.svg')
+saveas(fit_chunk, '2_fit_chunk.png')
 
 
